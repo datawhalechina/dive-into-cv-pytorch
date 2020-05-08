@@ -23,7 +23,6 @@ from torch import nn, optim
 import torchvision
 import numpy as np
 sys.path.append("../")
-import d2lzh_pytorch as d2l
 import torch.nn.functional as F
 
 
@@ -99,4 +98,29 @@ for X, Y in train_iter:
 lr, num_epochs = 0.001, 3
 optimizer = torch.optim.Adam(net.parameters(), lr=lr)
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
+
+
+def train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs):
+    net = net.to(device)
+    print("training on ", device)
+    loss = torch.nn.CrossEntropyLoss()
+    for epoch in range(num_epochs):
+        train_l_sum, train_acc_sum, n, batch_count, start = 0.0, 0.0, 0, 0, time.time()
+        for X, y in train_iter:
+            X = X.to(device)
+            y = y.to(device)
+            y_hat = net(X)
+            l = loss(y_hat, y)
+            optimizer.zero_grad()
+            l.backward()
+            optimizer.step()
+            train_l_sum += l.cpu().item()
+            train_acc_sum += (y_hat.argmax(dim=1) == y).sum().cpu().item()
+            n += y.shape[0]
+            batch_count += 1
+        test_acc = evaluate_accuracy(test_iter, net)
+        print('epoch %d, loss %.4f, train acc %.3f, test acc %.3f, time %.1f sec'
+              % (epoch + 1, train_l_sum / batch_count, train_acc_sum / n, test_acc, time.time() - start))
+
+
+train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
