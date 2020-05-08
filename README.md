@@ -46,40 +46,10 @@
         - [ ] 2.4.2 模型微调
         - [ ] 2.4.3 模型保存与加载
     - [ ] 2.5 模型集成
-* 5\. 目标检测入门
-    - [ ] 5.1 目标检测基础
-        - [x] [5.1.1 目标检测与边界框](https://github.com/monkeyDemon/Learn_Dive-into-DL-PyTorch/tree/master/chapter09_object_detection/9.1_object_detection_basics/9.1.1_object_detection_and_bounding_boxes)
-    - [ ] 5.2 目标检测数据集
-        - [x] [5.2.1 皮卡丘数据集](https://github.com/monkeyDemon/Learn_Dive-into-DL-PyTorch/tree/master/chapter09_object_detection/9.2_object_detection_datasets/9.2.1_Pikachu_dataset)
-        - [x] [5.2.2 VOC数据集](https://github.com/monkeyDemon/Learn_Dive-into-DL-PyTorch/tree/master/chapter09_object_detection/9.2_object_detection_datasets/9.2.2_PASCAL_VOC_dataset)
-        - [ ] 5.2.3 COCO数据集
-    * [5.3 目标检测和边界框](https://github.com/monkeyDemon/Learn_Dive-into-DL-PyTorch/blob/master/chapter09_computer_vision/9.3-9.5_object_detection_basics/9.3_object_detection_and_bounding_boxes.md)
-    * [5.4 锚框](https://github.com/monkeyDemon/Learn_Dive-into-DL-PyTorch/blob/master/chapter09_computer_vision/9.3-9.5_object_detection_basics/9.4_anchor_boxes.md)
-    - [ ] 9.5 多尺度目标检测
-    - [ ] 9.7 单发多框检测（SSD）
-    - [ ] 9.8 区域卷积神经网络（R-CNN）系列
-    - [ ] 9.9 语义分割和数据集
-    - [ ] 9.10 全卷积网络（FCN）
-    - [ ] 9.11 样式迁移
-    - [ ] 9.12 实战Kaggle比赛：图像分类（CIFAR-10）
-    - [ ] 9.13 实战Kaggle比赛：狗的品种识别（ImageNet Dogs）
+
 
 
 持续更新中......
 
-
-
-## 引用
-
-如果您在研究中使用了这个项目请引用原书:
-
-```
-@book{zhang2019dive,
-    title={Dive into Deep Learning},
-    author={Aston Zhang and Zachary C. Lipton and Mu Li and Alexander J. Smola},
-    note={\url{http://www.d2l.ai}},
-    year={2020}
-}
-```
 
 
