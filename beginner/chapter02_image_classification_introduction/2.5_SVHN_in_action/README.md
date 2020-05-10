@@ -1,14 +1,33 @@
 # 天池计算机视觉入门赛:SVHN数据集实战
 
-## 比赛简介
+这里我们以datawhale和天池合作的天池计算机视觉入门赛（TODO:链接）为例，通过案例实战来进一步巩固本章所介绍的图像分类知识。
 
-TODO：比赛介绍见×××
+## 比赛简介与赛题分析
 
-baseline思路：使用CNN进行定长字符分类；
+该比赛以SVHN街道字符为赛题数据，数据集报名后可见并可下载，该数据来自收集的SVHN街道字符，并进行了匿名采样处理，详细的介绍见赛事官网。
 
-TODO: 数据集下载链接 ×××
+![SVHN_dataset](../../../markdown_imgs/chapter02/2_5_SVHN_dataset.png)
 
-注：以下代码默认已将比赛数据的根文件夹命名为`tianchi_SVHN`并放置于`Dive-into-CV-PyTorch/dataset/tianchi_SVHN`下
+TODO: 数据集下载链接 ××
+
+注：以下代码均默认已将比赛数据的根文件夹命名为`tianchi_SVHN`并放置于`Dive-into-CV-PyTorch/dataset/tianchi_SVHN`下
+
+我们要做的就是识别图片中的数字串，赛题给定的数据图片中不同图片中包含的字符数量不等，如下图所示。
+
+![diff_long_char](../../../markdown_imgs/chapter02/2_5_diff_long_char.png)
+
+看起来好像有点棘手，和本章介绍的图像分类还并不一样。这里我们利用一个巧妙的思路，将赛题转化为一个分类问题来解。
+
+赛题数据集大部分图像中字符个数为2-4个，最多的字符个数为6个。因此可以对于所有的图像都抽象为6个字
+符的定长字符识别问题，少于6位的部分填充为X。
+
+例如字符23填充为23XXXX，字符231填充为231XXX。
+
+![paddXX](../../../markdown_imgs/chapter02/2_5_paddXX.png)
+
+于是相当于将赛题转化为了分别对6个数字进行的分类问题，每个数字预测0-9/X。
+
+注：这种思路显然不是本次比赛以及SVHN数据集的最佳解法，但却十分巧妙，这样设计的实战项目可以巩固对于本章图像分类知识的学习，考察灵活掌握的程度。
 
 
 ## 环境安装
@@ -140,6 +159,9 @@ val_loader = torch.utils.data.DataLoader(
 10000 10000
 ```
 
+通过上述代码, 定义了赛题图像数据和对应标签的读取器dataloader。后面实际进行训练时，dataloader会根据我们代码中的定义，进行在线的数据増广，数据扩增的效果如下所示：
+
+![augment](../../../markdown_imgs/chapter02/2_5_data_augment.png)
 
 ## 定义分类模型
 
