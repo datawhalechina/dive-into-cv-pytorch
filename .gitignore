@@ -1,2 +1,3 @@
 *.pyc
 dataset/cifar-10-batches-py
+dataset/tianchi_SVHN
