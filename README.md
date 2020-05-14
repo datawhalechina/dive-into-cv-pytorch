@@ -73,7 +73,7 @@
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">安晟</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">一只普通的算法攻城狮 </td>
-    <td>博客：</span><a href="https://blog.csdn.net/u011583927"><span style="font-weight:normal;font-style:normal;text-decoration:none">https://blog.csdn.net/u011583927</span></a>[博客](https://blog.csdn.net/u011583927)</td>
+    <td><a href="https://blog.csdn.net/u011583927">CSDN博客</a>  <a href="https://github.com/monkeyDemon">Github</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
