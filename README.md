@@ -53,4 +53,50 @@
 持续更新中......
 
 
+## 贡献者名单
+
+<table align="center" style="width:80%;">
+  <caption><b>成员信息</b></caption>
+<thead>
+  <tr>
+    <th>成员</th>
+    <th>介绍</th>
+    <th>个人主页</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>阿水</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">公众号：Coggle数据科学 </td>
+    <td><a href="https://www.zhihu.com/people/finlayliu">知乎</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">安晟</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">一只普通的算法攻城狮 </td>
+    <td><a href="https://blog.csdn.net/u011583927">CSDN博客</a>,   <a href="https://github.com/monkeyDemon">Github</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">南昌航空大学研究生   </td>
+    <td><a href="https://blog.csdn.net/weixin_40647819">CSDN博客</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁波大学计算机硕士</td>
+    <td><a href="https://github.com/QiangZiBro">Github</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">伊雪</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">中电科网安研究院开发工程师</span></td>
+    <td> </td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王茂霖</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">华中科技大学研究生，常年混迹Tianchi   </td>
+    <td><a href="https://github.com/mlw67">Github</a></td>
+  </tr>
+</tbody>
+</table> 
+
+
 

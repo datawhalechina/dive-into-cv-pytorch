@@ -47,7 +47,7 @@
 - 每轮进行训练和验证，并根据最优验证集精度保存模型；
 
 
-```
+```python
 train_loader = torch.utils.data.DataLoader(
     train_dataset,
     batch_size=10, 
@@ -79,7 +79,7 @@ for epoch in range(20):
 ```
 其中每个Epoch的训练代码如下：
 
-```
+```python
 def train(train_loader, model, criterion, optimizer, epoch):
     # 切换模型为训练模式
     model.train()
@@ -99,7 +99,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
 ```
 其中每个Epoch的验证代码如下：
 
-```
+```python
 def validate(val_loader, model, criterion):
     # 切换模型为预测模型
     model.eval()
@@ -124,7 +124,7 @@ def validate(val_loader, model, criterion):
 ## 模型保持与加载
 在Pytorch中模型的保存和加载非常简单，比较常见的做法是保存和加载模型参数：
 
-```
+```python
 torch.save(model_object.state_dict(), 'model.pt')
 model.load_state_dict(torch.load(' model.pt'))
 
