@@ -169,12 +169,14 @@ Anaconda是目前非常流行的一个python包管理器，自带很多流行的
 
 使用`conda env list`命令可以查看当前的所有python环境
 
->$ conda env list
- # conda environments:
- #
- base                  *  /home/ansheng/miniconda3
- open-mmlab               /home/ansheng/miniconda3/envs/open-mmlab
- py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
+```
+$ conda env list
+# conda environments:
+#
+base                  *  /home/ansheng/miniconda3
+open-mmlab               /home/ansheng/miniconda3/envs/open-mmlab
+py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
+```
 
 可以看到，我的电脑上有3个环境。一个是安装anaconda后自带的base环境，一个是我们刚刚新建的python环境py37_torch131，还有一个是我之前创建的环境。
 
