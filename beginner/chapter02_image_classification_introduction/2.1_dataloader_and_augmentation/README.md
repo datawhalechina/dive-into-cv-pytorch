@@ -118,7 +118,7 @@ PASCAL VOC为图像分类与物体检测提供了一整套标准的的数据集�
    
 在模型训练之前，我们需要先读取和加载数据，Pytorch的torchvision中已经包含了很多常用数据集，如Imagene，MNIST，CIFAR10、VOC等，利用torchvision可以很方便地读取;另外，在实际应用中，我们可能还需要从各种不同的数据集或自己构建的数据集中读取图像。所以，这一小节从常见数据集读取方法和自定义读取数据方法两个方面介绍Pytorch数据读取方法。      
 
-本节以CIFAR10数据集为例进行介绍，默认将数据集下载在'../dataset/'目录下。    
+本节以CIFAR10数据集为例进行介绍，默认将数据集下载在'Dive-into-CV-PyTorch/dataset/'目录下。    
       
 ### 1.常见数据集读取方法
     
@@ -147,13 +147,13 @@ import torchvision
 from torch.utils.data.dataset import Dataset
 import torchvision.transforms as transforms         
       
-train_data=torchvision.datasets.CIFAR10('../dataset', 
+train_data=torchvision.datasets.CIFAR10('../../../dataset', 
                                                       train=True, 
                                                       transform=None,  
                                                       target_transform=None, 
                                                       download=True)          
      
-test_data=torchvision.datasets.CIFAR10('../dataset', 
+test_data=torchvision.datasets.CIFAR10('../../../dataset', 
                                                       train=False, 
                                                       transform=None, 
                                                       target_transform=None, 
@@ -171,17 +171,14 @@ import torchvision
 from torch.utils.data.dataset import Dataset
 import torchvision.transforms as transforms        
       
-train_data=torchvision.datasets.CIFAR10('../dataset', train=True, 
+train_data=torchvision.datasets.CIFAR10('../../../dataset', train=True, 
                            transform=transforms.transforms.Compose([
                                            # 尺寸归一化
                                          transforms.Resize((64, 128)),
-
                                            # 随机颜色变换
                                          transforms.ColorJitter(0.2, 0.2, 0.2),
-
                                            # 加入随机旋转
                                          transforms.RandomRotation(5),
-
                                            # 对图像像素进行归一化
                                          transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])
                                       ]), 
@@ -199,7 +196,7 @@ import torchvision
 from torch.utils.data.dataset import Dataset
 import torchvision.transforms as transforms     
      
-train_data=torchvision.datasets.CIFAR10('../dataset', train=True, 
+train_data=torchvision.datasets.CIFAR10('../../../dataset', train=True, 
                                                       transform=None,  
                                                       target_transform=None, 
                                                       download=True)          
@@ -251,7 +248,7 @@ class MyDataset(Dataset):#继承Dataset
        
 当我们根据数据集的模式构建好MyDataset后，同样也就可以利用DataLoader进行多线程批量读取啦。    
        
-这里以[SVHN](http://ufldl.stanford.edu/housenumbers/)数据集为例构建了一个SVHNDataset完成对SVHN数据集的读取，详细内容可参考：[datawhale_team_learning](https://github.com/datawhalechina/team-learning/blob/master/03%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E5%AE%9E%E8%B7%B5%EF%BC%88%E8%A1%97%E6%99%AF%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%86%E5%88%AB%EF%BC%89/Datawhale%20%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8CV%20-%20Task%2002%20%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%89%A9%E5%A2%9E.md)。
+这里以[SVHN](http://ufldl.stanford.edu/housenumbers/)数据集为例构建了一个SVHNDataset完成对SVHN数据集的读取，这里仅是截取了天池CV入门赛baseline代码中的一段作为示例，详细内容可参考：[datawhale_team_learning](https://github.com/datawhalechina/team-learning/blob/master/03%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E5%AE%9E%E8%B7%B5%EF%BC%88%E8%A1%97%E6%99%AF%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%AF%86%E5%88%AB%EF%BC%89/Datawhale%20%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8CV%20-%20Task%2002%20%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%89%A9%E5%A2%9E.md)。
 
 ```python
 import os, sys, glob, shutil, json
@@ -297,18 +294,10 @@ data = SVHNDataset(train_path, train_label,
           transforms.Compose([
               # 缩放到固定尺寸
               transforms.Resize((64, 128)),
-
-              # 随机颜色变换
-              transforms.ColorJitter(0.2, 0.2, 0.2),
-
-              # 加入随机旋转
-              transforms.RandomRotation(5),
-
               # 将图片转换为pytorch 的tesntor
-              # transforms.ToTensor(),
-
+              transforms.ToTensor(),
               # 对图像像素进行归一化
-              # transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])
+              transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])
             ]))
 ```
      
@@ -360,8 +349,8 @@ import torchvision
 from torch.utils.data.dataset import Dataset
 import torchvision.transforms as transforms  
 
-outfile='../dataset'      
-im = Image.open('../dataset/*.png')         
+outfile='../../../dataset'      
+im = Image.open('../../../dataset/*.png')         
 ```
       
 ![IMG](../../../markdown_imgs/chapter02/Task02/cat.png)    
@@ -507,12 +496,12 @@ transform = transforms.Compose([
                        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-train_data=torchvision.datasets.CIFAR10('../dataset', train=True, 
+train_data=torchvision.datasets.CIFAR10('../../../dataset', train=True, 
                                         transform= transform, 
                                         target_transform=None, 
                                         download=False)
 
-test_data=torchvision.datasets.CIFAR10('../dataset', train=False, 
+test_data=torchvision.datasets.CIFAR10('../../../dataset', train=False, 
                                         transform= transform, 
                                         target_transform=None, 
                                         download=False)
@@ -567,9 +556,10 @@ class SVHNDataset(Dataset):
     def __len__(self):
         return len(self.img_path)
 
-train_path = glob.glob('../dataset/*.png')
+# 假设你的数据集根目录放在了dataset下
+train_path = glob.glob('../../../dataset/SVHN/train/*.png')
 train_path.sort()
-train_json = json.load(open('../dataset/train.json'))
+train_json = json.load(open('../../../dataset/SVHN/train.json'))
 train_label = [train_json[x]['label'] for x in train_json]
 
 train_loader = torch.utils.data.DataLoader(
