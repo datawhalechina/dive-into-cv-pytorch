@@ -18,7 +18,7 @@
 
 * 1\. 预备知识
     - [x] 1.1 深度学习环境配置
-    - [ ] 1.2 数据操作
+    - [x] 1.2 Pytorch基础使用介绍
     - [ ] 1.3 自动求梯度
     - [ ] 1.4 线性回归-小试身手
 * 2\. 图片分类入门
@@ -85,11 +85,6 @@
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">伊雪</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">中电科网安研究院开发工程师</span></td>
     <td> </td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王茂霖</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">华中科技大学研究生，常年混迹Tianchi   </td>
-    <td><a href="https://github.com/mlw67">Github</a></td>
   </tr>
 </tbody>
 </table> 
