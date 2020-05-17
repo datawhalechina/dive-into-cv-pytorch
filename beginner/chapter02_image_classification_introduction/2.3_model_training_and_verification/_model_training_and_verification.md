@@ -21,7 +21,7 @@ Pytorch包涵盖常用数据集，可通过torchvision.datasets读取，并使�
 
 本文使用Cifar10数据集，包含10类，分别为： ‘airplane’, ‘automobile’, ‘bird’, ‘cat’, ‘deer’, ‘dog’, ‘frog’, ‘horse’, ‘ship’, ‘truck’。图像大小均为32x32x3。
 
-![Cifar10数据集](../../../markdown_imgs/chapter02/Task02/dataset_ex.png)
+![Cifar10数据集](../../../markdown_imgs/chapter02/task04/dataset_ex.png)
 
 
 ```Python
@@ -65,7 +65,7 @@ imgshow(torchvision.utils.make_grid(images))
 print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
 ```
 
-![查看结果](../../../markdown_imgs/chapter02/Task02/dataset_check.png)
+![查看结果](../../../markdown_imgs/chapter02/task04/dataset_check.png)
 
 #### 2 模型训练、调参：
 
@@ -134,7 +134,7 @@ self.relu1 = nn.ReLU()
 ```
 激活函数图像
 
-![ReLU](../../../markdown_imgs/chapter02/Task02/relu.png)
+![ReLU](../../../markdown_imgs/chapter02/task04/relu.png)
 
 激活函数（Activation Function），是在人工神经网络的神经元上运行的函数，负责将神经元的输入映射到输出端。引入激活函数是为了增加神经网络模型的非线性。没有激活函数的每层都相当于矩阵相乘。就算你叠加了若干层之后，无非还是个矩阵相乘罢了。
 
