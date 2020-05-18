@@ -26,7 +26,11 @@
 
 为避免各位遇到GitHub的网络问题，教程中使用的图片均已上传到项目的`markdown_imgs`目录下，并在md文件中使用类似`![test img](../../markdown_imgs/test_img.jpg)`的相对路径进行引用
 
-部分理论较多的章节不可避免的会涉及公式，为了让公式正常显示，强烈建议安装chrome的`MathJax Plugin for Github`插件。
+常见问题：
+
+[github无法加载图片的解决办法](https://blog.csdn.net/u011583927/article/details/104384169)
+
+公式无法正常显示接近办法：部分理论较多的章节不可避免的会涉及公式，为了让公式正常显示，强烈建议安装chrome的`MathJax Plugin for Github`插件。
 
 以下是目录与代码更新进度
 
