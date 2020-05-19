@@ -1,3 +1,8 @@
 *.pyc
 dataset/cifar-10-batches-py
 dataset/tianchi_SVHN
+dataset/*
+.DS_Store
+.idea
+*.ckpt
+.ipynb_checkpoints
