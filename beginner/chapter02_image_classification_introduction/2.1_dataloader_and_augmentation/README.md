@@ -208,7 +208,7 @@ train_loader = torch.utils.data.DataLoader(train_data,
                                                       
 ```        
        
-batch_size设置了批量大小，shuffle设置为True在装载过程中为随机乱序，num_workers>=1表示多线程读取数据。
+batch_size设置了批量大小，shuffle设置为True在装载过程中为随机乱序，num_workers>=1表示多线程读取数据，在Win下num_workers最好设置为0。
         
 ### 2.自定义读取数据方法 
 
