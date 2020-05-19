@@ -338,8 +338,8 @@ class AlexNet(nn.Module):
 
 
 
-[^1]:https://cs231n.github.io/convolutional-networks/#overview
-[^2]:https://poloclub.github.io/cnn-explainer/
+[^1]:https://cs231n.github.io/convolutional-networks/#overview CS231
+[^2]:https://poloclub.github.io/cnn-explainer/ CNN Explainer
 [^3]: https://zhuanlan.zhihu.com/p/41423739 ,Amusi, 《一文读懂VGG网络》
 
 
