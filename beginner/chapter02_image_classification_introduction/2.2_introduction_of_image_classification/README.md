@@ -261,7 +261,7 @@ class AlexNet(nn.Module):
 
 #### VGG
 
-[VGG](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1409.1556)是Oxford的**V**isual **G**eometry **G**roup的组提出的。该网络是在ILSVRC 2014上的相关工作，主要工作是证明了增加网络的深度能够在一定程度上影响网络最终的性能。VGG有两种结构，分别是VGG16和VGG19，两者并没有本质上的区别，只是网络深度不一样。
+[VGG](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1409.1556)是Oxford的**V**isual **G**eometry **G**roup的组提出的。该网络是在ILSVRC 2014上的相关工作，主要工作是证明了增加网络的深度能够在一定程度上影响网络最终的性能。VGG有两种结构，分别是VGG16和VGG19，两者并没有本质上的区别，只是网络深度不一样。[^3]
 
 ##### 网络架构
 
@@ -301,8 +301,8 @@ class AlexNet(nn.Module):
 ​		
 
 <div align="center">
-  <img src="../../../markdown_imgs/chapter02/2.2/linear_conv.png" style="zoom:30%">
-  <img src="../../../markdown_imgs/chapter02/2.2/mlp_conv.png" style="zoom:30%">
+  <img src="../../../markdown_imgs/chapter02/2.2/linear_conv.png" width="40%">
+  <img src="../../../markdown_imgs/chapter02/2.2/mlp_conv.png" style="border-left: 1px solid black;" width="40%">
 </div>
 
 ​		
