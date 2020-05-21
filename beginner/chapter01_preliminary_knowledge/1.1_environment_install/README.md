@@ -2,11 +2,13 @@
 
 进行CV的学习，配置好实验环境就是第一步。本小节就带大家简单的过一下如何配置深度学习GPU环境。
 
-主要分为3个部分
+主要分为4个部分
 
 - 如何获取GPU资源
 
 - CUDA安装
+
+- Cudnn安装
 
 - Anaconda安装及环境管理
 
@@ -145,7 +147,30 @@ Cuda compilation tools, release 10.0, V10.0.130
 
 这个过程应该是整个环境配置过程中最容易出问题的，一般都和显卡驱动有关。不要灰心，我们面对什么困难，都不要怕，加油，奥利给！
 
-## 3.Anaconda安装及环境管理
+## 3.如何安装Cudnn
+
+首先到官网下载cudnn，注意版本一定要和CUDA进行对应就好
+
+cudnn其实并不需要安装，下载并解压后有两种处理方法：
+
+第一种是将文件对应的拷贝到你安装的cuda相应目录下，例如：
+
+```
+$ sudo cp cuda/include/cudnn.h /usr/local/cuda/include
+$ sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+$ sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
+```
+
+第二种是设置环境变量，让你的系统能够在需要时找到cudnn，例如在`~/.bashrc`中添加：
+
+```
+LD_LIBRARY_PATH="/data/ansheng/local/usr/lib64:$LD_LIBRARY_PATH"  # cudnn
+```
+
+你需要将路径更换为你实际放置cudnn的路径
+
+
+## 4.Anaconda安装及环境管理
 
 Anaconda是目前非常流行的一个python包管理器，自带很多流行的python库，包括numpy，pandas等，当然还有conda。而Conda是一个开源的软件包管理系统和环境管理系统，用于安装多个版本的软件包及其依赖关系，并在它们之间轻松切换。我们非常推荐使用Anaconda来管理你的python环境，随着你后面的不断学习，你会感受到它的精髓和好用。
 
@@ -219,6 +244,27 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 除此之外，你可以还需要一切其他的库，根据你的需要，再使用pip命令安装到当前环境中即可，例如：
 
 >$pip install jupyter tqdm opencv-python matplotlib pandas
+
+**下载超时的解决办法**
+
+使用pip或conda时遇到下载龟速甚至超时失败的情况，可以通过更好国内源的方式解决
+
+pip更换清华源
+
+```
+$ mkdir ~/.pip
+$ cd ~/.pip
+$ vi pip.conf
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+conda更换清华的源
+
+```
+$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+$ conda config --set show_channel_urls yes
+```
 
 到此，本教材关于GPU环境配置的介绍就全部结束了。如有意见和建议，欢迎和我联系。
 
