@@ -378,7 +378,7 @@ class Net(nn.Module):
 ##### 总结
 
 - NiN重复使用由卷积层和代替全连接层的1×1卷积层构成的NiN块来构建深层网络
-- 1x1卷积等效于该像素点在所有特征上进行一次全连接的计算，起到了**压缩通道**，也即**降维**的作用，减少了通道的数量。
+- 1x1卷积等效于该像素点在所有特征上进行一次全连接的计算，起到了**压缩通道**，即**降维**的作用，减少了通道的数量。
 - NiN去除了容易造成过拟合的全连接输出层，而是将其替换成输出通道数等于标签类别数 的NiN块和全局平均池化层。
 - NiN的以上设计思想影响了后面一系列卷积神经网络的设计。
 
@@ -524,7 +524,7 @@ class GoogLeNet(nn.Module):
 
 ##### 总结
 
-- 使用1x1的卷积一是为了减少通道数，降低模型复杂度，二是为了提取更丰富的特征
+- 使用1x1的卷积，原因一是为了减少通道数，降低模型复杂度，二是为了提取更丰富的特征
 - 在构建神经网络层的时候，不想决定池化层是使用1×1，3×3还是5×5的过滤器，那么**Inception**模块就是最好的选择。我们可以应用各种类型的过滤器，只需要把输出连接起来。
 
 #### 批量归一化（Batch Normalization）
@@ -539,7 +539,7 @@ class GoogLeNet(nn.Module):
 
 - 对全连接层做批量归一化
 
- 我们先考虑如何对全连接层做批量归一化。通常，我们将批量归一化层置于全连接层中的仿射变换和激活函数之间。设全连接层的输入为$\boldsymbol{u}$，权重参数和偏差参数分别为$\boldsymbol{W}$和$\boldsymbol{b}$，激活函数为$\phi$。设批量归一化的运算符为$\text{BN}$。那么，使用批量归一化的全连接层的输出为
+我们先考虑如何对全连接层做批量归一化。通常，我们将批量归一化层置于全连接层中的仿射变换和激活函数之间。设全连接层的输入为$\boldsymbol{u}$，权重参数和偏差参数分别为$\boldsymbol{W}$和$\boldsymbol{b}$，激活函数为$\phi$。设批量归一化的运算符为$\text{BN}$。那么，使用批量归一化的全连接层的输出为
 $$
 \phi(\text{BN}(\boldsymbol{x})),
 $$
@@ -555,7 +555,11 @@ $$
 得到。考虑一个由$m$个样本组成的小批量，仿射变换的输出为一个新的小批量$\mathcal{B} = \{\boldsymbol{x}^{(1)}, \ldots, \boldsymbol{x}^{(m)} \}$。它们正是批量归一化层的输入。对于小批量$\mathcal{B}$中任意样本$\boldsymbol{x}^{(i)} \in \mathbb{R}^d, 1 \leq  i \leq m$，批量归一化层的输出同样是$d$维向量
 
 $$
-\boldsymbol{y}^{(i)} = \text{BN}(\boldsymbol{x}^{(i)})
+\begin{equation}
+\begin{aligned}
+\boldsymbol{y}^{(i)}  & = \phi(\text{BN}(\boldsymbol{x}^{(i)}))
+\end{aligned}
+\end{equation}
 $$
 
 
@@ -583,7 +587,6 @@ $$
 {\boldsymbol{y}}^{(i)} \leftarrow \boldsymbol{\gamma} \odot \hat{\boldsymbol{x}}^{(i)} + \boldsymbol{\beta}.
 $$
 
-
 至此，我们得到了$\boldsymbol{x}^{(i)}$的批量归一化的输出$\boldsymbol{y}^{(i)}$。
 值得注意的是，可学习的拉伸和偏移参数保留了不对$\hat{\boldsymbol{x}}^{(i)}$做批量归一化的可能：此时只需学出$\boldsymbol{\gamma} = \sqrt{\boldsymbol{\sigma}_\mathcal{B}^2 + \epsilon}$和$\boldsymbol{\beta} = \boldsymbol{\mu}_\mathcal{B}$。我们可以对此这样理解：如果批量归一化无益，理论上，学出的模型可以不使用批量归一化。
 
@@ -595,7 +598,165 @@ $$
 
 使用批量归一化训练时，我们可以将批量大小设得大一点，从而使批量内样本的均值和方差的计算都较为准确。将训练好的模型用于预测时，我们希望模型对于任意输入都有确定的输出。因此，单个样本的输出不应取决于批量归一化所需要的随机小批量中的均值和方差。一种常用的方法是通过移动平均估算整个训练数据集的样本均值和方差，并在预测时使用它们得到确定的输出。可见，和丢弃层一样，批量归一化层在训练模式和预测模式下的计算结果也是不一样的。
 
+##### 代码实战
+
+- 使用批量归一化方法优化lenet，[->](2.2.2_classical_cnn_models/BN/BatchNormalization.py)
+- 核心代码
+
+```python
+
+# 定义一次batch normalization运算的计算图
+def batch_norm(is_training, X, gamma, beta, moving_mean, moving_var, eps, momentum):
+    # 判断当前模式是训练模式还是预测模式
+    if not is_training:
+        # 如果是在预测模式下，直接使用传入的移动平均所得的均值和方差
+        X_hat = (X - moving_mean) / torch.sqrt(moving_var + eps)
+    else:
+        assert len(X.shape) in (2, 4)
+        if len(X.shape) == 2:
+            # 使用全连接层的情况，计算特征维上的均值和方差
+            mean = X.mean(dim=0)
+            var = ((X - mean) ** 2).mean(dim=0)
+        else:
+            # 使用二维卷积层的情况，计算每个通道维上（axis=1）的均值和方差。
+            # 这里我们需要保持X的形状以便后面可以做广播运算
+            mean = X.mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
+            var = ((X - mean) ** 2).mean(dim=0, keepdim=True).mean(dim=2, keepdim=True).mean(dim=3, keepdim=True)
+        # 训练模式下用当前的均值和方差做标准化
+        X_hat = (X - mean) / torch.sqrt(var + eps)
+        # 更新移动平均的均值和方差
+        moving_mean = momentum * moving_mean + (1.0 - momentum) * mean
+        moving_var = momentum * moving_var + (1.0 - momentum) * var
+    Y = gamma * X_hat + beta  # 拉伸和偏移
+    return Y, moving_mean, moving_var
+
+
+# 手动实现版本BatchNormalization层的完整定义
+class BatchNorm(nn.Module):
+    def __init__(self, num_features, num_dims):
+        super(BatchNorm, self).__init__()
+        if num_dims == 2:
+            shape = (1, num_features)  # 全连接层输出神经元
+        else:
+            shape = (1, num_features, 1, 1)  # 通道数
+        # 参与求梯度和迭代的拉伸和偏移参数，分别初始化成1和0
+        self.gamma = nn.Parameter(torch.ones(shape))
+        self.beta = nn.Parameter(torch.zeros(shape))
+        # 不参与求梯度和迭代的变量，全在内存上初始化成0
+        self.moving_mean = torch.zeros(shape)
+        self.moving_var = torch.zeros(shape)
+
+    def forward(self, X):
+        # 如果X不在内存上，将moving_mean和moving_var复制到X所在显存上
+        if self.moving_mean.device != X.device:
+            self.moving_mean = self.moving_mean.to(X.device)
+            self.moving_var = self.moving_var.to(X.device)
+        # 保存更新过的moving_mean和moving_var, Module实例的traning属性默认为true, 调用.eval()后设成false
+        Y, self.moving_mean, self.moving_var = batch_norm(self.training,
+                                                          X, self.gamma, self.beta, self.moving_mean,
+                                                          self.moving_var, eps=1e-5, momentum=0.9)
+        return Y
+```
+
+
+
 #### 残差网络（ResNet）
+
+ ResNets要解决的是深度神经网络的“退化”问题。我们知道，对浅层网络逐渐叠加layers，模型在训练集和测试集上的性能会变好，因为模型复杂度更高了，表达能力更强了，可以对潜在的映射关系拟合得更好。而“退化”指的是，给网络叠加更多的层后，性能却快速下降的情况，如图：
+
+<div align=center>
+<img src="../../../markdown_imgs/chapter02/2.2/640.png"/>
+</div>
+
+针对这一问题，何恺明等人提出了残差网络（ResNet）。它在2015年的ImageNet图像识别挑战赛夺魁，并深刻影响了后来的深度神经网络的设计。
+
+
+
+##### 网络结构
+
+-  残差块
+
+设输入为$\boldsymbol{x}$。假设我们希望学出的理想映射为$f(\boldsymbol{x})$，从而作为图5.9上方激活函数的输入。左图虚线框中的部分需要直接拟合出该映射$f(\boldsymbol{x})$，而右图虚线框中的部分则需要拟合出有关恒等映射的残差映射$f(\boldsymbol{x})-\boldsymbol{x}$。残差映射在实际中往往更容易优化。以本节开头提到的恒等映射作为我们希望学出的理想映射$f(\boldsymbol{x})$。我们只需将图5.9中右图虚线框内上方的加权运算（如仿射）的权重和偏差参数学成0，那么$f(\boldsymbol{x})$即为恒等映射。实际中，当理想映射$f(\boldsymbol{x})$极接近于恒等映射时，残差映射也易于捕捉恒等映射的细微波动。图5.9右图也是ResNet的基础块，即残差块（residual block）。在残差块中，输入可通过跨层的数据线路更快地向前传播。
+
+<div align=center>
+<img width="400" src="../../../markdown_imgs/chapter02/2.2/5.11_residual-block.svg"/>
+</div>
+<div align=center>普通的网络结构（左）与加入残差连接的网络结构（右）</div>
+
+##### 代码实战
+
+- 可运行代码[->](2.2.2_classical_cnn_models/ResNet/ResNet.py)
+- 核心代码
+
+```python
+# 3x3 convolution
+def conv3x3(in_channels, out_channels, stride=1):
+    return nn.Conv2d(in_channels, out_channels, kernel_size=3,
+                     stride=stride, padding=1, bias=False)
+
+
+# Residual block
+class ResidualBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=1, downsample=None):
+        super(ResidualBlock, self).__init__()
+        self.conv1 = conv3x3(in_channels, out_channels, stride)
+        self.bn1 = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = conv3x3(out_channels, out_channels)
+        self.bn2 = nn.BatchNorm2d(out_channels)
+        self.downsample = downsample
+
+    def forward(self, x):
+        residual = x
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+        if self.downsample:
+            residual = self.downsample(x)
+        out += residual
+        out = self.relu(out)
+        return out
+# ResNet
+class Net(nn.Module):
+    def __init__(self, block, layers, num_classes=10):
+        super(Net, self).__init__()
+        self.in_channels = 16
+        self.conv = conv3x3(3, 16)
+        self.bn = nn.BatchNorm2d(16)
+        self.relu = nn.ReLU(inplace=True)
+        self.layer1 = self.make_layer(block, 16, layers[0])
+        self.layer2 = self.make_layer(block, 32, layers[1], 2)
+        self.layer3 = self.make_layer(block, 64, layers[2], 2)
+        self.avg_pool = nn.AvgPool2d(8)
+        self.fc = nn.Linear(64, num_classes)
+
+    def make_layer(self, block, out_channels, blocks, stride=1):
+        downsample = None
+        if (stride != 1) or (self.in_channels != out_channels):
+            downsample = nn.Sequential(
+                conv3x3(self.in_channels, out_channels, stride=stride),
+                nn.BatchNorm2d(out_channels))
+        layers = []
+        layers.append(block(self.in_channels, out_channels, stride, downsample))
+        self.in_channels = out_channels
+        for i in range(1, blocks):
+            layers.append(block(out_channels, out_channels))
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        out = self.conv(x)
+        out = self.bn(out)
+        out = self.relu(out)
+        out = self.layer1(out)
+        out = self.layer2(out)
+        out = self.layer3(out)
+        out = self.avg_pool(out)
+        out = out.view(out.size(0), -1)
+        out = self.fc(out)
+        return out
+```
 
 
 

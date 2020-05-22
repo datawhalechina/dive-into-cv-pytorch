@@ -1,50 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb 19 11:53:59 2020
-
-批量归一化（BatchNormalization）
-
-本小节通过手动实现BN层，来学习其原理
-
-借鉴机器学习模型中对输入进行的z-scoer标准化
-(处理后的任意一个特征在数据集中所有样本上的均值为0、标准差为1。)
-
-标准化处理输入数据使各个特征的分布相近，尽可能消除量纲和数据波动带来的影响。
-从而能让模型cover住更多情况，获得性能提升。
-
-然而对于深度模型来说，仅仅是对输入进行标准化是不够的。
-
-批量归一化的具体做法是：
-利用小批量上的均值和标准差，不断调整神经网络中间输出，从而使整个神经网络在各层的中间输出的数值更稳定。
-
-BN对于全连接层和卷积层的处理方式稍有不同
-
-BN对全连接层的每个输入节点按batch进行归一化，即：
-假设输入维度 batch * N, 归一化参数 均值和方差的维度为 1*N
-
-BN对卷积层以channel为单位按batch进行归一化，即：
-假设输入维度 batch * channel * H * W, 归一化参数 均值和方差的维度为 1 * channel * 1 * 1
-也就是每个channel共享一组归一化参数
-
-我们这里的实现将BN层放在了激活函数的前面，这对使用sigmoid作为激活函数时显然是有意义的
-后续有人指出(包括BN的一个作者)BN放在RELU后面效果更好
-可以参考这个回答 https://www.zhihu.com/question/283715823/answer/438882036
-
-@author: 伯禹教育
-@modified by: as
-"""
-import os
-import sys
-import time
-import torch
-from torch import nn, optim
-import torch.nn.functional as F
+import torch, sys, os
+import torch.nn as nn
 import torchvision
-sys.path.append("../") 
-import d2lzh_pytorch as d2l
+import torchvision.transforms as transforms
+import torch.nn.functional as F
 
-# 设置CUDA可见设备
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
+sys.path.append("../")
 
 
 # 定义一次batch normalization运算的计算图
@@ -78,9 +38,9 @@ class BatchNorm(nn.Module):
     def __init__(self, num_features, num_dims):
         super(BatchNorm, self).__init__()
         if num_dims == 2:
-            shape = (1, num_features) #全连接层输出神经元
+            shape = (1, num_features)  # 全连接层输出神经元
         else:
-            shape = (1, num_features, 1, 1)  #通道数
+            shape = (1, num_features, 1, 1)  # 通道数
         # 参与求梯度和迭代的拉伸和偏移参数，分别初始化成1和0
         self.gamma = nn.Parameter(torch.ones(shape))
         self.beta = nn.Parameter(torch.zeros(shape))
@@ -94,72 +54,124 @@ class BatchNorm(nn.Module):
             self.moving_mean = self.moving_mean.to(X.device)
             self.moving_var = self.moving_var.to(X.device)
         # 保存更新过的moving_mean和moving_var, Module实例的traning属性默认为true, 调用.eval()后设成false
-        Y, self.moving_mean, self.moving_var = batch_norm(self.training, 
-            X, self.gamma, self.beta, self.moving_mean,
-            self.moving_var, eps=1e-5, momentum=0.9)
+        Y, self.moving_mean, self.moving_var = batch_norm(self.training,
+                                                          X, self.gamma, self.beta, self.moving_mean,
+                                                          self.moving_var, eps=1e-5, momentum=0.9)
         return Y
 
 
-# 将BN层应用到LeNet中
-net = nn.Sequential(
-            nn.Conv2d(1, 6, 5), # in_channels, out_channels, kernel_size
-            BatchNorm(6, num_dims=4),
-            nn.Sigmoid(),
-            nn.MaxPool2d(2, 2), # kernel_size, stride
-            nn.Conv2d(6, 16, 5),
-            BatchNorm(16, num_dims=4),
-            nn.Sigmoid(),
-            nn.MaxPool2d(2, 2),
-            d2l.FlattenLayer(),
-            nn.Linear(16*4*4, 120),
-            BatchNorm(120, num_dims=2),
-            nn.Sigmoid(),
-            nn.Linear(120, 84),
-            BatchNorm(84, num_dims=2),
-            nn.Sigmoid(),
-            nn.Linear(84, 10)
-        )
+def test_batch_norm_in_lenet():
+    # Device configuration
+    device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+    print("You are using:", device)
 
-print('打印网络结构')
-print(net)
+    # Hyper parameters
+    num_epochs = 50
+    num_classes = 10
+    batch_size = 25
+    learning_rate = 0.001
+    DATA_PATH = '../../../../../dataset/'
+    transform = transforms.Compose([transforms.ToTensor(),
+                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+    # 训练集
+
+    train_dataset = torchvision.datasets.CIFAR10(root=DATA_PATH,
+                                                 train=True,
+                                                 transform=transform,
+                                                 download=True)
+    # 测试集
+    test_dataset = torchvision.datasets.CIFAR10(root=DATA_PATH,
+                                                train=False,
+                                                transform=transform)
+
+    # Data loader
+    train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                               batch_size=batch_size,
+                                               shuffle=True)
+
+    test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
+                                              batch_size=batch_size,
+                                              shuffle=False)
+    classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+    # Lenet network
+    class Net(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.conv = nn.Sequential(
+                nn.Conv2d(3, 6, 5),
+                BatchNorm(6, 4),
+                nn.Sigmoid(),
+                nn.MaxPool2d(2, 2),
+
+                nn.Conv2d(6, 16, 5),
+                nn.Sigmoid(),
+                BatchNorm(16, 4),
+                nn.MaxPool2d(2, 2),
+            )
+            self.mlp = nn.Sequential(
+                nn.Linear(16 * 5 * 5, 120),
+                nn.Sigmoid(),
+
+                nn.Linear(120, 84),
+                nn.Sigmoid(),
+
+                nn.Linear(84, num_classes)
+            )
+
+        def forward(self, x):
+            x = self.conv(x)
+            x = x.view(x.size()[0], -1)
+
+            assert x.shape[1] == 16 * 5 * 5
+            x = self.mlp(x)
+            return x
+
+    model = Net().to(device)
+
+    # Loss and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+    # Train the model
+    total_step = len(train_loader)
+    for epoch in range(num_epochs):
+        for i, (images, labels) in enumerate(train_loader):
+            images = images.to(device)
+            labels = labels.to(device)
+
+            # Forward pass
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+
+            # Backward and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            if (i + 1) % 100 == 0:
+                print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
+                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+
+    # Test the model
+    model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+    with torch.no_grad():
+        correct = 0
+        total = 0
+        for images, labels in test_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        print('Test Accuracy of the model on test images: {} %'.format(100 * correct / total))
+
+    # Save the model checkpoint
+    torch.save(model.state_dict(), 'model.ckpt')
 
 
-print('打印 1*1*28*28 输入经过每个模块后的shape')
-X = torch.rand(1, 1, 28, 28)
-for name, blk in net.named_children():
-    X = blk(X)
-    print(name, 'output shape: ', X.shape)
-
-
-print('训练...')
-batch_size = 16  #如训练时出现“out of memory”的报错信息，可减小batch_size或resize
-train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
-
-lr, num_epochs = 0.001, 3
-optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
-
-
-print('使用官方实现nn.BatchNorm2d & nn.BatchNorm1d来实现LeNet')
-net = nn.Sequential(
-            nn.Conv2d(1, 6, 5), # in_channels, out_channels, kernel_size
-            nn.BatchNorm2d(6),
-            nn.Sigmoid(),
-            nn.MaxPool2d(2, 2), # kernel_size, stride
-            nn.Conv2d(6, 16, 5),
-            nn.BatchNorm2d(16),
-            nn.Sigmoid(),
-            nn.MaxPool2d(2, 2),
-            d2l.FlattenLayer(),
-            nn.Linear(16*4*4, 120),
-            nn.BatchNorm1d(120),
-            nn.Sigmoid(),
-            nn.Linear(120, 84),
-            nn.BatchNorm1d(84),
-            nn.Sigmoid(),
-            nn.Linear(84, 10)
-        )
-print('训练...')
-optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
+if __name__ == "__main__":
+    test_batch_norm_in_lenet()
