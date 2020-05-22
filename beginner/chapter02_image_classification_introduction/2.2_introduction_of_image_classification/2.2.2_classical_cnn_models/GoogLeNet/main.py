@@ -1,20 +1,18 @@
-"""
-代码修改自https://github.com/yunjey/pytorch-tutorial
-"""
+# -*- coding: utf-8 -*-
 import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-import torch.nn.functional as F
+from googlenet import GoogLeNet as Net
 
 # Device configuration
 device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 print("You are using:", device)
 
 # Hyper parameters
-num_epochs = 50
+num_epochs = 10
 num_classes = 10
-batch_size = 25
+batch_size = 50
 learning_rate = 0.001
 DATA_PATH = '../../../../../dataset/'
 transform = transforms.Compose([transforms.ToTensor(),
@@ -42,47 +40,6 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 
-# https://github.com/jiecaoyu/pytorch-nin-cifar10/blob/master/original.py
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.classifier = nn.Sequential(
-            # MLP卷积层1
-            nn.Conv2d(3, 192, kernel_size=5, stride=1, padding=2),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(192, 160, kernel_size=1, stride=1, padding=0),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(160, 96, kernel_size=1, stride=1, padding=0),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
-            nn.Dropout(0.5),
-
-            # MLP卷积层2
-            nn.Conv2d(96, 192, kernel_size=5, stride=1, padding=2),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
-            nn.ReLU(inplace=True),
-            nn.AvgPool2d(kernel_size=3, stride=2, padding=1),
-            nn.Dropout(0.5),
-
-            # MLP卷积层3
-            nn.Conv2d(192, 192, kernel_size=3, stride=1, padding=1),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(192, 10, kernel_size=1, stride=1, padding=0),
-            nn.ReLU(inplace=True),
-            nn.AvgPool2d(kernel_size=8, stride=1, padding=0),
-
-        )
-
-    def forward(self, x):
-        x = self.classifier(x)
-        x = F.avg_pool2d(x, kernel_size=x.size()[2:])
-        x = x.view(x.size(0), 10)
-        return x
 
 
 model = Net().to(device)

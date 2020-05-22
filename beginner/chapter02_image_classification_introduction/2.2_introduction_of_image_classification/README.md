@@ -176,9 +176,15 @@ class Net(nn.Module):
 
 #### AlexNet
 
- <center><img src="../../../markdown_imgs/chapter02/2.2/alexnet.png" alt="IMG" style="zoom:100%;" /></center>  
+在**AlexNet**之前，深度学习已经在语音识别和其它几个领域获得了一些关注，但正是通过这篇论文，计算机视觉群体开始重视深度学习，并确信深度学习可以应用于计算机视觉领域。此后，深度学习在计算机视觉及其它领域的影响力与日俱增。
+
+
 
 ##### 网络架构
+
+ <center><img src="../../../markdown_imgs/chapter02/2.2/alexnet.png" alt="IMG" style="zoom:100%;" /></center>  
+
+​		在写这篇论文的时候，**GPU**的处理速度还比较慢，所以**AlexNet**采用了非常复杂的方法在两个**GPU**上进行训练。大致原理是，这些层分别拆分到两个不同的**GPU**上，同时还专门有一个方法用于两个**GPU**进行交流。
 
 - 上下两个部分结构一样，为了方便在两块GPU上进行训练
 - 每个部分有五个卷积层，三个全连接层
@@ -256,6 +262,7 @@ class AlexNet(nn.Module):
 - 多GPU训练。
 - 用Dropout来控制全连接层的模型复杂度。
 - 引入数据增强，如翻转、裁剪和颜色变化，从而进一步扩大数据集来缓解过拟合。
+- 相对复杂，包含大量超参数
 
 
 
@@ -296,7 +303,7 @@ class AlexNet(nn.Module):
 
 ​		前⼏节介绍的LeNet、AlexNet和VGG在设计上的共同之处是:先以由卷积层构成的模块充分抽取空间特征，再以由全连接层构成的模块来输出分类结果（下左图）。其中，AlexNet和VGG对LeNet的改进主要在于如何对这两个模块加宽(增加通道数)和加深。
 
-​		本节我们介绍网络中的⽹络(NiN)。它提出了另外⼀个思路，即串联多个由卷积层和“全连接”层构成的⼩网络，又称MLP卷积，来构建⼀个深层网络（下右图）。使用这种结构的原因有两个，一， MLP与CNN更兼容，并使用反向传播进行训练；二，MLP本身可以是深度模型，这与特性重用的精神是一致的。
+​		本节我们介绍网络中的⽹络(NiN)。它提出了另外⼀个思路，即串联多个由卷积层和“**全连接**”层构成的⼩网络，又称MLP卷积，来构建⼀个深层网络（下右图）。先进行一次普通的卷积（比如3x3），紧跟再进行一次**1x1的卷积**，对于某个像素点来说1x1卷积等效于该像素点在所有特征上进行一次全连接的计算，所以右侧图的1x1卷积画成了全连接层的形式，需要注意的是NIN结构中无论是第一个3x3卷积还是新增的1x1卷积，后面都紧跟着激活函数（比如relu）。使用这种结构的原因有两个，一， MLP与CNN更兼容，并使用反向传播进行训练；二，MLP本身可以是深度模型，这与特性重用的精神是一致的。注意到这种1x1卷积方式是非常有效的，对后来的网络设计有非常大的启发，虽然NiN在后来应用不多，但1x1卷积的思想得到了广泛使用。
 
 ​		
 
@@ -319,16 +326,274 @@ class AlexNet(nn.Module):
      NiN网络架构
    </div>
 </center>  
+##### 代码实战
+
+- 完整运行版[->](2.2.2_classical_cnn_models/NiN/NiN.py)
+- 网络代码
+
+```python
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.classifier = nn.Sequential(
+          	#MLP卷积层1
+            nn.Conv2d(3, 192, kernel_size=5, stride=1, padding=2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 160, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(160, 96, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
+            nn.Dropout(0.5),
+
+          	#MLP卷积层2
+            nn.Conv2d(96, 192, kernel_size=5, stride=1, padding=2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.AvgPool2d(kernel_size=3, stride=2, padding=1),
+            nn.Dropout(0.5),
+						
+          	#MLP卷积层3
+            nn.Conv2d(192, 192, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 10, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.AvgPool2d(kernel_size=8, stride=1, padding=0),
+
+        )
+
+    def forward(self, x):
+        x = self.classifier(x)
+        x = F.avg_pool2d(x, kernel_size=x.size()[2:])
+        return x
+```
 
 
+
+##### 总结
+
+- NiN重复使用由卷积层和代替全连接层的1×1卷积层构成的NiN块来构建深层网络
+- 1x1卷积等效于该像素点在所有特征上进行一次全连接的计算，起到了**压缩通道**，也即**降维**的作用，减少了通道的数量。
+- NiN去除了容易造成过拟合的全连接输出层，而是将其替换成输出通道数等于标签类别数 的NiN块和全局平均池化层。
+- NiN的以上设计思想影响了后面一系列卷积神经网络的设计。
 
 #### 含并行连结的网络（GoogLeNet）
 
+​		在2014年的ImageNet图像识别挑战赛中，一个名叫GoogLeNet的网络结构大放异彩 。它虽然在名字上向LeNet致敬，但在网络结构上已经很难看到LeNet的影子。GoogLeNet吸收了NiN中网络串联网络的思想，并在此基础上做了很大改进。在随后的几年里，研究人员对GoogLeNet进行了数次改进，本节将介绍这个模型系列的第一个版本。
 
+​		
+
+##### 网络架构
+
+
+
+<div align=center>
+<img src="../../../markdown_imgs/chapter02/2.2/googlenet.png"/>
+</div>
+<div align=center>Inception块的结构</div>
+
+​		GoogLeNet中的基础卷积块叫作Inception块，得名于同名电影《盗梦空间》（Inception）。与上一节介绍的NiN块相比，这个基础块在结构上更加复杂。基本思想是**Inception**网络不需要人为决定使用哪个过滤器或者是否需要池化，而是由网络自行确定这些参数，你可以给网络添加这些参数的所有可能值，然后把这些输出连接起来，让网络自己学习它需要什么样的参数，采用哪些过滤器组合。
+
+​		上图显示了Inception块的两个版本，图（a）是Inception块的基础版本，有4条并行的线路。前3条线路使用窗口大小分别是$1\times 1$、$3\times 3$和$5\times 5$的卷积层，第四条使用$3\times 3$最大池化层来抽取不同空间尺寸下的信息，再用1x1卷积改变通道数。
+
+​		图（b）在中间2个线路会对输入先做$1\times 1$卷积来**减少输入通道数，以降低模型复杂度**。
+
+​		4条线路**都使用了合适的填充来使输入与输出的高和宽一致**。最后我们将每条线路的输出在通道维上连结，并输入到接下来的层中去。
+
+##### 代码实战
+
+- 完整运行版[->](2.2.2_classical_cnn_models/GoogLeNet/main.py)
+
+- 网络架构
+
+```python
+# https://github.com/facebookresearch/mixup-cifar10/blob/master/models/googlenet.py
+'''GoogLeNet with PyTorch.'''
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+from torch.autograd import Variable
+
+
+class Inception(nn.Module):
+    """
+    1、输入通过Inception模块的4个分支分别计算，得到的输出宽和高相同(因为使用了padding)，而通道不同。
+    2、将4个分支的通道进行简单的合并，即得到Inception模块的输出。
+    3、每次卷积之后都使用批正则化`BatchNorm2d`，并使用relu函数进行激活。
+    """
+
+    def __init__(self, in_planes, n1x1, n3x3red, n3x3, n5x5red, n5x5, pool_planes):
+        super(Inception, self).__init__()
+        # 1x1 conv branch
+        self.b1 = nn.Sequential(
+            nn.Conv2d(in_planes, n1x1, kernel_size=1),
+            nn.BatchNorm2d(n1x1),
+            nn.ReLU(True),
+        )
+
+        # 1x1 conv -> 3x3 conv branch
+        self.b2 = nn.Sequential(
+            nn.Conv2d(in_planes, n3x3red, kernel_size=1),
+            nn.BatchNorm2d(n3x3red),
+            nn.ReLU(True),
+            nn.Conv2d(n3x3red, n3x3, kernel_size=3, padding=1),
+            nn.BatchNorm2d(n3x3),
+            nn.ReLU(True),
+        )
+
+        # 1x1 conv -> 5x5 conv branch
+        self.b3 = nn.Sequential(
+            nn.Conv2d(in_planes, n5x5red, kernel_size=1),
+            nn.BatchNorm2d(n5x5red),
+            nn.ReLU(True),
+            # 2个3x3卷积代替1个5x5卷积
+            nn.Conv2d(n5x5red, n5x5, kernel_size=3, padding=1),
+            nn.BatchNorm2d(n5x5),
+            nn.ReLU(True),
+            nn.Conv2d(n5x5, n5x5, kernel_size=3, padding=1),
+            nn.BatchNorm2d(n5x5),
+            nn.ReLU(True),
+        )
+
+        # 3x3 pool -> 1x1 conv branch
+        self.b4 = nn.Sequential(
+            nn.MaxPool2d(3, stride=1, padding=1),
+            nn.Conv2d(in_planes, pool_planes, kernel_size=1),
+            nn.BatchNorm2d(pool_planes),
+            nn.ReLU(True),
+        )
+
+    def forward(self, x):
+        y1 = self.b1(x)
+        y2 = self.b2(x)
+        y3 = self.b3(x)
+        y4 = self.b4(x)
+        return torch.cat([y1, y2, y3, y4], 1)
+
+
+class GoogLeNet(nn.Module):
+    def __init__(self):
+        super(GoogLeNet, self).__init__()
+        self.pre_layers = nn.Sequential(
+            nn.Conv2d(3, 192, kernel_size=3, padding=1),
+            nn.BatchNorm2d(192),
+            nn.ReLU(True),
+        )
+
+        self.a3 = Inception(192, 64, 96, 128, 16, 32, 32)
+        self.b3 = Inception(256, 128, 128, 192, 32, 96, 64)
+
+        self.maxpool = nn.MaxPool2d(3, stride=2, padding=1)
+
+        self.a4 = Inception(480, 192, 96, 208, 16, 48, 64)
+        self.b4 = Inception(512, 160, 112, 224, 24, 64, 64)
+        self.c4 = Inception(512, 128, 128, 256, 24, 64, 64)
+        self.d4 = Inception(512, 112, 144, 288, 32, 64, 64)
+        self.e4 = Inception(528, 256, 160, 320, 32, 128, 128)
+
+        self.a5 = Inception(832, 256, 160, 320, 32, 128, 128)
+        self.b5 = Inception(832, 384, 192, 384, 48, 128, 128)
+
+        self.avgpool = nn.AvgPool2d(8, stride=1)
+        self.linear = nn.Linear(1024, 10)
+
+    def forward(self, x):
+        out = self.pre_layers(x)
+        out = self.a3(out)
+        out = self.b3(out)
+        out = self.maxpool(out)
+        out = self.a4(out)
+        out = self.b4(out)
+        out = self.c4(out)
+        out = self.d4(out)
+        out = self.e4(out)
+        out = self.maxpool(out)
+        out = self.a5(out)
+        out = self.b5(out)
+        out = self.avgpool(out)
+        out = out.view(out.size(0), -1)
+        out = self.linear(out)
+        return out
+```
+
+##### 总结
+
+- 使用1x1的卷积一是为了减少通道数，降低模型复杂度，二是为了提取更丰富的特征
+- 在构建神经网络层的时候，不想决定池化层是使用1×1，3×3还是5×5的过滤器，那么**Inception**模块就是最好的选择。我们可以应用各种类型的过滤器，只需要把输出连接起来。
 
 #### 批量归一化（Batch Normalization）
 
+##### 为什么要进行批量归一化
 
+​	   本节我们介绍批量归一化（batch normalization）层，它能让较深的神经网络的训练变得更加容易。通常来说，数据标准化预处理对于浅层模型就足够有效了。随着模型训练的进行，当每层中参数更新时，靠近输出层的输出较难出现剧烈变化。但对深层神经网络来说，即使输入数据已做标准化，训练中模型参数的更新依然很容易造成靠近输出层输出的剧烈变化。这种计算数值的不稳定性通常令我们难以训练出有效的深度模型。
+
+​		批量归一化的提出正是为了应对深度模型训练的挑战。在模型训练时，批量归一化利用小批量上的均值和标准差，不断调整神经网络中间输出，从而使整个神经网络在各层的中间输出的数值更稳定。**批量归一化和下一节将要介绍的残差网络为训练和设计深度模型提供了两类重要思路。**
+
+##### 怎样进行批量归一化
+
+- 对全连接层做批量归一化
+
+ 我们先考虑如何对全连接层做批量归一化。通常，我们将批量归一化层置于全连接层中的仿射变换和激活函数之间。设全连接层的输入为$\boldsymbol{u}$，权重参数和偏差参数分别为$\boldsymbol{W}$和$\boldsymbol{b}$，激活函数为$\phi$。设批量归一化的运算符为$\text{BN}$。那么，使用批量归一化的全连接层的输出为
+$$
+\phi(\text{BN}(\boldsymbol{x})),
+$$
+
+
+其中批量归一化输入$\boldsymbol{x}$由仿射变换
+
+$$
+\boldsymbol{x} = \boldsymbol{W\boldsymbol{u} + \boldsymbol{b}}
+$$
+
+
+得到。考虑一个由$m$个样本组成的小批量，仿射变换的输出为一个新的小批量$\mathcal{B} = \{\boldsymbol{x}^{(1)}, \ldots, \boldsymbol{x}^{(m)} \}$。它们正是批量归一化层的输入。对于小批量$\mathcal{B}$中任意样本$\boldsymbol{x}^{(i)} \in \mathbb{R}^d, 1 \leq  i \leq m$，批量归一化层的输出同样是$d$维向量
+
+$$
+\boldsymbol{y}^{(i)} = \text{BN}(\boldsymbol{x}^{(i)})
+$$
+
+
+并由以下几步求得。首先，对小批量$\mathcal{B}$求均值和方差：
+
+$$
+\boldsymbol{\mu}_\mathcal{B} \leftarrow \frac{1}{m}\sum_{i = 1}^{m} \boldsymbol{x}^{(i)}
+$$
+
+$$
+\boldsymbol{\sigma}_\mathcal{B}^2 \leftarrow \frac{1}{m} \sum_{i=1}^{m}(\boldsymbol{x}^{(i)} - \boldsymbol{\mu}_\mathcal{B})^2
+$$
+
+
+其中的平方计算是按元素求平方。接下来，使用按元素开方和按元素除法对$\boldsymbol{x}^{(i)}$标准化：
+
+$$
+\hat{\boldsymbol{x}}^{(i)} \leftarrow \frac{\boldsymbol{x}^{(i)} - \boldsymbol{\mu}_\mathcal{B}}{\sqrt{\boldsymbol{\sigma}_\mathcal{B}^2 + \epsilon}},
+$$
+
+
+这里$\epsilon > 0$是一个很小的常数，保证分母大于0。在上面标准化的基础上，批量归一化层引入了两个可以学习的模型参数，**拉伸**（scale）参数 $\boldsymbol{\gamma}$ 和**偏移**（shift）参数 $\boldsymbol{\beta}$。这两个参数和$\boldsymbol{x}^{(i)}$形状相同，皆为$d$维向量。它们与$\boldsymbol{x}^{(i)}$分别做按元素乘法（符号$\odot$）和加法计算：
+
+$$
+{\boldsymbol{y}}^{(i)} \leftarrow \boldsymbol{\gamma} \odot \hat{\boldsymbol{x}}^{(i)} + \boldsymbol{\beta}.
+$$
+
+
+至此，我们得到了$\boldsymbol{x}^{(i)}$的批量归一化的输出$\boldsymbol{y}^{(i)}$。
+值得注意的是，可学习的拉伸和偏移参数保留了不对$\hat{\boldsymbol{x}}^{(i)}$做批量归一化的可能：此时只需学出$\boldsymbol{\gamma} = \sqrt{\boldsymbol{\sigma}_\mathcal{B}^2 + \epsilon}$和$\boldsymbol{\beta} = \boldsymbol{\mu}_\mathcal{B}$。我们可以对此这样理解：如果批量归一化无益，理论上，学出的模型可以不使用批量归一化。
+
+- 对卷积层做批量归一化
+
+对卷积层来说，批量归一化发生在卷积计算之后、应用激活函数之前。如果卷积计算输出多个通道，我们需要对这些通道的输出分别做批量归一化，且**每个通道都拥有独立的拉伸和偏移参数，并均为标量**。设小批量中有$m$个样本。在单个通道上，假设卷积计算输出的高和宽分别为$p$和$q$。我们需要对该通道中$m \times p \times q$个元素同时做批量归一化。对这些元素做标准化计算时，我们使用相同的均值和方差，即该通道中$m \times p \times q$个元素的均值和方差。
+
+- 预测时的批量归一化
+
+使用批量归一化训练时，我们可以将批量大小设得大一点，从而使批量内样本的均值和方差的计算都较为准确。将训练好的模型用于预测时，我们希望模型对于任意输入都有确定的输出。因此，单个样本的输出不应取决于批量归一化所需要的随机小批量中的均值和方差。一种常用的方法是通过移动平均估算整个训练数据集的样本均值和方差，并在预测时使用它们得到确定的输出。可见，和丢弃层一样，批量归一化层在训练模式和预测模式下的计算结果也是不一样的。
 
 #### 残差网络（ResNet）
 
@@ -338,9 +603,10 @@ class AlexNet(nn.Module):
 
 
 
-[^1]:https://cs231n.github.io/convolutional-networks/#overview CS231
-[^2]:https://poloclub.github.io/cnn-explainer/ CNN Explainer
-[^3]: https://zhuanlan.zhihu.com/p/41423739 ,Amusi, 《一文读懂VGG网络》
+[^1]:https://cs231n.github.io/convolutional-networks/#overview CS231   
+[^2]:https://poloclub.github.io/cnn-explainer/ CNN Explainer    
+[^3]: https://zhuanlan.zhihu.com/p/41423739 ,Amusi, 《一文读懂VGG网络》    
+[^4]: https://zhuanlan.zhihu.com/p/32702031 ，张磊，深入理解GoogLeNet结构
 
 
 
