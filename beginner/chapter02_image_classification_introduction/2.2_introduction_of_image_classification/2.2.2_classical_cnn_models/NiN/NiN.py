@@ -1,91 +1,130 @@
-# -*- coding: utf-8 -*-
 """
-Created on Mon Feb 17 15:54:28 2020
-
-NiN
-
-LeNet、AlexNet和 VGG：先以由卷积层构成的模块充分抽取空间特征，再以由全连接层构成的模块来输出分类结果。
-NiN：串联多个由卷积层和“全连接”层(1*1卷积层来替代全连接的功能)构成的小网络来构建一个深层网络。
-最后一层使用 global average pooling 来直接完成预测，及 通道数 等于 分类数
-
-1×1卷积核作用
-1.放缩通道数：通过控制卷积核的数量达到通道数的放缩。
-2.增加非线性。1×1卷积核的卷积过程相当于全连接层的计算过程，并且还加入了非线性激活函数，从而可以增加网络的非线性。
-3.计算参数少
-
-主要差异与贡献:
-NiN重复使用由卷积层和代替全连接层的1×1卷积层构成的NiN块来构建深层网络。
-NiN去除了容易造成过拟合的全连接输出层，而是将其替换成输出通道数等于标签类别数 的NiN块和全局平均池化层。
-NiN的以上设计思想影响了后面一系列卷积神经网络的设计。
-TODO:待补充
-
-@author: 伯禹教育
-@modified by: as
+代码修改自https://github.com/yunjey/pytorch-tutorial
 """
-import os
-import sys
-import time
 import torch
-from torch import nn, optim
+import torch.nn as nn
 import torchvision
-import numpy as np
-sys.path.append("../")
-import d2lzh_pytorch as d2l
+import torchvision.transforms as transforms
 import torch.nn.functional as F
 
+# Device configuration
+device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+print("You are using:", device)
 
-def nin_block(in_channels, out_channels, kernel_size, stride, padding):
-    blk = nn.Sequential(nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding),
-                        nn.ReLU(),
-                        nn.Conv2d(out_channels, out_channels, kernel_size=1),
-                        nn.ReLU(),
-                        nn.Conv2d(out_channels, out_channels, kernel_size=1),
-                        nn.ReLU())
-    return blk
+# Hyper parameters
+num_epochs = 50
+num_classes = 10
+batch_size = 25
+learning_rate = 0.001
+DATA_PATH = '../../../../../dataset/'
+transform = transforms.Compose([transforms.ToTensor(),
+                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+# 训练集
+
+train_dataset = torchvision.datasets.CIFAR10(root=DATA_PATH,
+                                             train=True,
+                                             transform=transform,
+                                             download=True)
+# 测试集
+test_dataset = torchvision.datasets.CIFAR10(root=DATA_PATH,
+                                            train=False,
+                                            transform=transform)
+
+# Data loader
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                           batch_size=batch_size,
+                                           shuffle=True)
+
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
+                                          batch_size=batch_size,
+                                          shuffle=False)
+classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 
-# 已保存在d2lzh_pytorch
-class GlobalAvgPool2d(nn.Module):
-    # 全局平均池化层可通过将池化窗口形状设置成输入的高和宽实现
+# https://github.com/jiecaoyu/pytorch-nin-cifar10/blob/master/original.py
+class Net(nn.Module):
     def __init__(self):
-        super(GlobalAvgPool2d, self).__init__()
+        super(Net, self).__init__()
+        self.classifier = nn.Sequential(
+            # MLP卷积层1
+            nn.Conv2d(3, 192, kernel_size=5, stride=1, padding=2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 160, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(160, 96, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
+            nn.Dropout(0.5),
+
+            # MLP卷积层2
+            nn.Conv2d(96, 192, kernel_size=5, stride=1, padding=2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.AvgPool2d(kernel_size=3, stride=2, padding=1),
+            nn.Dropout(0.5),
+
+            # MLP卷积层3
+            nn.Conv2d(192, 192, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 10, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(inplace=True),
+            nn.AvgPool2d(kernel_size=8, stride=1, padding=0),
+
+        )
+
     def forward(self, x):
-        return F.avg_pool2d(x, kernel_size=x.size()[2:])
+        x = self.classifier(x)
+        x = F.avg_pool2d(x, kernel_size=x.size()[2:])
+        x = x.view(x.size(0), 10)
+        return x
 
 
-# 定义网络结构
-net = nn.Sequential(
-    nin_block(1, 96, kernel_size=11, stride=4, padding=0),
-    nn.MaxPool2d(kernel_size=3, stride=2),
-    nin_block(96, 256, kernel_size=5, stride=1, padding=2),
-    nn.MaxPool2d(kernel_size=3, stride=2),
-    nin_block(256, 384, kernel_size=3, stride=1, padding=1),
-    nn.MaxPool2d(kernel_size=3, stride=2), 
-    nn.Dropout(0.5),
-    # 标签类别数是10
-    nin_block(384, 10, kernel_size=3, stride=1, padding=1),
-    GlobalAvgPool2d(), 
-    # 将四维的输出转成二维的输出，其形状为(批量大小, 10)
-    d2l.FlattenLayer())
+model = Net().to(device)
 
+# Loss and optimizer
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-print('打印网络信息')
-print(net)
+# Train the model
+total_step = len(train_loader)
+for epoch in range(num_epochs):
+    for i, (images, labels) in enumerate(train_loader):
+        images = images.to(device)
+        labels = labels.to(device)
 
+        # Forward pass
+        outputs = model(images)
+        loss = criterion(outputs, labels)
 
-print('打印 1*1*224*224 经过每个模块后的shape')
-X = torch.rand(1, 1, 224, 224)
-for name, blk in net.named_children(): 
-    X = blk(X)
-    print(name, 'output shape: ', X.shape)
+        # Backward and optimize
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
+        if (i + 1) % 100 == 0:
+            print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
+                  .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
 
-batch_size = 16
-train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=224)
+# Test the model
+model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+with torch.no_grad():
+    correct = 0
+    total = 0
+    for images, labels in test_loader:
+        images = images.to(device)
+        labels = labels.to(device)
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
 
+    print('Test Accuracy of the model on test images: {} %'.format(100 * correct / total))
 
-lr, num_epochs = 0.002, 5
-optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
-
+# Save the model checkpoint
+torch.save(model.state_dict(), 'model.ckpt')
