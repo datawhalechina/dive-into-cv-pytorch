@@ -5,10 +5,7 @@ Pytorch自动求梯度原理介绍
 ## 1 基本概念介绍
 ### 1.1 Variable和Tensor
 
-<div align=center>
-<img width="500" src="image/variable.PNG"/>
-</div>
-<div align=center>图1.1 Variable</div>
+![IMG](../../../markdown_imgs/chapter01/variable.PNG) 
 
 Variable是 torch.autograd中的数据类型，主要用于封装 Tensor，进行自动求导。    
 >data : 被包装的Tensor  
@@ -17,11 +14,7 @@ grad\_fn : 创建 Tensor的 Function，是自动求导的关键
 requires_grad：指示是否需要梯度  
 is_leaf : 指示是否是叶子结点 
 
-
-<div align=center>
-<img width="500" src="image/tensor.PNG"/>
-</div>
-<div align=center>图1.2 Tensor</div>
+![IMG](../../../markdown_imgs/chapter01/tensor.PNG) 
 
 Pytorch 0.4.0版开始，Variable并入Tensor。  
 >dtype：张量的数据类型，如torch.FloatTensor，torch.cuda.FloatTensor  
@@ -38,10 +31,7 @@ device：张量所在设备，GPU/CPU
 我们已经知道PyTorch使用有向无环图DAG记录计算的全过程，那么DAG是怎样建立的呢？DAG的节点是`Function`对象，边表示数据依赖，从输出指向输入。
 每当对`Tensor`施加一个运算的时候，就会产生一个`Function`对象，它产生运算的结果，记录运算的发生，并且记录运算的输入。`Tensor`使用`.grad_fn`属性记录这个计算图的入口。反向传播过程中，`autograd`引擎会按照逆序，通过`Function`的`backward`依次计算梯度。
 
-<div align=center>
-<img width="500" src="image/动态计算图.gif"/>
-</div>
-<div align=center>图1.3 动态计算图</div>
+![IMG](../../../markdown_imgs/chapter01/Computational Graph.gif) 
 
 ### 1.3 代码示例
 创建一个`Tensor`并设置`requires_grad=True`:
