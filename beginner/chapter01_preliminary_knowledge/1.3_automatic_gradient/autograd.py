@@ -1,5 +1,4 @@
 import torch
-import numpy as np
 
 #创建一个`Tensor`并设置`requires_grad=True`
 x = torch.ones(2, 2, requires_grad=True)
