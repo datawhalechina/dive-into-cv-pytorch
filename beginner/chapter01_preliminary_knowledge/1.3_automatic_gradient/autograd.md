@@ -31,6 +31,10 @@ device：张量所在设备，GPU/CPU
 我们已经知道PyTorch使用有向无环图DAG记录计算的全过程，那么DAG是怎样建立的呢？DAG的节点是`Function`对象，边表示数据依赖，从输出指向输入。
 每当对`Tensor`施加一个运算的时候，就会产生一个`Function`对象，它产生运算的结果，记录运算的发生，并且记录运算的输入。`Tensor`使用`.grad_fn`属性记录这个计算图的入口。反向传播过程中，`autograd`引擎会按照逆序，通过`Function`的`backward`依次计算梯度。
 
+<div align=center>
+<img width="500" src="../../../markdown_imgs/chapter01/Computational Graph.gif"/>
+</div>
+<div align=center> </div>
 
 ![IMG](../../../markdown_imgs/chapter01/Computational Graph.gif) 
 
