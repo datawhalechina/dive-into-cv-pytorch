@@ -273,13 +273,25 @@ tensor([2.])
 
 
 
-## 注意事项
+### 注意事项
 
 * 梯度不自动清零，如果不清零梯度会累加，所以需要在每次梯度后人为清零。
 * 依赖于叶子结点的结点，requires_grad默认为True。
 * 叶子结点不可执行in-place，因为其他节点在计算梯度时需要用到叶子节点，所以叶子地址中的值不得改变否则会是其他节点求梯度时出错。所以叶子节点不能进行原位计算。
 * 注意在y.backward()时，如果y是标量量，则不需要为backward()传⼊入任何参数；否则，需要传⼊一个与y同形的Tensor。
 
-## 参考
+### 参考
 -----------
 > [Dive-into-DL-PyTorch](https://github.com/ShusenTang/Dive-into-DL-PyTorch/edit/master/docs/chapter02_prerequisite/2.3_autograd.md)
+
+---
+
+--- ***By: 星尘***
+
+>一个迷茫的追风者，邮箱[1573187692@qq.com]，[CSDN博客](https://blog.csdn.net/OuDiShenmiss)
+
+
+**关于Datawhale**：
+
+>Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。
+
