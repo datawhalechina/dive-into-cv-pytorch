@@ -106,7 +106,6 @@ class GoogLeNet(nn.Module):
         out = out.view(out.size(0), -1)
         out = self.linear(out)
         return out
-tuple()
 
 if __name__ == "__main__":
     net = GoogLeNet()
