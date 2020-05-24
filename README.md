@@ -43,24 +43,17 @@
     - [ ] 1.4 线性回归-小试身手
 * 2\. 图片分类入门
     - [x] 2.1 数据读取与数据扩增
-    - [ ] 2.2 图像分类介绍
-        - [ ] 2.2.1 卷积神经网络基础
-            - [ ] 二维卷积层
-            - [ ] 填充和步幅
-            - [ ] 多输入通道和多输出通道
-            - [ ] 池化层
-        - [ ] 2.2.2 经典图像分类模型介绍(根据情况删减)
-            - [ ] LeNet
-            - [ ] AlexNet
-            - [ ] VGG
-            - [ ] 网络中的网络（NiN）
-            - [ ] 含并行连结的网络（GoogLeNet）
-            - [ ] 批量归一化（Batch Normalization）
-            - [ ] 残差网络（ResNet）
-    - [ ] 2.3 模型训练与验证
-        - [ ] 2.4.1 模型训练与调参
-        - [ ] 2.4.2 模型微调
-        - [ ] 2.4.3 模型保存与加载
+    - [x] 2.2 图像分类介绍
+        - [x] 卷积神经网络基础
+        - [x] 经典图像分类模型简介
+            - [x] LeNet
+            - [x] AlexNet
+            - [x] VGG
+            - [x] 网络中的网络（NiN）
+            - [x] 含并行连结的网络（GoogLeNet）
+            - [x] 批量归一化（Batch Normalization）
+            - [x] 残差网络（ResNet）
+    - [x] 2.3 模型训练与验证
     - [ ] 2.4 模型集成
     - [x] 2.5 天池计算机视觉入门赛: SVHN数据集实战
 
@@ -86,9 +79,9 @@
     <td><a href="https://blog.csdn.net/u011583927">CSDN博客</a>,   <a href="https://github.com/monkeyDemon">Github</a></td>
   </tr>
   <tr>
-    <td>阿水</td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">公众号：Coggle数据科学 </td>
-    <td><a href="https://www.zhihu.com/people/finlayliu">知乎</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁波大学计算机硕士</td>
+    <td><a href="https://github.com/QiangZiBro">Github</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
@@ -96,14 +89,14 @@
     <td><a href="https://blog.csdn.net/weixin_40647819">CSDN博客</a></td>
   </tr>
   <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁波大学计算机硕士</td>
-    <td><a href="https://github.com/QiangZiBro">Github</a></td>
-  </tr>
-  <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">伊雪</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">中电科网安研究院开发工程师</span></td>
     <td> </td>
+  </tr>
+  <tr>
+    <td>阿水</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">公众号：Coggle数据科学 </td>
+    <td><a href="https://www.zhihu.com/people/finlayliu">知乎</a></td>
   </tr>
 </tbody>
 </table> 
