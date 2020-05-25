@@ -193,7 +193,7 @@ class Net(nn.Module):
 
 ##### 代码实战
 
-[完整代码](classical_cnn_models/lenet/AlexNet.py)
+[完整代码](classical_cnn_models/AlexNet/AlexNet.py)
 
 模型定义
 
@@ -281,9 +281,9 @@ class AlexNet(nn.Module):
 
 ##### 代码实战
 
-[简单vgg案例](classical_cnn_models/VGG/)
+[简单vgg案例](./classical_cnn_models/VGG/main.py)
 
-[VGG各模型综合比较](classical_cnn_models/pytorch-vgg-cifar10/)
+[VGG各模型综合比较](./classical_cnn_models/pytorch-vgg-cifar10/)
 
 ##### 总结
 
