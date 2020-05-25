@@ -138,7 +138,7 @@ LeNet分为卷积层块和全连接层块两个部分。下面我们分别介绍
 
 ##### 代码实战
 
-[完整代码](2.2.2_classical_cnn_models/lenet/LeNet.py)
+[完整代码](classical_cnn_models/lenet/LeNet.py)
 
 网络定义:
 
@@ -193,7 +193,7 @@ class Net(nn.Module):
 
 ##### 代码实战
 
-[完整代码](2.2.2_classical_cnn_models/lenet/AlexNet.py)
+[完整代码](classical_cnn_models/lenet/AlexNet.py)
 
 模型定义
 
@@ -281,9 +281,9 @@ class AlexNet(nn.Module):
 
 ##### 代码实战
 
-[简单vgg案例](2.2.2_classical_cnn_models/VGG/)
+[简单vgg案例](classical_cnn_models/VGG/)
 
-[VGG各模型综合比较](2.2.2_classical_cnn_models/pytorch-vgg-cifar10/)
+[VGG各模型综合比较](classical_cnn_models/pytorch-vgg-cifar10/)
 
 ##### 总结
 
@@ -326,7 +326,7 @@ class AlexNet(nn.Module):
 </center>  
 ##### 代码实战
 
-- 完整运行版[->](2.2.2_classical_cnn_models/NiN/NiN.py)
+- 完整运行版[->](classical_cnn_models/NiN/NiN.py)
 - 网络代码
 
 ```python
@@ -405,7 +405,7 @@ class Net(nn.Module):
 
 ##### 代码实战
 
-- 完整运行版[->](2.2.2_classical_cnn_models/GoogLeNet/main.py)
+- 完整运行版[->](classical_cnn_models/GoogLeNet/main.py)
 
 - 网络架构
 
@@ -598,7 +598,7 @@ $$
 
 ##### 代码实战
 
-- 使用批量归一化方法优化lenet，[->](2.2.2_classical_cnn_models/BN/BatchNormalization.py)
+- 使用批量归一化方法优化lenet，[->](classical_cnn_models/BN/BatchNormalization.py)
 - 核心代码
 
 ```python
@@ -683,7 +683,7 @@ class BatchNorm(nn.Module):
 
 ##### 代码实战
 
-- 可运行代码[->](2.2.2_classical_cnn_models/ResNet/ResNet.py)
+- 可运行代码[->](classical_cnn_models/ResNet/ResNet.py)
 - 核心代码
 
 ```python
