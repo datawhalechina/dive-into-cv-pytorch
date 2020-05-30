@@ -1,14 +1,12 @@
 # 天池计算机视觉入门赛:SVHN数据集实战
 
-这里我们以datawhale和天池合作的天池计算机视觉入门赛（TODO:链接）为例，通过案例实战来进一步巩固本章所介绍的图像分类知识。
+这里我们以datawhale和天池合作的[天池计算机视觉入门赛](https://tianchi.aliyun.com/competition/entrance/531795/introduction)为例，通过案例实战来进一步巩固本章所介绍的图像分类知识。
 
 ## 比赛简介与赛题分析
 
 该比赛以SVHN街道字符为赛题数据，数据集报名后可见并可下载，该数据来自收集的SVHN街道字符，并进行了匿名采样处理，详细的介绍见赛事官网。
 
 ![SVHN_dataset](../../../markdown_imgs/chapter02/2.5/2_5_SVHN_dataset.png)
-
-TODO: 数据集下载链接 ××
 
 注：以下代码均默认已将比赛数据的根文件夹命名为`tianchi_SVHN`并放置于`Dive-into-CV-PyTorch/dataset/tianchi_SVHN`下
 
@@ -32,7 +30,7 @@ TODO: 数据集下载链接 ××
 
 ## 环境安装
 
-本节所介绍的实战代码对环境有特殊依赖，理论上Python2/3，Pytorch1.x版本均可以跑通。此外，由于数据集较小，有无GPU都是可以的，动手开始实战吧~
+本节所介绍的实战代码对环境没有特殊依赖，理论上Python2/3，Pytorch1.x版本均可以跑通。此外，由于数据集较小，有无GPU都是可以的，动手开始实战吧~
 
 下面给出 python3.7 + torch1.3.1-gpu版本的环境安装示例
 
@@ -55,7 +53,7 @@ TODO: 数据集下载链接 ××
 
 ## 阅读baseline
 
-下面我们首先浏览并理解一下Datawhale观察提供的[baseline](https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.6.2ce832bchtKi75&postId=108342)。
+下面我们首先浏览并理解一下Datawhale观察提供的[baseline](https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.6.2ce832bchtKi75&postId=108342)中的代码。
 
 ### 首先导入必要的库
 
@@ -163,6 +161,8 @@ val_loader = torch.utils.data.DataLoader(
 通过上述代码, 定义了赛题图像数据和对应标签的读取器dataloader。后面实际进行训练时，dataloader会根据我们代码中的定义，进行在线的数据増广，数据扩增的效果如下所示：
 
 ![augment](../../../markdown_imgs/chapter02/2.5/2_5_data_augment.png)
+
+注：这里仅为一个示例图，上面的代码并没有使用旋转和颜色变换的数据增强
 
 ### 定义分类模型
 

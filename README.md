@@ -56,7 +56,7 @@
             - [x] 批量归一化（Batch Normalization）
             - [x] 残差网络（ResNet）
     - [x] 2.3 模型训练与验证
-    - [ ] 2.4 模型集成
+    - [x] 2.4 模型集成
     - [x] 2.5 天池计算机视觉入门赛: SVHN数据集实战
 
 
@@ -93,6 +93,18 @@
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">伊雪</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">中电科网安研究院开发工程师</span></td>
+    <td> </td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员</span></td>
+    <td><a href="https://blog.csdn.net/OuDiShenmiss">CSDN博客</a></td>
+    <td> </td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">杨皓博</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员</span></td>
+    <td><a href="https://github.com/Dulpyanghaobo">Github</a></td>
     <td> </td>
   </tr>
   <tr>
