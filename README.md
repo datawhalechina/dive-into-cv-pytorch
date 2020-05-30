@@ -99,13 +99,11 @@
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员</span></td>
     <td><a href="https://blog.csdn.net/OuDiShenmiss">CSDN博客</a></td>
-    <td> </td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">杨皓博</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员</span></td>
     <td><a href="https://github.com/Dulpyanghaobo">Github</a></td>
-    <td> </td>
   </tr>
   <tr>
     <td>阿水</td>
