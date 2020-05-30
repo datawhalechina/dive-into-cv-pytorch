@@ -66,7 +66,6 @@ train_loader = torch.utils.data.DataLoader(
                     transforms.Resize((64, 128)),
                     transforms.RandomCrop((60, 120)),
                     transforms.ColorJitter(0.3, 0.3, 0.2),
-                    transforms.RandomRotation(10),
                     transforms.ToTensor(),
                     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])),
@@ -264,8 +263,7 @@ print(len(test_path), len(test_label))
 test_loader = torch.utils.data.DataLoader(
     SVHNDataset(test_path, test_label,
                 transforms.Compose([
-                    transforms.Resize((64, 128)),
-                    transforms.RandomCrop((60, 120)),
+                    transforms.Resize((60, 120)),
                     transforms.ToTensor(),
                     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])),

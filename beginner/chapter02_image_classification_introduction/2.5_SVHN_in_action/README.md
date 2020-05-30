@@ -6,7 +6,7 @@
 
 该比赛以SVHN街道字符为赛题数据，数据集报名后可见并可下载，该数据来自收集的SVHN街道字符，并进行了匿名采样处理，详细的介绍见赛事官网。
 
-![SVHN_dataset](../../../markdown_imgs/chapter02/2_5_SVHN_dataset.png)
+![SVHN_dataset](../../../markdown_imgs/chapter02/2.5/2_5_SVHN_dataset.png)
 
 TODO: 数据集下载链接 ××
 
@@ -14,7 +14,7 @@ TODO: 数据集下载链接 ××
 
 我们要做的就是识别图片中的数字串，赛题给定的数据图片中不同图片中包含的字符数量不等，如下图所示。
 
-![diff_long_char](../../../markdown_imgs/chapter02/2_5_diff_long_char.png)
+![diff_long_char](../../../markdown_imgs/chapter02/2.5/2_5_diff_long_char.png)
 
 看起来好像有点棘手，和本章介绍的图像分类还并不一样。这里我们利用一个巧妙的思路，将赛题转化为一个分类问题来解。
 
@@ -23,7 +23,7 @@ TODO: 数据集下载链接 ××
 
 例如字符23填充为23XXXX，字符231填充为231XXX。
 
-![paddXX](../../../markdown_imgs/chapter02/2_5_paddXX.png)
+![paddXX](../../../markdown_imgs/chapter02/2.5/2_5_paddXX.png)
 
 于是相当于将赛题转化为了分别对6个数字进行的分类问题，每个数字预测0-9/X。
 
@@ -53,7 +53,11 @@ TODO: 数据集下载链接 ××
 `$ pip install tqdm pandas matplotlib opencv-python jupyter`
 
 
-## 首先导入必要的库
+## 阅读baseline
+
+下面我们首先浏览并理解一下Datawhale观察提供的[baseline](https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.6.2ce832bchtKi75&postId=108342)。
+
+### 首先导入必要的库
 
 ```python
 # -*- coding: utf-8 -*-                                                                          
@@ -83,7 +87,7 @@ from torch.autograd import Variable
 from torch.utils.data.dataset import Dataset
 ```
 
-## 定义读取数据集
+### 定义读取数据集
 
 ```python
 class SVHNDataset(Dataset):
@@ -110,8 +114,7 @@ class SVHNDataset(Dataset):
 
 ```
 
-
-## 定义读取数据dataloader
+### 定义读取数据dataloader
 
 ```python
 train_path = glob.glob('../../../dataset/tianchi_SVHN/train/*.png')
@@ -125,8 +128,6 @@ train_loader = torch.utils.data.DataLoader(
                 transforms.Compose([
                     transforms.Resize((64, 128)),
                     transforms.RandomCrop((60, 120)),
-                    transforms.ColorJitter(0.3, 0.3, 0.2),
-                    transforms.RandomRotation(10),
                     transforms.ToTensor(),
                     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])),
@@ -161,9 +162,9 @@ val_loader = torch.utils.data.DataLoader(
 
 通过上述代码, 定义了赛题图像数据和对应标签的读取器dataloader。后面实际进行训练时，dataloader会根据我们代码中的定义，进行在线的数据増广，数据扩增的效果如下所示：
 
-![augment](../../../markdown_imgs/chapter02/2_5_data_augment.png)
+![augment](../../../markdown_imgs/chapter02/2.5/2_5_data_augment.png)
 
-## 定义分类模型
+### 定义分类模型
 
 这里使用ResNet18模型进行特征提取
 
@@ -213,7 +214,6 @@ def train(train_loader, model, criterion, optimizer):
                 criterion(c3, target[:, 3]) + \
                 criterion(c4, target[:, 4])
 
-        # loss /= 6
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -239,7 +239,6 @@ def validate(val_loader, model, criterion):
                     criterion(c2, target[:, 2]) + \
                     criterion(c3, target[:, 3]) + \
                     criterion(c4, target[:, 4])
-            # loss /= 6
             val_loss.append(loss.item())
     return np.mean(val_loss)
 
@@ -284,19 +283,19 @@ def predict(test_loader, model, tta=10):
 ```
 
 
-## 训练与验证
+### 训练与验证
 
 ```python
 model = SVHN_Model1()
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), 0.001)
-best_loss = 1000.0
 
 use_cuda = True
 if use_cuda:
     model = model.cuda()
 
-for epoch in range(10):
+best_loss = 1000.0
+for epoch in range(3):
     train_loss = train(train_loader, model, criterion, optimizer)
     val_loss = validate(val_loader, model, criterion)
     
@@ -315,8 +314,8 @@ for epoch in range(10):
     
     val_char_acc = np.mean(np.array(val_label_pred) == np.array(val_label))
     
-    print('Epoch: {0}, Train loss: {1} \t Val loss: {2}'.format(epoch, train_loss, val_loss))
-    print('Val Acc', val_char_acc)
+    print('Epoch: {0}, Train loss: {1} \t Val loss: {2} \t Val Acc: {3}'.format(epoch, train_loss, val_loss, val_char_acc))
+
     # 记录下验证集精度
     if val_loss < best_loss:
         best_loss = val_loss
@@ -325,20 +324,13 @@ for epoch in range(10):
 ```
 
 ```
-Epoch: 0, Train loss: 3.5854218196868897 	Val loss: 3.6840851964950563   Val Acc 0.3205
-Epoch: 1, Train loss: 2.26186142206192 	    Val loss: 3.3972847995758055   Val Acc 0.395
-Epoch: 2, Train loss: 1.8909126870632171 	Val loss: 2.751760967731476    Val Acc 0.4849
-Epoch: 3, Train loss: 1.686914145708084 	Val loss: 2.7759255743026734   Val Acc 0.4846
-Epoch: 4, Train loss: 1.53107564496994 	    Val loss: 2.786783583164215    Val Acc 0.4913
-Epoch: 5, Train loss: 1.418904512643814 	Val loss: 2.6081195278167724   Val Acc 0.5183
-Epoch: 6, Train loss: 1.3347066225210826 	Val loss: 2.4557434034347536   Val Acc 0.5468
-Epoch: 7, Train loss: 1.237933918039004 	Val loss: 2.576781086444855    Val Acc 0.5155
-Epoch: 8, Train loss: 1.1775057731866836 	Val loss: 2.5613928298950195   Val Acc 0.5506
-Epoch: 9, Train loss: 1.1077081708113352 	Val loss: 2.59310835814476     Val Acc 0.5388
+Epoch: 0, Train loss: 3.2353286933898926 	 Val loss: 3.518701043128967 	 Val Acc: 0.3391
+Epoch: 1, Train loss: 1.99197505068779 	     Val loss: 2.9245959606170655 	 Val Acc: 0.4436
+...
+...
 ```
 
-
-## 预测并生成提交文件
+### 预测并生成提交文件
 
 ```python
 test_path = glob.glob('../../../dataset/tianchi_SVHN/test_a/*.png')
@@ -349,8 +341,7 @@ print(len(test_path), len(test_label))
 test_loader = torch.utils.data.DataLoader(
     SVHNDataset(test_path, test_label,
                 transforms.Compose([
-                    transforms.Resize((64, 128)),
-                    transforms.RandomCrop((60, 120)),
+                    transforms.Resize((70, 140)),
                     transforms.ToTensor(),
                     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])),
@@ -365,7 +356,7 @@ test_loader = torch.utils.data.DataLoader(
 ```
 
 ```python
-# 加载保存的最优模型
+# 加载保存的最优模型生成提交文件
 model.load_state_dict(torch.load('model.pt'))
 
 test_predict_label = predict(test_loader, model, 1)
@@ -394,16 +385,192 @@ df_submit.to_csv('submit.csv', index=None)
 (40000, 55)
 ```
 
+## 调参实战
+
+首先让我们快速确定baseline的几个基础参数
+
+### 学习率调整
+
+首先快速确定初始学习率，以及学习率调整策略
+
+初始学习率判断标准：训练初期loss快速下降
+
+我们先以0.01作为初始学习率，训练几个epoch
+
+```
+Epoch: 0, Train loss: 3.201288181463877 	 Val loss: 3.6346988077163696 	 Val Acc: 0.3234
+Epoch: 1, Train loss: 1.9820853635470073 	 Val loss: 3.010792998790741 	 Val Acc: 0.44
+Epoch: 2, Train loss: 1.6244886504809062 	 Val loss: 2.765939730644226 	 Val Acc: 0.4758
+Epoch: 3, Train loss: 1.4178793375492096 	 Val loss: 2.6497371077537535 	 Val Acc: 0.5069
+Epoch: 4, Train loss: 1.2603404329617818 	 Val loss: 2.716396602153778 	 Val Acc: 0.4849
+Epoch: 5, Train loss: 1.1504622252782186 	 Val loss: 2.5561904258728028 	 Val Acc: 0.5357
+Epoch: 6, Train loss: 1.04843408370018 	     Val loss: 2.5777493786811827 	 Val Acc: 0.5415
+Epoch: 7, Train loss: 0.9496217265923818 	 Val loss: 2.524811834573746 	 Val Acc: 0.5326
+Epoch: 8, Train loss: 0.8733580025633176 	 Val loss: 2.6108505029678346 	 Val Acc: 0.5505
+Epoch: 9, Train loss: 0.7865098938941956 	 Val loss: 2.607123359680176 	 Val Acc: 0.5523
+best val acc: 0.5523
+```
+
+可以看到，训练初期loss快速下降，所以0.01作为初始学习率是合适的。
+
+训练中，学习率是可以进行调整的，一种常用的方法是阶段性学习率衰减策略。
+
+在上面尝试性的训练过程中，可以看到，验证集loss在10个epoch左右下降趋势已不明显，因此可以尝试在第10个epoch，将学习率衰减为原来的10%。按照这样的学习率调整策略，我们训练20个epoch看下：
+
+
+```
+Epoch: 0, Train loss: 3.217955897013346 	 Val loss: 3.4973887462615965 	 Val Acc: 0.3428
+Epoch: 1, Train loss: 1.9865643223921459 	 Val loss: 3.041480797290802 	 Val Acc: 0.4252
+Epoch: 2, Train loss: 1.6422564171155294 	 Val loss: 2.734321162700653 	 Val Acc: 0.4845
+Epoch: 3, Train loss: 1.4109662581682205 	 Val loss: 2.6289015769958497 	 Val Acc: 0.5124
+Epoch: 4, Train loss: 1.268737798611323 	 Val loss: 2.6607061581611635 	 Val Acc: 0.5025
+Epoch: 5, Train loss: 1.149802592118581 	 Val loss: 2.693304219722748 	 Val Acc: 0.5122
+Epoch: 6, Train loss: 1.0440267440478006 	 Val loss: 2.5291405525207518 	 Val Acc: 0.5363
+Epoch: 7, Train loss: 0.9582021673123042 	 Val loss: 2.64508363032341 	 Val Acc: 0.5167
+Epoch: 8, Train loss: 0.8617052629590034 	 Val loss: 2.5092941007614136 	 Val Acc: 0.5473
+Epoch: 9, Train loss: 0.7965546736717224 	 Val loss: 2.4935685346126557 	 Val Acc: 0.5429
+Epoch: 10, Train loss: 0.47227135149141153 	 Val loss: 2.3851090211868287 	 Val Acc: 0.5987
+Epoch: 11, Train loss: 0.356143202851216 	 Val loss: 2.458720991849899 	 Val Acc: 0.603
+Epoch: 12, Train loss: 0.3016581511025627 	 Val loss: 2.5575384349822996 	 Val Acc: 0.6012
+Epoch: 13, Train loss: 0.26212659483402967 	 Val loss: 2.7137050013542177 	 Val Acc: 0.5975
+Epoch: 14, Train loss: 0.22160522095113994 	 Val loss: 2.834437639474869 	 Val Acc: 0.6031
+Epoch: 15, Train loss: 0.1934196574985981 	 Val loss: 3.015086229324341 	 Val Acc: 0.5971
+Epoch: 16, Train loss: 0.16129128922770422 	 Val loss: 3.131588038921356 	 Val Acc: 0.601
+Epoch: 17, Train loss: 0.14016953054318826 	 Val loss: 3.417837708234787 	 Val Acc: 0.5923
+Epoch: 18, Train loss: 0.12422899308552345 	 Val loss: 3.5185752115249636 	 Val Acc: 0.5991
+Epoch: 19, Train loss: 0.09977891861026486 	 Val loss: 3.5448452734947207 	 Val Acc: 0.6027
+best val acc: 0.6031
+```
+
+可以看到，这样的策略将验证集准确率大幅提高到了0.6031 :rocket:
+
+### bug排查
+
+我们已经在线下的验证集将准确率做到了0.6，于是我们可以尝试第一次提交了。
+
+![baseline_bug](../../../markdown_imgs/chapter02/2.5/2_5_baseline_bug.png)
+
+0.33分。。。翻车了
+
+相信用过baseline的小伙伴们都经历过0.3-0.4左右分数的绝望，让我们来看看哪里出了问题。
+
+核心是要抓主要矛盾。
+
+目前的问题是验证集和测试集的准确率存在很大的误差，通常这说明验证集和测试集存在一定的差异。
+
+由于这是个比赛，数据集都是官方提供的，那这种差异是不是我们自己代码的隐性bug带来的呢？
+
+我们观察代码，会发现，训练和测试的dataloader中resize部分是存在不一致的
+
+```
+train_loader = torch.utils.data.DataLoader(
+    SVHNDataset(train_path, train_label,
+                transforms.Compose([
+                    transforms.Resize((64, 128)),
+                    transforms.RandomCrop((60, 120)),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])),
+    batch_size=40,
+    shuffle=True,
+    num_workers=10,
+)
+
+...
+
+test_loader = torch.utils.data.DataLoader(
+    SVHNDataset(test_path, test_label,
+                transforms.Compose([
+                    transforms.Resize((70, 140)),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])),
+    batch_size=40,
+    shuffle=False,
+    num_workers=10,
+)
+```
+
+图像的输入尺寸是不一致的，而且差异不小，相当于人为引入了验证集和测试集之间的差异。
+
+因此我们将`test_loader`调整为
+
+```
+test_loader = torch.utils.data.DataLoader(
+    SVHNDataset(test_path, test_label,
+                transforms.Compose([
+                    transforms.Resize((60, 120)),   # TODO: modify here
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])),
+    batch_size=40,
+    shuffle=False,
+    num_workers=10,
+)
+```
+
+这个bug修复后，成绩一下就能达到0.7左右的水平，我提交的分数是0.7319 :rocket:
+
+### 数据增强策略
+
+我们观察上面的训练日志可以发现，训练集loss可以达到非常低的水平，但是验证集做不到，因此目前的主要矛盾变成了过拟合。
+
+
+```
+...
+Epoch: 17, Train loss: 0.14016953054318826 	 Val loss: 3.417837708234787 	 Val Acc: 0.5923
+Epoch: 18, Train loss: 0.12422899308552345 	 Val loss: 3.5185752115249636 	 Val Acc: 0.5991
+Epoch: 19, Train loss: 0.09977891861026486 	 Val loss: 3.5448452734947207 	 Val Acc: 0.6027
+best val acc: 0.6031
+```
+
+于是数据增强就成了目前最有可能提分的武器之一。
+
+上面的baseline中我们在训练过程中仅仅使用了RandomCrop作为数据增强,下面我们尝试在训练集中使用更多的数据增强方法，并验证效果。
+
+我们尝试加上一些颜色空间的变换
+
+```
+train_loader = torch.utils.data.DataLoader(
+    SVHNDataset(train_path, train_label,
+                transforms.Compose([
+                    transforms.Resize((64, 128)),
+                    transforms.RandomCrop((60, 120)),
+                    transforms.ColorJitter(0.3, 0.3, 0.2),   # TODO: new add
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])),
+    batch_size=40,
+    shuffle=True,
+    num_workers=10,
+)
+```
+
+重新训练并提交后，得到了0.7453的分数，又上涨了一些。:rocket:
+
+你还可以继续尝试其他的数据增强方法，以及调整其他的参数，这里就不介绍了。
+
+核心就是注意把握两点：
+
+- 抓主要矛盾，确保你现在的实验是在解决目前面临的主要问题，而不是一些无关痛痒的尝试。
+
+- 遵循单一变量原则进行实验。
+
+相信通过本文的介绍，你已经了解了调参的基本方法和思路。
+
+开始自己动手实验吧，Good Luck~
+
+
 
 ---
-**Task01 预备知识 **
 
 --- ***By: 安晟***
 
-
->可添加个人相关网址：博客、知乎、github等
+>一只普通的算法攻城狮，邮箱[anshengmath@163.com]，[CSDN博客](https://blog.csdn.net/u011583927)，[Github](https://github.com/monkeyDemon)
 
 
 **关于Datawhale**：
 
->Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合>    了一群有开源精神和探索精神的团队成员。Datawhale以“for the learner，和学习者一起成长”为愿景，鼓励>    真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时Datawhale 用开源的理念去探索开源内容>    、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联>    结。
+>Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。
+ 
+
