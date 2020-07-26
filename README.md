@@ -57,7 +57,9 @@
             - [x] 残差网络（ResNet）
     - [x] 2.3 模型训练与验证
     - [x] 2.4 模型集成
-    - [x] 2.5 天池计算机视觉入门赛: SVHN数据集实战
+    - [x] 2.5 比赛实战
+        - [x] [天池计算机视觉入门赛:街景字符识别baseline讲解](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action/README.md)
+        - [x] [比赛方案与优化技巧总结](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action/ideas_and_tricks_summary.md)
 
 
 持续更新中......
