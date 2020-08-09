@@ -1,0 +1,17 @@
+- 目录
+    - 第一章：预备知识
+        - [1.1 深度学习环境配置](chapter1/1.1_environment_install/README.md)
+        - 1.2 Pytorch基础使用介绍
+        - 1.3 自动求梯度
+        - 1.4 线性回归-小试身手
+        - 1.5 初识图像分类
+    - 第二章：图片分类入门
+        - 2.1 数据读取与数据扩增
+        - 2.2 图像分类介绍
+        - 2.3 模型训练与验证
+        - 2.4 模型集成
+        - 2.5 比赛实战
+            - [天池计算机视觉入门赛:街景字符识别baseline讲解](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action/README.md)
+            - [比赛方案与优化技巧总结](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action/ideas_and_tricks_summary.md)
+    - 第三章 目标检测入门
+
