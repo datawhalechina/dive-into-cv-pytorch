@@ -9,9 +9,8 @@
         - 2.1 数据读取与数据扩增
         - 2.2 图像分类介绍
         - 2.3 模型训练与验证
-        - 2.4 模型集成
-        - 2.5 比赛实战
-            - [天池计算机视觉入门赛:街景字符识别baseline讲解](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action/README.md)
-            - [比赛方案与优化技巧总结](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action/ideas_and_tricks_summary.md)
+        - 2.4 天池CV入门赛实战
+            - [街景字符识别baseline讲解](chapter2/2.4_classification_action_SVHN/baseline.md)
+            - [比赛方案与优化技巧总结](chapter2/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
     - 第三章 目标检测入门
 
