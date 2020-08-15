@@ -1,14 +1,10 @@
-Pytorch自动求梯度原理介绍
-===========================================
+# Pytorch自动求梯度原理介绍
 
 在深度学习中，我们经常需要对函数求梯度（gradient）。PyTorch提供的[autograd](https://pytorch.org/docs/stable/autograd.html)包能够根据输入和前向传播过程自动构建计算图，并执行反向传播。本节将介绍如何使用autograd包来进行自动求梯度的有关操作。
 ## 1 基本概念介绍
 ### 1.1 Variable和Tensor
 
-<div align=center>
-<img width="500" src="../../../markdown_imgs/chapter01/variable.PNG"/>
-</div>
-<div align=center> </div>
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.3_automatic_gradient/variable.png">
 
 Variable是 torch.autograd中的数据类型，主要用于封装 Tensor，进行自动求导。    
 >data : 被包装的Tensor  
@@ -17,10 +13,7 @@ grad\_fn : 创建 Tensor的 Function，是自动求导的关键
 requires_grad：指示是否需要梯度  
 is_leaf : 指示是否是叶子结点 
 
-<div align=center>
-<img width="500" src="../../../markdown_imgs/chapter01/tensor.PNG"/>
-</div>
-<div align=center> </div>
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.3_automatic_gradient/tensor.png">
 
 Pytorch 0.4.0版开始，Variable并入Tensor。  
 >dtype：张量的数据类型，如torch.FloatTensor，torch.cuda.FloatTensor  
@@ -37,10 +30,7 @@ device：张量所在设备，GPU/CPU
 我们已经知道PyTorch使用有向无环图DAG记录计算的全过程，那么DAG是怎样建立的呢？DAG的节点是`Function`对象，边表示数据依赖，从输出指向输入。
 每当对`Tensor`施加一个运算的时候，就会产生一个`Function`对象，它产生运算的结果，记录运算的发生，并且记录运算的输入。`Tensor`使用`.grad_fn`属性记录这个计算图的入口。反向传播过程中，`autograd`引擎会按照逆序，通过`Function`的`backward`依次计算梯度。
 
-<div align=center>
-<img width="500" src="../../../markdown_imgs/chapter01/Computational Graph.gif"/>
-</div>
-<div align=center> </div>
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.3_automatic_gradient/computational_graph.gif">
 
 ### 1.3 代码示例
 创建一个`Tensor`并设置`requires_grad=True`:
@@ -289,13 +279,11 @@ tensor([2.])
 * 叶子结点不可执行in-place，因为其他节点在计算梯度时需要用到叶子节点，所以叶子地址中的值不得改变否则会是其他节点求梯度时出错。所以叶子节点不能进行原位计算。
 * 注意在y.backward()时，如果y是标量量，则不需要为backward()传⼊入任何参数；否则，需要传⼊一个与y同形的Tensor。
 
-### 参考
 -----------
-> [Dive-into-DL-PyTorch](https://github.com/ShusenTang/Dive-into-DL-PyTorch/edit/master/docs/chapter02_prerequisite/2.3_autograd.md)
 
----
+> 本文内容参考 [Dive-into-DL-PyTorch](https://github.com/ShusenTang/Dive-into-DL-PyTorch/edit/master/docs/chapter02_prerequisite/2.3_autograd.md)
 
---- ***By: 星尘***
+*** modifed by: 星尘***
 
 >一个迷茫的追风者，邮箱[1573187692@qq.com]，[CSDN博客](https://blog.csdn.net/OuDiShenmiss)
 
