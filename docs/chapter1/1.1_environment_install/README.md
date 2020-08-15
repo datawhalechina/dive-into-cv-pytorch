@@ -110,11 +110,11 @@ CPU的性能和GPU差距过大，可能出现这样的现象：CPU为了计算�
 接下来，到NVIDIA官网下载CUDA的安装文件,[这个页面](https://developer.nvidia.com/cuda-toolkit-archive)可以找到不同版本的下载链接，这里我们以CUDA10.0为例
 
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/select_CUDA_version.png">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/select_CUDA_version.png">
 
 进入CUDA10.0的下载界面，根据自己的系统进行勾选，并下载CUDA安装文件
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/select_installer.png">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/select_installer.png">
 
 最后就是安装了，运行如下命令：
 
@@ -236,7 +236,7 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 不同环境下的安装命令可以在[Pytorch官网](https://pytorch.org)找到
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/select_pytorch.png">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/select_pytorch.png">
 
 上面的命令相当于通过conda帮你在当前环境中把pytorch及其所有的依赖库都安装好了。
 
