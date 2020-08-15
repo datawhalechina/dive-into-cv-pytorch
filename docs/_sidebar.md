@@ -1,6 +1,6 @@
 - 目录
     - 第一章：预备知识
-        - [1.1 深度学习环境配置](chapter1/1.1_environment_install/README.md)
+        - [1.1 深度学习环境配置](chapter01_preliminary_knowledge/1.1_environment_install/README.md)
         - 1.2 Pytorch基础使用介绍
         - 1.3 自动求梯度
         - 1.4 线性回归-小试身手
@@ -10,7 +10,7 @@
         - 2.2 图像分类介绍
         - 2.3 模型训练与验证
         - 2.4 天池CV入门赛实战
-            - [街景字符识别baseline讲解](chapter2/2.4_classification_action_SVHN/baseline.md)
-            - [比赛方案与优化技巧总结](chapter2/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
+            - [街景字符识别baseline讲解](chapter02_image_classification_introduction/2.4_classification_action_SVHN/baseline.md)
+            - [比赛方案与优化技巧总结](chapter02_image_classification_introduction/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
     - 第三章 目标检测入门
 
