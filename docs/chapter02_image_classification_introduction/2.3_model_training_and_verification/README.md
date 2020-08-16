@@ -1,6 +1,7 @@
 # 基于Cifar10的图像分类入门学习-PyTorch版
 
 ##  图像分类小目标
+
 - 数据预处理、加载
 - 模型训练、调参
 - 模型保存、加载
@@ -21,10 +22,9 @@ Pytorch包涵盖常用数据集，可通过torchvision.datasets读取，并使�
 
 本文使用Cifar10数据集，包含10类，分别为： ‘airplane’, ‘automobile’, ‘bird’, ‘cat’, ‘deer’, ‘dog’, ‘frog’, ‘horse’, ‘ship’, ‘truck’。图像大小均为32x32x3。
 
-![Cifar10数据集](../../../markdown_imgs/chapter02/task04/dataset_ex.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.3_model_training_and_verification/dataset_ex.png">
 
-
-```Python
+```python
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -49,7 +49,8 @@ classes = ('plane', 'car', 'bird', 'cat','deer', 'dog', 'frog', 'horse', 'ship',
 ```
 
 可查看图像
-```Python
+
+```python
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -65,7 +66,7 @@ imgshow(torchvision.utils.make_grid(images))
 print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
 ```
 
-![查看结果](../../../markdown_imgs/chapter02/task04/dataset_check.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.3_model_training_and_verification/dataset_check.png">
 
 #### 2 模型训练、调参：
 
@@ -134,7 +135,7 @@ self.relu1 = nn.ReLU()
 ```
 激活函数图像
 
-![ReLU](../../../markdown_imgs/chapter02/task04/relu.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.3_model_training_and_verification/relu.png">
 
 激活函数（Activation Function），是在人工神经网络的神经元上运行的函数，负责将神经元的输入映射到输出端。引入激活函数是为了增加神经网络模型的非线性。没有激活函数的每层都相当于矩阵相乘。就算你叠加了若干层之后，无非还是个矩阵相乘罢了。
 
@@ -165,7 +166,8 @@ Dropout：删除掉隐藏层随机选取的一半神经元，然后在这个更�
 - maxpool之后结果是16x16x18 ，可以理解为16x16大小的图片共有18张（18通道）
 - 全连接层fc1，输入层18x16x16 = 4608个神经元，输出层有64个神经元
 - 全连接层fc2，输入层有64个神经元，输出层有10个神经元，对应的是十个标签
-```Python
+
+```python
 from torch.autograd.variable import Variable
 import torch.nn.functional as F
  
@@ -189,7 +191,7 @@ class SimpleCNN(torch.nn.Module):
 ```
 2.2 定义损失函数及优化
 
-```Python
+```python
 import torch.optim as optim
 
 def createlossandoptimizer(net, learning_rate=0.001):
@@ -199,7 +201,8 @@ def createlossandoptimizer(net, learning_rate=0.001):
     return loss, optimizer
 ```
 2.3 定义训练、验证、预测模块
-```Python
+
+```python
 def get_train_loader(batch_size):
     # train_loader， 一次性加载了sample中全部的样本数据，每次以batch_size为一组循环
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, sampler=train_sample, num_workers=2)   return train_loader
@@ -210,7 +213,7 @@ test_loader = torch.utils.data.DataLoader(test_set, batch_size=4, sampler=test_s
 ```
 2.4 迭代训练并验证
 
-```Python
+```python
 def trainNet(net, batchsize, n_epochs, learning_rate):
     print("HYPERPARAMETERS：")  
     print("batch-size=", batchsize)
@@ -277,13 +280,16 @@ def trainNet(net, batchsize, n_epochs, learning_rate):
     print("Training finished, took {:.2f}s".format(time.time() - training_start_time))  
 
 ```
+
 #### 模型保存、加载
-```Python
+
+```python
 torch.save(model_object.state_dict(), 'model.pt')
 model.load_state_dict(torch.load(' model.pt'))
 ```
 
 ## 总结
+
 本节以常用数据集Cifar10为例，用PyTorch训练了一个简单的图像分类器。介绍训练分类器的小目标，结合小目标给出具体步骤，并给出相关知识点及代码。
 
 贡献者：

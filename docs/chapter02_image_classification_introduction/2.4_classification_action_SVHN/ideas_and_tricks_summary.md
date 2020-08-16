@@ -28,13 +28,13 @@
 
 本质上，baseline的思路就是将赛题转换为了一个定长的字符识别问题，用包含多个输出的分类问题来进行求解。
 
-![定长字符识别](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_fix_len_identify.png)
+![定长字符识别](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_fix_len_identify.png)
 
 ### 1.1 改进版baseline
 
 那么如何进行进一步优化呢？在比赛进行的过程中，我在天池进行了一次[如何调参上分](https://tianchi.aliyun.com/course/video?spm=5176.12586971.1001.1.11be79delsbf6G&liveId=41169)的直播分享
 
-直播对应的代码可以在我们的[动手学CV项目的2.5节找到](https://github.com/datawhalechina/dive-into-cv-pytorch/tree/master/beginner/chapter02_image_classification_introduction/2.5_SVHN_in_action)
+直播对应的代码可以在我们的[动手学CV项目的2.4节找到](https://github.com/datawhalechina/dive-into-cv-pytorch/tree/master/code/chapter02_image_classification_introduction/2.4_classification_action_SVHN)
 
 这份代码相当于一个加强版的baseline，简短来说，介绍了以下几点：
 
@@ -153,7 +153,7 @@ class SVHN_Model2(nn.Module):
 
 baseline方案将识别问题转化为了定长识别问题，那么定多长合适？就是个值得思考的问题，有的小伙伴通过一个小脚本进行了统计，训练集中的样本的字符长度分别为1,2,3,4,5,6的样本数量分别为4636,16262,7813,1280,8,1。
 
-![len](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_svhn_hen.png)
+![len](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_svhn_hen.png)
 
 可以看到，数据集中长度为5和6的图片都是可以忽略不计的，因此主动放弃这部分极少数情况的case可以很好的为模型“减负”，从而获得更好的效果。
 
@@ -196,11 +196,11 @@ baseline模型设定定长len=5，不妨尝试下len=4，会带来进一步的�
 
 验证集图片示例：
 
-![val_show](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_val_show.png)
+![val_show](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_val_show.png)
 
 测试集图片示例：
 
-![test_show](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_test_show.png)
+![test_show](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_test_show.png)
 
 对于这个问题，很多人很自然的想到了进行目标检测，这也是几乎所有前排选手的一致选择。但是，我们的baseline就没有一战之力了吗？当然不是，我个人用resnet50作为backbone将单模型的分数训到了0.91，相当于正式赛Top2%的分数，而且因为我没有时间做太多的超参数调整实验，这个成绩也并没有达到baseline的上限。
 
@@ -268,13 +268,13 @@ test_loader = torch.utils.data.DataLoader(
 除了两种端到端的识别方案，还可以引入目标检测来解题，根据具体使用中检测框粒度的不同，还可以细分为三种不同的方案：
 
 方案一：文本行检测+文本行识别
-![检测+识别](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_linedetect_identify.png)
+![检测+识别](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_linedetect_identify.png)
 
 方案二：字符级目标检测+字符识别模型
-![字符级检测+单字符识别](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_chardetect_identify.png)
+![字符级检测+单字符识别](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_chardetect_identify.png)
 
 方案三：纯目标检测方案
-![字符级目标检测](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.5/2_5_char_detect.png)
+![字符级目标检测](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.4_classification_action_SVHN/2_5_char_detect.png)
 
 根据我最近两周持续对前排选手进行的骚扰+在线乞讨收集到的情报来看，前排选手使用的普遍是方案三，但是方案一、方案二也有人用，而且成绩不差。也就是说，对于这个赛题，从实际结果上看这三个方案上限差不多。
 

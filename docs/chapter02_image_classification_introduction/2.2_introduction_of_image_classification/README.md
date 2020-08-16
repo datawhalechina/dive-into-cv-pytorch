@@ -1,5 +1,6 @@
 # 经典图像分类模型介绍
 
+
 ## 介绍
 
 ​		本文我们来回顾经典的卷积神经网络（Convolution Nerual Network，简称CNN ）。CNN是一类特殊的人工神经网络，是深度学习中重要的一个分支。CNN在很多领域都表现优异，精度和速度比传统计算学习算法高很多。特别是在计算机视觉领域，CNN是解决图像分类、图像检索、物体检测和语义分割的主流模型。
@@ -8,8 +9,8 @@
 
 <center>
   <div>
-  <img src="../../../markdown_imgs/chapter02/2.2/cnn.jpeg" width="40%" />
-  <img src="../../../markdown_imgs/chapter02/2.2/cnn1.jpeg" style="border-left: 1px solid black;" width="48%" />
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/cnn.jpeg" width="40%" />
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/cnn1.jpeg" style="border-left: 1px solid black;" width="48%" />
   </div>
   <div>
     左：具有4层的感知机，右：卷积神经网络
@@ -30,7 +31,7 @@ $$
 
 <center>
   <div>
-    <img src="../../../markdown_imgs/chapter02/2.2/overview.png" style="zoom:30%;" />
+    <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/overview.png" style="zoom:30%;" />
   </div>
   <div>
   	CNN explainer
@@ -49,7 +50,7 @@ $$
 ​		卷积核和感受野之间的卷积操作如下图。感受野与卷积核大小一致，对应位置相乘再相加，即可得到结果。可见：单个卷积核与图片的一个感受野进行卷积，结果是下一层图片对应位置的一个像素点，一张输入图片与一个卷积核的输出结果是一张图片。
 
 <div align="center">
-	<img src="../../../markdown_imgs/chapter02/2.2/conv.png" style="zoom:50%;" />
+	<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/conv.png" style="zoom:50%;" />
 	<div> 卷积操作</div>
 </div>
 ​		**多输入通道** 卷积核窗口形状为$k_h\times k_w$。当$c_i=1$时，我们知道卷积核只包含一个形状为$k_h\times k_w$的二维数组。当$c_i > 1$时，我们将会为每个输入通道各分配一个形状为$k_h\times k_w$的核数组。把这$c_i$个数组在输入通道维上连结，即得到一个形状为$c_i\times k_h\times k_w$的卷积核。如下图，点开第一个卷积层，可以看到一组通道数为3的卷积核，与输入的通道为3的图像进行卷积，得到3个中间结果（表示在intermidiate层），再将三个中间结果对象像素位置相加，加上可学习的bias，得到一个通道的卷积结果。
@@ -64,7 +65,7 @@ $$
 
 
 <div align="center">
-  <img src="../../../markdown_imgs/chapter02/2.2/convlayer_overview_demo.gif" width="60%" height="60%" />
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/convlayer_overview_demo.gif" width="60%" height="60%" />
   <div>
     卷积层
   </div>
@@ -95,7 +96,7 @@ $$
 $$
 
 <div align="center">
-  <img src="../../../markdown_imgs/chapter02/2.2/relu_graph.svg" width="30%" height="30%" />
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/relu_graph.svg" width="30%" height="30%" />
   <div>
     卷积层
   </div>
@@ -110,7 +111,7 @@ $$
 
 
 <div align="center">
-  <img src="../../../markdown_imgs/chapter02/2.2/softmax_animation.gif"  />
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/softmax_animation.gif"  />
   <div>
     Softmax
   </div>
@@ -126,7 +127,7 @@ $$
 
 #### LeNet
 
- <center><img src="../../../markdown_imgs/chapter02/2.2/lenet.png" alt="IMG" style="zoom:100%;" /></center>   
+ <center><img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/lenet.png" alt="IMG" style="zoom:100%;" /></center>   
 
 ##### 网络架构
 
@@ -180,7 +181,7 @@ class Net(nn.Module):
 
 ##### 网络架构
 
- <center><img src="../../../markdown_imgs/chapter02/2.2/alexnet.png" alt="IMG" style="zoom:100%;" /></center>  
+ <center><img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/alexnet.png" alt="IMG" style="zoom:100%;" /></center>  
 
 ​		在写这篇论文的时候，**GPU**的处理速度还比较慢，所以**AlexNet**采用了非常复杂的方法在两个**GPU**上进行训练。大致原理是，这些层分别拆分到两个不同的**GPU**上，同时还专门有一个方法用于两个**GPU**进行交流。
 
@@ -248,7 +249,7 @@ class AlexNet(nn.Module):
 - 使用relu。在此之前都用饱和的非线性激活函数$tanh(x)=(1+e^{-x})^{-1}$，但其比非饱和非线性函数$relu(x)=max(0,x)$函数，梯度下降慢，因此用了`relu`函数，结果如下图
 
  <center><div>
-   <img src="../../../markdown_imgs/chapter02/2.2/alex_test1.png" alt="IMG" style="zoom:40%;" />
+   <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/alex_test1.png" alt="IMG" style="zoom:40%;" />
    </div>
 	<div>
     实线使用了relu，虚线使用了tanh
@@ -272,7 +273,7 @@ class AlexNet(nn.Module):
 
 <center>
    <div>
-     <img src="../../../markdown_imgs/chapter02/2.2/VGG.png" alt="IMG" style="zoom:100%;" />
+     <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/VGG.png" alt="IMG" style="zoom:100%;" />
    </div>
    <div>
      VGG16
@@ -306,8 +307,8 @@ class AlexNet(nn.Module):
 ​		
 
 <div align="center">
-  <img src="../../../markdown_imgs/chapter02/2.2/linear_conv.png" width="40%">
-  <img src="../../../markdown_imgs/chapter02/2.2/mlp_conv.png" style="border-left: 1px solid black;" width="40%">
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/linear_conv.png" width="40%">
+  <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/mlp_conv.png" style="border-left: 1px solid black;" width="40%">
 </div>
 
 ​		
@@ -318,7 +319,7 @@ class AlexNet(nn.Module):
 
 <center>
    <div>
-     <img src="../../../markdown_imgs/chapter02/2.2/NiN.png" alt="IMG" style="zoom:100%;" />
+     <img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/NiN.png" alt="IMG" style="zoom:100%;" />
    </div>
    <div>
      NiN网络架构
@@ -391,7 +392,7 @@ class Net(nn.Module):
 
 
 <div align=center>
-<img src="../../../markdown_imgs/chapter02/2.2/googlenet.png"/>
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/googlenet.png"/>
 </div>
 <div align=center>Inception块的结构</div>
 
@@ -663,7 +664,7 @@ class BatchNorm(nn.Module):
  ResNets要解决的是深度神经网络的“退化”问题。我们知道，对浅层网络逐渐叠加layers，模型在训练集和测试集上的性能会变好，因为模型复杂度更高了，表达能力更强了，可以对潜在的映射关系拟合得更好。而“退化”指的是，给网络叠加更多的层后，性能却快速下降的情况，如图：
 
 <div align=center>
-<img src="../../../markdown_imgs/chapter02/2.2/640.png"/>
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/640.png"/>
 </div>
 
 针对这一问题，何恺明等人提出了残差网络（ResNet）。它在2015年的ImageNet图像识别挑战赛夺魁，并深刻影响了后来的深度神经网络的设计。
@@ -677,7 +678,7 @@ class BatchNorm(nn.Module):
 设输入为$\boldsymbol{x}$。假设我们希望学出的理想映射为$f(\boldsymbol{x})$，从而作为图5.9上方激活函数的输入。左图虚线框中的部分需要直接拟合出该映射$f(\boldsymbol{x})$，而右图虚线框中的部分则需要拟合出有关恒等映射的残差映射$f(\boldsymbol{x})-\boldsymbol{x}$。残差映射在实际中往往更容易优化。以本节开头提到的恒等映射作为我们希望学出的理想映射$f(\boldsymbol{x})$。我们只需将图5.9中右图虚线框内上方的加权运算（如仿射）的权重和偏差参数学成0，那么$f(\boldsymbol{x})$即为恒等映射。实际中，当理想映射$f(\boldsymbol{x})$极接近于恒等映射时，残差映射也易于捕捉恒等映射的细微波动。图5.9右图也是ResNet的基础块，即残差块（residual block）。在残差块中，输入可通过跨层的数据线路更快地向前传播。
 
 <div align=center>
-<img width="400" src="../../../markdown_imgs/chapter02/2.2/5.11_residual-block.svg"/>
+<img width="400" src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.2_introduction_of_image_classification/5.11_residual-block.svg"/>
 </div>
 <div align=center>普通的网络结构（左）与加入残差连接的网络结构（右）</div>
 

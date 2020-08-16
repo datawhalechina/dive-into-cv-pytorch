@@ -10,8 +10,7 @@ ImageNet项目是一个大型计算机视觉数据库，它按照WordNet层次�
 
 目前，ImageNet已广泛应用于图像分类(Classification)、目标定位(Object localization)、目标检测(Object detection)、视频目标检测(Object detection from video)、场景分类(Scene classification)、场景解析(Scene parsing)。    
 
-![ImageNet](../../../markdown_imgs/chapter02/Task02/imageNet展示.png)
-
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/imageNet展示.png">
 
 * #### 总览
 
@@ -25,11 +24,12 @@ ImageNet项目是一个大型计算机视觉数据库，它按照WordNet层次�
 
  下图展示了ImageNet的层次结构：                               
                        
- ![ImageNet层次结构](../../../markdown_imgs/chapter02/Task02/imageNet层次结构.png)                   
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/imageNet层次结构.png">
                
  ImageNet有5种下载方式，如下图所示：                   
                        
- ![ImageNet下载方式](../../../markdown_imgs/chapter02/Task02/imageNet下载方式.png)      
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/imageNet下载方式.png">
+
    *  所有原始图像可通过url下载：http://image-net.org/download-imageurls
    *  直接下载原始图像：需要自己申请注册一个账号，然后登录访问，普通邮箱（非组织和学校）无法获取权限。对于希望将图像用于非商业研究或教育目的的研究人员，可以在特定条件下通过ImageNet网站提供访问权限。
    *  下载图像sift features：http://image-net.org/download-features
@@ -47,7 +47,8 @@ ImageNet项目是一个大型计算机视觉数据库，它按照WordNet层次�
 CIFAR-10是一个小型图片分类数据集，该数据集共有60000张彩色图像，图像尺寸为32 * 32，共分为10个类，每类6000张图像。CIFAR-10数据集被分为5个训练的batch和一个测试的batch,每个batch中均包含10000张图像。测试批的数据里，取自10类中的每一类，每一类随机取1000张。抽剩下的就随机排列组成了训练批。注意一个训练批中的各类图像并不一定数量相同，总的来看训练批，每一类都有5000张图。
 
 以下是数据集中的类，以及每个类中的10张随机图像：       
-![CIFAR10展示](../../../markdown_imgs/chapter02/Task02/CIFAR10展示.png)
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/CIFAR10展示.png">
 
 值得说明的是这10类都是各自独立的，不会出现重叠，例如汽车并不包括卡车。
 
@@ -68,11 +69,11 @@ CIFAR-10是一个小型图片分类数据集，该数据集共有60000张彩色�
 
 MNIST数据集(Mixed National Institute of Standards and Technology database)是美国国家标准与技术研究院收集整理的大型手写数字数据库。包含60,000个示例的训练集以及10,000个示例的测试集，其中训练集 (training set) 由来自 250 个不同人手写的数字构成, 其中 50% 是高中学生, 50% 来自人口普查局 (the Census Bureau) 的工作人员，测试集(test set) 也是同样比例的手写数字数据。可以说，完成MNIST手写数字分类和识别是计算机视觉领域的"Hello World"。        
 
-![MNIST](../../../markdown_imgs/chapter02/Task02/MNIST展示.png)   
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/MNIST展示.png">
 
 如下图所示，MNIST数据集的图像尺寸为28 * 28，且这些图像只包含灰度信息，灰度值在0~1之间。     
 
-![MNIST](../../../markdown_imgs/chapter02/Task02/MNIST展示2.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/MNIST展示2.png">
 
 * #### 下载
 
@@ -91,7 +92,7 @@ MNIST数据集(Mixed National Institute of Standards and Technology database)是
                   
 PASCAL VOC为图像分类与物体检测提供了一整套标准的的数据集，并从2005年到2012年每年都举行一场图像检测竞赛。PASCAL全称为Pattern Analysis, Statical Modeling and Computational Learning，其中常用的数据集主要有VOC2007与VOC2012两个版本，VOC2007中包含了9963张标注过的图片以及24640个物体标签。在VOC2007之上，VOC2012进一步升级了数据集，一共11530张图片，包括人类；动物（鸟、猫、牛、狗、马、羊）；交通工具（飞机、自行车、船、公共汽车、小轿车、摩托车、火车）；室内（瓶子、椅子、餐桌、盆栽植物、沙发、电视）20个物体类别，图片尺寸为500x375。VOC整体图像质量较好，标注比较完整，非常适合模型的性能测试，比较适合做基线。     
       
-   ![IMG](../../../markdown_imgs/chapter02/Task02/VOC展示.png)     
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/VOC展示.png">
          
  * ### 数据格式    
  ```
@@ -353,7 +354,7 @@ outfile='../../../dataset'
 im = Image.open('../../../dataset/*.png')         
 ```
       
-![IMG](../../../markdown_imgs/chapter02/Task02/cat.png)    
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/cat.png">
              
 #### 一.裁剪    
       
@@ -362,14 +363,14 @@ im = Image.open('../../../dataset/*.png')
 new_im = transforms.CenterCrop([200,200])(im)  
 ```
       
-![IMG](../../../markdown_imgs/chapter02/Task02/CenterCrop.png)           
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/CenterCrop.png">
       
 #### 2.随机裁剪：：transforms.RandomCrop
 ```python
 new_im =transforms.RandomCrop([200,200])(im) 
 ```     
      
-![IMG](../../../markdown_imgs/chapter02/Task02/RandomCrop.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/RandomCrop.png">
         
 #### 3.随机长宽比裁剪 transforms.RandomResizedCrop
 ```python 
@@ -379,7 +380,7 @@ new_im =transforms.RandomResizedCrop(200,
                              interpolation=2)(im) 
 ```    
       
-![IMG](../../../markdown_imgs/chapter02/Task02/RandomResizedCrop.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/RandomResizedCrop.png">
            
 #### 二.翻转和旋转 
       
@@ -388,21 +389,21 @@ new_im =transforms.RandomResizedCrop(200,
 new_im =transforms.RandomHorizontalFlip(0.7)(im) 
 ```    
         
-![IMG](../../../markdown_imgs/chapter02/Task02/RandomHorizontalFlip.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/RandomHorizontalFlip.png">
         
 #### 5.依概率p垂直翻转：transforms.RandomVerticalFlip 
 ```python
 new_im=transforms.RandomVerticalFlip(0.8)(im)
 ```   
      
-![IMG](../../../markdown_imgs/chapter02/Task02/RandomVerticalFlip.png) 
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/RandomVerticalFlip.png">
       
 #### 6.随机旋转：transforms.RandomRotation    
 ```python
 new_im=transforms.RandomRotation(30)(im)    
 ```     
       
-![IMG](../../../markdown_imgs/chapter02/Task02/RandomRotation.png)       
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/RandomRotation.png">
      
 #### 三.图像变换   
     
@@ -411,7 +412,7 @@ new_im=transforms.RandomRotation(30)(im)
  new_im =transforms.Pad(10, fill=0, padding_mode='constant')(im)   
 ```     
        
-![IMG](../../../markdown_imgs/chapter02/Task02/Pad.png)      
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/Pad.png">
 
 #### 8.调整亮度、对比度和饱和度：transforms.ColorJitter 
 ```python    
@@ -421,28 +422,28 @@ new_im=transforms.ColorJitter(brightness=1,
                               hue=0.4)(im)        
 ```
       
-![IMG](../../../markdown_imgs/chapter02/Task02/ColorJitter.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/ColorJitter.png">
      
 #### 9.转灰度图：transforms.Grayscale
 ```python
 new_im=transforms.Grayscale(1)(im)      
 ```   
       
-![IMG](../../../markdown_imgs/chapter02/Task02/Grayscale.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/Grayscale.png">
        
 #### 10. 仿射变换：transforms.RandomAffine
 ```python 
 new_im =transforms.RandomAffine(45,(0.5,0.7),(0.8,0.5),3)(im) 
 ```    
      
-![IMG](../../../markdown_imgs/chapter02/Task02/RandomAffine.png) 
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/RandomAffine.png">
       
 #### 11.尺寸缩放:transforms.Resize   
 ```python 
 new_im=transforms.Resize([100,200])(im)      
 ```   
       
-![IMG](../../../markdown_imgs/chapter02/Task02/Resize.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/Resize.png">
        
 #### 12.转Tensor、标准化和转换为PILImage    
 ```python     
@@ -456,7 +457,7 @@ transform = transforms.Compose([
 new_img = transform(im)   
 ```
         
-![IMG](../../../markdown_imgs/chapter02/Task02/Normalize.png)  
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter02/2.1_dataloader_and_augmentation/Normalize.png">
               
 #### 图像显示和保存
 ```python
