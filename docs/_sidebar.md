@@ -3,7 +3,7 @@
         - [1.1 深度学习环境配置](chapter01_preliminary_knowledge/1.1_environment_install/README.md)
         - [1.2 Pytorch基础使用介绍](chapter01_preliminary_knowledge/1.2_pytorch_basic_usage_introduction/README.md)
         - [1.3 自动求梯度](chapter01_preliminary_knowledge/1.3_automatic_gradient/README.md)
-        - 1.4 线性回归-小试身手(chapter01_preliminary_knowledge/1.4_linear_regression_pytorch/README.md)
+        - [1.4 线性回归-小试身手](chapter01_preliminary_knowledge/1.4_linear_regression_pytorch/README.md)
         - 1.5 初识图像分类
     - 第二章：图片分类入门
         - [2.1 数据读取与数据扩增](chapter02_image_classification_introduction/2.1_dataloader_and_augmentation/README.md)
