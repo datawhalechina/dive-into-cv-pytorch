@@ -543,14 +543,16 @@ tensor([0.5906], dtype=torch.float64)
 
 ---
 
-初稿：安晟[Github](https://github.com/monkeyDemon)
+**本文作者**
 
-优化：游璐颖[Github](https://github.com/Sonatau)
+初稿：[安晟](https://github.com/monkeyDemon)
 
-校对：安晟[Github](https://github.com/monkeyDemon)
+优化：[游璐颖](https://github.com/Sonatau)
+
+校对：[安晟](https://github.com/monkeyDemon)
 
 
-参考资料:
+**参考资料**
 
 1. 《Pytorch深度学习》
 
