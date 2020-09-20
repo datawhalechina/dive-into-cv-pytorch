@@ -8,9 +8,7 @@ Pytorch是一个基于python的科学计算包，主要面向两部分受众：
 
 - 一个提供更大灵活性和速度的深度学习研究平台
 
-本节将会介绍Pytorch的一些基本使用和操作，内容高度依赖Pytorch官方[What is Pytorch?](https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py)教程。
-
-让我们开始吧～
+本节将会介绍Pytorch的一些基本使用和操作，帮助你熟悉和上手Pytorch，让我们开始吧～
 
 ## 1.Tensors
 
@@ -22,7 +20,9 @@ Tensors(张量)的概念可以类比Numpy中的ndarrays，本质上就是一个�
 import torch
 ```
 
-构建一个未初始化的5\*3的空矩阵（张量）
+首先让我们来看下如何生成一些简单的Tensor
+
+构建一个未初始化的5\*3的空矩阵（张量）的代码如下:
 
 ```python
 x = torch.empty(5, 3)
@@ -43,7 +43,46 @@ tensor([[7.7050e+31, 6.7415e+22, 1.2690e+31],
 
 注意，对于未初始化的张量，它的取值是不固定的，取决于它创建时分配的那块内存的取值。
 
-下面我们创建一个随机初始化的矩阵
+`torch.zeros` 和 `torch.ones`也是非常常用的Tensor初始化函数：
+
+```python
+tensor_ones = torch.ones(2,3)
+print(tensor_ones)
+tensor_zeros = torch.zeros(2,3)
+print(tensor_zeros)
+```
+
+输出：
+
+```
+tensor([[1., 1., 1.],
+        [1., 1., 1.]])
+tensor([[0., 0., 0.],
+        [0., 0., 0.]])
+```
+
+可以通过dtype属性来指定tensor的数据类型
+
+这里我们再次构建一个使用0填充的tensor，将dtype属性设置为长整型，并打印结果的数据类型，注意观察区别
+
+```python
+print(tensor_zeros.dtype)
+tensor_zeros_int = torch.zeros(2, 3, dtype=torch.long)
+print(tensor_zeros_int.dtype)
+```
+
+输出：
+
+```
+torch.float32
+torch.int64
+```
+
+和Numpy类似，除了常见的0/1取值的初始化，我们还可以进行随机初始化，或者直接用现有数据进行张量的初始化。
+
+`torch.rand` 和 `torch.randn` 是两个常用的随机初始化函数
+
+`torch.rand`用于生成服从区间[0,1)均匀分布的随机张量，示例：
 
 ```python
 x = torch.rand(5, 3)
@@ -60,29 +99,23 @@ tensor([[0.6544, 0.1733, 0.2569],
         [0.4497, 0.6201, 0.1952]])
 ```
 
-构建一个使用0填充的tensor，并尝试dtype属性的设置，观察区别
+`torch.randn`用于生成服从均值为0、方差为1正太分布的随机张量，示例：
 
-```
-x = torch.zeros(5, 3)
+```python
+x = torch.randn(4, 4)
 print(x)
-print(x.dtype)
-x = torch.zeros(5, 3, dtype=torch.long)                                                          
-print(x.dtype)
 ```
 
 输出：
 
 ```
-tensor([[0., 0., 0.],
-        [0., 0., 0.],
-        [0., 0., 0.],
-        [0., 0., 0.],
-        [0., 0., 0.]])
-torch.float32
-torch.int64
+tensor([[-1.2787, -1.8935, -0.1098, -0.5664],
+        [ 1.2988,  0.5578, -1.7803,  0.9369],
+        [ 0.7574, -0.4856, -1.5168, -0.5782],
+        [ 0.9653, -1.0099,  0.4913, -0.1843]])
 ```
 
-和Numpy类似，除了常见的0/1取值的初始化，我们还可以直接用现有数据进行张量的初始化
+我们还可以直接用现有数据进行张量的初始化，例如python的列表List，例如：
 
 ```python
 x = torch.tensor([5.5, 3])
@@ -95,7 +128,7 @@ print(x)
 tensor([5.5000, 3.0000])
 ```
 
-我们还可以基于已有的tensor来创建新的tensor，通常是为了复用已有tensor的一些属性，包括shape和dtype。观察下面的示例：
+也可以基于已有的tensor来创建新的tensor，通常是为了复用已有tensor的一些属性，包括shape和dtype。观察下面的示例：
 
 ```python
 x = torch.tensor([5.5, 3], dtype=torch.double)
@@ -142,11 +175,25 @@ torch.Size([5, 3])
 
 `torch.Size`本质上是一个`tuple`，通过上面的例子也可以看出，它支持元组的操作。
 
+最后介绍一个非常实用的函数`torch.arange`,用于生成一定范围内等间隔的一维数组。参数有三个，分别是范围的起始值、范围的结束值和步长，使用示例：
+
+```python
+torch.arange(1, 10, 1)
+```
+
+输出：
+
+```
+tensor([1, 2, 3, 4, 5, 6, 7, 8, 9])
+```
+
 ## 2.Operations
 
-Operations(操作)设计的语法很多，但很多都是相通的，下面我们来看看加法操作作为示例。
+Operations(操作)涉及的语法和函数很多，大多数都是相通的，下面我们列举一些常用操作及其用法示例。
 
-加法：语法1
+首先来看下张量间的元素级的四则运算，加减乘除的用法
+
+有多种不同的使用方法，以加法为例：语法1
 
 ```python
 y = torch.rand(5, 3)
@@ -218,7 +265,121 @@ tensor([[ 1.7110, -0.0545,  0.3557],
 
 在Pytorch中，我们约定凡是会覆盖函数调用主体的`in-place`操作，都以后缀`_`结束，例如：`x.copy_(y)`，`x.t_()`，都会改变`x`的取值。
 
+张量之间的减法、点乘和点除的用法是类似的：
+
+```python
+a =torch.randn(2,3)
+print(a)
+b =torch.randn(2,3)
+print(b)
+
+c =torch.sub(a, b)
+print(c)
+d =torch.mul(a, b)
+print(d)
+e =torch.div(a, b)
+print(e)
+```
+
+运行后，输出的内容如下：
+
+```
+tensor([[ 0.3580, -0.5780, -0.6883],
+        [ 0.0883, -0.9064,  0.5411]])
+tensor([[-1.7065,  0.7099,  0.6574],
+        [-1.3688,  0.1767,  0.3669]])
+tensor([[ 2.0645, -1.2880, -1.3457],
+        [ 1.4571, -1.0831,  0.1742]])
+tensor([[-0.6109, -0.4104, -0.4525],
+        [-0.1209, -0.1602,  0.1986]])
+tensor([[-0.2098, -0.8142, -1.0471],
+        [-0.0645, -5.1292,  1.4748]])
+```
+
+当然，张量和常数间的基本运算也是支持的
+
+```python
+a =torch.randn(2,3)
+print(a)
+b =torch.mul(a,10)
+print(b)
+c =torch.div(a,10)
+print(c)
+```
+
+运行后，输出的内容如下：
+
+```
+tensor([[-1.6306,  0.2616,  0.0606],
+        [-0.4596, -1.3998,  0.9431]])
+tensor([[-16.3055,   2.6162,   0.6061],
+        [ -4.5963, -13.9981,   9.4307]])
+tensor([[-0.1631,  0.0262,  0.0061],
+        [-0.0460, -0.1400,  0.0943]])
+```
+
+上面介绍了`torch.mul`用来计算张量间的点乘，而进行矩阵乘法计算需要用到`torch.mm`函数
+
+```python
+a =torch.randn(2, 3)
+print(a)
+b =torch.randn(3, 2)
+print(b)
+c =torch.mm(a, b)
+print(c)
+```
+
+输出的内容如下：
+
+```
+tensor([[-1.0442,  0.2439,  1.3658],
+        [-1.0813,  0.3178,  0.4006]])
+tensor([[ 0.4317,  0.3242],
+        [-0.2085,  0.5584],
+        [ 0.7991,  0.0926]])
+tensor([[ 0.5898, -0.0759],
+        [-0.2129, -0.1360]])
+```
+
+
 下面我们来看看其他的一些基础操作。
+
+`torch.abs`函数可以用来计算张量的绝对值
+
+```python
+a =torch.randn(2, 3)
+print(a)
+b =torch.abs(a)
+print(b)
+```
+
+输出：
+
+```
+tensor([[-0.8631,  0.3728,  1.0428],
+        [ 0.5944,  0.5572,  0.6256]])
+tensor([[0.8631, 0.3728, 1.0428],
+        [0.5944, 0.5572, 0.6256]])
+```
+
+`torch.pow`函数用于进行求幂操作
+
+```python
+import torch
+a = torch.randn(2, 3)
+print(a)
+b = torch.pow(a, 2)
+print(b)
+```
+
+输出：
+
+```
+tensor([[ 0.0115,  0.2041, -2.9827],
+        [ 0.6467,  0.3175, -0.4201]])
+tensor([[1.3127e-04, 4.1647e-02, 8.8963e+00],
+        [4.1824e-01, 1.0082e-01, 1.7648e-01]])
+```
 
 在Pytorch中，我们可以使用标准的`Numpy-like`的索引操作，例如：
 
@@ -268,6 +429,27 @@ torch.Size([1])
 <class 'float'>
 ```
 
+
+通常我们在需要控制张量的取值范围不越界时，需要用到`torch.clamp`函数，它可以对输入参数按照自定义的范围进行裁剪，最后将参数裁剪的结果作为输出。输入参数一共有三个，分别是需要进行裁剪的Tensor变量、裁剪的下边界和裁剪的上边界
+
+```python
+import torch
+a =torch.randn(2,3)
+print(a)
+b =torch.clamp(a, -0.5, 0.5)
+print(b)
+```
+
+输出的内容如下：
+
+```
+tensor([[-0.1076,  1.4202,  1.5780],
+        [-1.3722, -1.7166, -1.0581]])
+tensor([[-0.1076,  0.5000,  0.5000],
+        [-0.5000, -0.5000, -0.5000]])
+```
+
+
 想要学习更多？[这里](https://pytorch.org/docs/stable/torch.html)的官方教程有更多关于tensor操作的介绍，介绍了100多个Tensor运算，包括转置，索引，切片，数学运算，线性代数，随机数等。
 
 ## 3.Numpy桥梁
@@ -281,15 +463,6 @@ Pytorch中可以很方便的将Torch的Tensor同Numpy的ndarray进行互相转�
 ```python
 a = torch.ones(5)
 print(a)
-```
-
-输出：
-
-```
-tensor([1., 1., 1., 1., 1.])
-```
-
-```python
 b = a.numpy()
 print(b)
 ```
@@ -297,6 +470,7 @@ print(b)
 输出：
 
 ```
+tensor([1., 1., 1., 1., 1.])
 [1. 1. 1. 1. 1.]
 ```
 
@@ -369,11 +543,17 @@ tensor([0.5906], dtype=torch.float64)
 
 ---
 
---- ***By: 安晟***
+**本文作者**
 
->一只普通的算法攻城狮，邮箱[anshengmath@163.com]，[CSDN博客](https://blog.csdn.net/u011583927)，[Github](https://github.com/monkeyDemon)
+初稿：[安晟](https://github.com/monkeyDemon)
+
+第2版：[游璐颖](https://github.com/Sonatau)
+
+校对：[安晟](https://github.com/monkeyDemon)
 
 
-**关于Datawhale**：
+**参考资料**
 
->Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。
+1. 《Pytorch深度学习》
+
+2.  [Pytorch官网](http://pytorch.org/)
