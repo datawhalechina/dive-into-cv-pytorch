@@ -212,7 +212,7 @@ train_loader = torch.utils.data.DataLoader(train_data,
 
 我们以读取MNIST数据为例，构建分类任务的图像索引文件，对于其他任务的索引文件，我相信你在学过分类任务的索引文件制作后将会无师自通。
 
-通过https://www.cs.utoronto.ca/~kriz/cifar.html我们下载MNIST的图像和标签数据到'Dive-into-CV-PyTorch/dataset/MNIST/'目录下，得到下面的压缩文件并解压暂存，以用来充当自己的图像数据集。
+通过 https://www.cs.utoronto.ca/~kriz/cifar.html 我们下载MNIST的图像和标签数据到`Dive-into-CV-PyTorch/dataset/MNIST/`目录下，得到下面的压缩文件并解压暂存，以用来充当自己的图像数据集。
 
 ```
 train-images-idx3-ubyte.gz: training set images (9912422 bytes) ➡ train-images-idx3-ubyte（解压后）
@@ -386,7 +386,7 @@ test_dataset = MnistDataset(test_img_list,
 
 首先通过`get_path_label()`函数获得图像的路径和标签列表，并通过`MnistDataset`类中`\_\_init\_\_()`的`self.image_path`和`self.image_label`进行存储，我们能够看到此处的图像列表中的数据和标签列表中的数据是一一对应的关系，同时我们在初始化中还初始化了`transform`，以实现后续中图像增强操作。
 
-`MnistDataset`类的`\_\_getitem\_\_()`函数完成了图像读取和增强。该函数的前三行，我们通过`index`读取了`self.image_path`和`self.image_label`（两个list，也是前文中提到的list）中的图像和标签。第四、五行，对图像进行处理，在**transform**中可以实现旋转、裁剪、仿射变换、标准化等等一系列操作。最后返回处理好的图像数据和标签。
+`MnistDataset`类的 \_\_getitem\_\_() 函数完成了图像读取和增强。该函数的前三行，我们通过`index`读取了`self.image_path`和`self.image_label`（两个list，也是前文中提到的list）中的图像和标签。第四、五行，对图像进行处理，在`transform`中可以实现旋转、裁剪、仿射变换、标准化等等一系列操作。最后返回处理好的图像数据和标签。
 
 通过`MnistDataset`类的定义，pytorch就知道了如何获取一张图片并完成相应的预处理工作。这里我们尝试从数据集中读取一些数据，打印下输出结果进行观察：
 
@@ -438,7 +438,7 @@ torch.Size([1, 28, 28]) tensor(8.)
 train num: 60000
 ```
 
-需要注意的是，以上面的train_dataset为例，当train_dataset创建好后并没有将所有的数据都读进来，而是在使用到时，如next(iter(train_dataset))，才会触发`MnistDataset`类内部的`\_\_getitem\_\_()`读取一次数据。
+需要注意的是，以上面的train_dataset为例，当train_dataset创建好后并没有将所有的数据都读进来，而是在使用到时，如next(iter(train_dataset))，才会触发`MnistDataset`类内部的 \_\_getitem\_\_() 读取一次数据。
 
 **3° 使用DataLoader批量读取数据**
 
