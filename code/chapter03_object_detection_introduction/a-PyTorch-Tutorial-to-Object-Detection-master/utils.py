@@ -507,7 +507,9 @@ def flip(image, boxes):
 
 def resize(image, boxes, dims=(300, 300), return_percent_coords=True):
     """
-    Resize image. For the SSD300, resize to (300, 300).
+    Resize image.
+    For the SSD300, resize to (300, 300).
+    For our demo, resize to (224, 224).
 
     Since percent/fractional coordinates are calculated for the bounding boxes (w.r.t image dimensions) in this process,
     you may choose to retain them.
@@ -658,7 +660,7 @@ def save_checkpoint(epoch, model, optimizer):
     state = {'epoch': epoch,
              'model': model,
              'optimizer': optimizer}
-    filename = 'checkpoint_ssd300.pth.tar'
+    filename = 'checkpoint.pth.tar'
     torch.save(state, filename)
 
 
@@ -682,15 +684,3 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
-
-def clip_gradient(optimizer, grad_clip):
-    """
-    Clips gradients computed during backpropagation to avoid explosion of gradients.
-
-    :param optimizer: optimizer with the gradients to be clipped
-    :param grad_clip: clip value
-    """
-    for group in optimizer.param_groups:
-        for param in group['params']:
-            if param.grad is not None:
-                param.grad.data.clamp_(-grad_clip, grad_clip)

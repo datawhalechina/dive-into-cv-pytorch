@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load model checkpoint
-checkpoint = 'checkpoint_ssd300.pth.tar'
+checkpoint = 'checkpoint.pth.tar'
 checkpoint = torch.load(checkpoint)
 start_epoch = checkpoint['epoch'] + 1
 print('\nLoaded checkpoint from epoch %d.\n' % start_epoch)
@@ -14,7 +14,7 @@ model = model.to(device)
 model.eval()
 
 # Transforms
-resize = transforms.Resize((300, 300))
+resize = transforms.Resize((224, 224))
 to_tensor = transforms.ToTensor()
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])
@@ -22,7 +22,7 @@ normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
 
 def detect(original_image, min_score, max_overlap, top_k, suppress=None):
     """
-    Detect objects in an image with a trained SSD300, and visualize the results.
+    Detect objects in an image with a trained tiny object detector, and visualize the results.
 
     :param original_image: image, a PIL Image
     :param min_score: minimum threshold for a detected box to be considered a match for a certain class
@@ -64,7 +64,8 @@ def detect(original_image, min_score, max_overlap, top_k, suppress=None):
     # Annotate
     annotated_image = original_image
     draw = ImageDraw.Draw(annotated_image)
-    font = ImageFont.truetype("./calibril.ttf", 15)
+    #font = ImageFont.truetype("./calibril.ttf", 15)
+    font = ImageFont.load_default()
 
     # Suppress specific classes, if needed
     for i in range(det_boxes.size(0)):
@@ -96,7 +97,7 @@ def detect(original_image, min_score, max_overlap, top_k, suppress=None):
 
 
 if __name__ == '__main__':
-    img_path = '/media/ssd/ssd data/VOC2007/JPEGImages/000001.jpg'
+    img_path = '../../../dataset/VOCdevkit/VOC2007/JPEGImages/000001.jpg'
     original_image = Image.open(img_path, mode='r')
     original_image = original_image.convert('RGB')
     detect(original_image, min_score=0.2, max_overlap=0.5, top_k=200).show()

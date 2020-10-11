@@ -2,7 +2,6 @@ from torch import nn
 from utils import *
 import torch.nn.functional as F
 from math import sqrt
-from itertools import product as product
 import torchvision
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -11,6 +10,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class VGGBase(nn.Module):
     """
     VGG base convolutions to produce feature maps.
+    完全采用vgg16的结构作为特征提取模块，丢掉fc6和fc7两个全连接层。
+    因为vgg16的ImageNet预训练模型是使用224×224尺寸训练的，因此我们的网络输入也固定为224×224
     """
 
     def __init__(self):
@@ -28,7 +29,6 @@ class VGGBase(nn.Module):
         self.conv3_1 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
         self.conv3_2 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
         self.conv3_3 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
-        #self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)  # ceiling (not floor) here for even dims   75->38
         self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)    # 56->28
 
         self.conv4_1 = nn.Conv2d(256, 512, kernel_size=3, padding=1)
@@ -41,11 +41,7 @@ class VGGBase(nn.Module):
         self.conv5_3 = nn.Conv2d(512, 512, kernel_size=3, padding=1)
         self.pool5 = nn.MaxPool2d(kernel_size=2, stride=2)    # 14->7
 
-        ## Replacements for FC6 and FC7 in VGG16
-        #self.conv6 = nn.Conv2d(512, 1024, kernel_size=3, padding=6, dilation=6)  # atrous convolution
-        #self.conv7 = nn.Conv2d(1024, 1024, kernel_size=1)
-
-        # Load pretrained layers
+        # Load pretrained weights on ImageNet
         self.load_pretrained_layers()
 
     def forward(self, image):
@@ -53,7 +49,7 @@ class VGGBase(nn.Module):
         Forward propagation.
 
         :param image: images, a tensor of dimensions (N, 3, 224, 224)
-        :return: lower-level feature maps conv4_3 and conv7
+        :return: feature maps pool5
         """
         out = F.relu(self.conv1_1(image))  # (N, 64, 224, 224)
         out = F.relu(self.conv1_2(out))  # (N, 64, 224, 224)
@@ -83,7 +79,7 @@ class VGGBase(nn.Module):
 
     def load_pretrained_layers(self):
         """
-        As in the paper, we use a VGG-16 pretrained on the ImageNet task as the base network.
+        we use a VGG-16 pretrained on the ImageNet task as the base network.
         There's one available in PyTorch, see https://pytorch.org/docs/stable/torchvision/models.html#torchvision.models.vgg16
         We copy these parameters into our network. It's straightforward for conv1 to conv5.
         """
@@ -100,13 +96,12 @@ class VGGBase(nn.Module):
             state_dict[param] = pretrained_state_dict[pretrained_param_names[i]]
 
         self.load_state_dict(state_dict)
-
         print("\nLoaded base model.\n")
 
 
 class PredictionConvolutions(nn.Module):
     """
-    Convolutions to predict class scores and bounding boxes using lower and higher-level feature maps.
+    Convolutions to predict class scores and bounding boxes using feature maps.
 
     The bounding boxes (locations) are predicted as encoded offsets w.r.t each of the 8732 prior (default) boxes.
     See 'cxcy_to_gcxgcy' in utils.py for the encoding definition.
@@ -284,6 +279,7 @@ class tiny_detector(nn.Module):
                 # A torch.uint8 (byte) tensor to keep track of which predicted boxes to suppress
                 # 1 implies suppress, 0 implies don't suppress
                 suppress = torch.zeros((n_above_min_score), dtype=torch.uint8).to(device)  # (n_qualified)
+                #suppress = torch.zeros((n_above_min_score), dtype=torch.bool).to(device)  # (n_qualified)
 
                 # Consider each box in order of decreasing scores
                 for box in range(class_decoded_locs.size(0)):
@@ -293,7 +289,11 @@ class tiny_detector(nn.Module):
 
                     # Suppress boxes whose overlaps (with this box) are greater than maximum overlap
                     # Find such boxes and update suppress indices
-                    suppress = torch.max(suppress, overlap[box] > max_overlap)
+                    #cur_box_overlap = (overlap[box] > max_overlap).uint8()
+                    #suppress = torch.max(suppress, torch.cuda.ByteTensor(cur_box_overlap))
+                    #cur_box_overlap = torch.tensor(X, dtype=torch.float32)
+                    #suppress = torch.max(suppress, (overlap[box] > max_overlap))
+                    suppress = torch.max(suppress, (overlap[box] > max_overlap).to(torch.uint8))
                     # The max operation retains previously suppressed boxes, like an 'OR' operation
 
                     # Don't suppress this box, even though it has an overlap of 1 with itself
