@@ -126,6 +126,9 @@ def create_data_lists(voc07_path, voc12_path, output_folder):
 def calculate_mAP(det_boxes, det_labels, det_scores, true_boxes, true_labels, true_difficulties):
     """
     Calculate the Mean Average Precision (mAP) of detected objects.
+    这里的map指标遵循的VOC2007的标准，具体地：
+    统一用IOU>0.5作为目标框是否准召的标准
+    AP的计算标准采用召回分别为 0:0.05:1 时的准确率平均得到
 
     See https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173 for an explanation
 
@@ -137,17 +140,16 @@ def calculate_mAP(det_boxes, det_labels, det_scores, true_boxes, true_labels, tr
     :param true_difficulties: list of tensors, one tensor for each image containing actual objects' difficulty (0 or 1)
     :return: list of average precisions for all classes, mean average precision (mAP)
     """
-    assert len(det_boxes) == len(det_labels) == len(det_scores) == len(true_boxes) == len(
-        true_labels) == len(
-        true_difficulties)  # these are all lists of tensors of the same length, i.e. number of images
+    # make sure all lists of tensors of the same length, i.e. number of images
+    assert len(det_boxes) == len(det_labels) == len(det_scores) == \
+           len(true_boxes) == len(true_labels) == len(true_difficulties)
     n_classes = len(label_map)
 
     # Store all (true) objects in a single continuous tensor while keeping track of the image it is from
     true_images = list()
     for i in range(len(true_labels)):
         true_images.extend([i] * true_labels[i].size(0))
-    true_images = torch.LongTensor(true_images).to(
-        device)  # (n_objects), n_objects is the total no. of objects across all images
+    true_images = torch.LongTensor(true_images).to(device)  # (n_objects), n_objects: total num of objects across all images
     true_boxes = torch.cat(true_boxes, dim=0)  # (n_objects, 4)
     true_labels = torch.cat(true_labels, dim=0)  # (n_objects)
     true_difficulties = torch.cat(true_difficulties, dim=0)  # (n_objects)
@@ -176,8 +178,8 @@ def calculate_mAP(det_boxes, det_labels, det_scores, true_boxes, true_labels, tr
 
         # Keep track of which true objects with this class have already been 'detected'
         # So far, none
-        true_class_boxes_detected = torch.zeros((true_class_difficulties.size(0)), dtype=torch.uint8).to(
-            device)  # (n_class_objects)
+        true_class_boxes_detected = torch.zeros((true_class_difficulties.size(0)), dtype=torch.uint8)
+        true_class_boxes_detected = true_class_boxes_detected.to(device)  # (n_class_objects)
 
         # Extract only detections with this class
         det_class_images = det_images[det_labels == c]  # (n_class_detections)
@@ -200,7 +202,7 @@ def calculate_mAP(det_boxes, det_labels, det_scores, true_boxes, true_labels, tr
             this_image = det_class_images[d]  # (), scalar
 
             # Find objects in the same image with this class, their difficulties, and whether they have been detected before
-            object_boxes = true_class_boxes[true_class_images == this_image]  # (n_class_objects_in_img)
+            object_boxes = true_class_boxes[true_class_images == this_image]  # (n_class_objects_in_img, 4)
             object_difficulties = true_class_difficulties[true_class_images == this_image]  # (n_class_objects_in_img)
             # If no such object in this image, then the detection is a false positive
             if object_boxes.size(0) == 0:
@@ -294,7 +296,7 @@ def cxcy_to_gcxgcy(cxcy, priors_cxcy):
     :return: encoded bounding boxes, a tensor of size (n_priors, 4)
     """
 
-    # The 10 and 5 below are referred to as 'variances' in the original Caffe repo, completely empirical
+    # The 10 and 5 below are referred to as 'variances' in the original SSD Caffe repo, completely empirical
     # They are for some sort of numerical conditioning, for 'scaling the localization gradient'
     # See https://github.com/weiliu89/caffe/issues/155
     return torch.cat([(cxcy[:, :2] - priors_cxcy[:, :2]) / (priors_cxcy[:, 2:] / 10),  # g_c_x, g_c_y

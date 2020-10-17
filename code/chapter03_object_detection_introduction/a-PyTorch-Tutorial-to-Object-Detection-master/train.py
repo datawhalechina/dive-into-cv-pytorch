@@ -90,12 +90,12 @@ def train(train_loader, model, criterion, optimizer, epoch):
         data_time.update(time.time() - start)
 
         # Move to default device
-        images = images.to(device)  # (batch_size (N), 3, 300, 300)
+        images = images.to(device)  # (batch_size (N), 3, 224, 224)
         boxes = [b.to(device) for b in boxes]
         labels = [l.to(device) for l in labels]
 
         # Forward prop.
-        predicted_locs, predicted_scores = model(images)  # (N, 8732, 4), (N, 8732, n_classes)
+        predicted_locs, predicted_scores = model(images)  # (N, 441, 4), (N, 441, n_classes)
 
         # Loss
         loss = criterion(predicted_locs, predicted_scores, boxes, labels)  # scalar

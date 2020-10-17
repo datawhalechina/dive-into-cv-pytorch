@@ -7,7 +7,7 @@ from pprint import PrettyPrinter
 pp = PrettyPrinter()
 
 # Parameters
-data_folder = './'
+data_folder = '../../../dataset/VOCdevkit'
 keep_difficult = True  # difficult ground truth objects must always be considered in mAP calculation, because these objects DO exist!
 batch_size = 64
 workers = 4
@@ -57,20 +57,20 @@ def evaluate(test_loader, model):
             # Forward prop.
             predicted_locs, predicted_scores = model(images)
 
-            # Detect objects in SSD output
+            # Post process, get the final detect objects from out tiny detector output
             det_boxes_batch, det_labels_batch, det_scores_batch = model.detect_objects(predicted_locs, predicted_scores,
-                                                                                       min_score=0.01, max_overlap=0.45,
-                                                                                       top_k=200)
-            # Evaluation MUST be at min_score=0.01, max_overlap=0.45, top_k=200 for fair comparision with the paper's results and other repos
+                                                                            min_score=0.01, max_overlap=0.45, top_k=200)
+            # Evaluation MUST be at min_score=0.01, max_overlap=0.45, top_k=200 for fair comparision with other repos
 
-            # Store this batch's results for mAP calculation
-            boxes = [b.to(device) for b in boxes]
-            labels = [l.to(device) for l in labels]
-            difficulties = [d.to(device) for d in difficulties]
-
+            # Store this batch's predict results for mAP calculation
             det_boxes.extend(det_boxes_batch)
             det_labels.extend(det_labels_batch)
             det_scores.extend(det_scores_batch)
+
+            # Store this batch's ground-truth results for mAP calculation
+            boxes = [b.to(device) for b in boxes]
+            labels = [l.to(device) for l in labels]
+            difficulties = [d.to(device) for d in difficulties]
             true_boxes.extend(boxes)
             true_labels.extend(labels)
             true_difficulties.extend(difficulties)
