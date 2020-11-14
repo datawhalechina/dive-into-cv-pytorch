@@ -9,7 +9,7 @@ MNIST手写体数字识别是一个分类任务，为了简单直观，本小节
 关于MNIST数据集，大部分同学一定不会陌生，它是一个手写数字数据集，包含了0 ~ 9这10个数字，一共有7万张灰度图像，其中6w张训练接，1w张测试集，并且每张都有标签，如标签0对应图像中数字0，标签1对应图像中数字1，以此类推...。
 另外，在 MNIST 数据集中的每张图片由 28 x 28 个像素点构成, 每个像素点用一个灰度值表示,灰度值在0 ~ 1 或 0 ~ 255之间，MINIST数据集图像示例如下：
 
-![MNIST](../../../markdown_imgs/chapter01/1.5_FC_MNIST_Classification/MNIST.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.5_FC_MNIST_Classification/MNIST.png">
 
 在Pytorch中已经集成了MNIST数据集，所以使用非常方便，几行代码即可解决。关于MNIST数据集更详细的介绍和加载方法，第二章将会介绍。
 
@@ -17,11 +17,11 @@ MNIST手写体数字识别是一个分类任务，为了简单直观，本小节
 
 全连接层（full-connected layer），简称FC，是神经网络中的一种基本的结构。那么仅由输入层、全连接层、输出层构成的神经网络就叫做全连接神经网络，中间的隐藏层由多层含有不同神经元的全连接层构成，结构可以看下图。
 
-![FC](../../../markdown_imgs/chapter01/1.5_FC_MNIST_Classification/FC.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.5_FC_MNIST_Classification/FC.png">
 
 “全连接”层，顾名思义，表示神经网络中除输入层之外的每个节点都和上一层的所有节点有连接，如下图所示:
 
-![FC2](../../../markdown_imgs/chapter01/1.5_FC_MNIST_Classification/FC2.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.5_FC_MNIST_Classification/FC2.png">
 
 图片中IN1和IN2表示两个像素点，FC1为第一层全连接层，FC2为第二层全连接层，可以看到全连接层所有的节点都和上一层每一个节点相连接，最后连接输出层。当然上图只是一个简单的示例图，节点个数和层数都是随意设置的。      
         
@@ -32,7 +32,7 @@ MNIST手写体数字识别是一个分类任务，为了简单直观，本小节
 
 为了使模型能够学习非线性模式（或者说具有更高的复杂度），激活函数被引入其中。常用的激活函数有Sigmoid、tanh、Relu，如下图所示：
 
-![acticve](../../../markdown_imgs/chapter01/1.5_FC_MNIST_Classification/acticve.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.5_FC_MNIST_Classification/acticve.png">
 
 好，基本知识就介绍完毕，接下来，就开始实践吧！
 
@@ -121,7 +121,8 @@ for i in range(4):
 plt.show()
 
 ```
-![datashow](../../../markdown_imgs/chapter01/1.5_FC_MNIST_Classification/datashow.png)
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.5_FC_MNIST_Classification/datashow.png">
 
 ### 定义损失函数和优化器
 模型训练是一个监督学习过程，模型学习到的特征和真实特征难免会存在误差，那么为了纠正模型（通过误差反向传播修正权值），就需要一个函数去描述这种误差，这个函数就是损失函数（loss），训练过程就是使损失函数的值越来越小的过程，loss越小，模型就越精确。
@@ -233,7 +234,7 @@ plt.show()
 
 ```
 
-![resultshow](../../../markdown_imgs/chapter01/1.5_FC_MNIST_Classification/resultshow.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.5_FC_MNIST_Classification/resultshow.png">
 
 ## 总结 
 
