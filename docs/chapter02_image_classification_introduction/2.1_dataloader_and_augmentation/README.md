@@ -4,13 +4,14 @@
 
 - CV中常见数据集简介
 - pytorch中图像数据集制作及读取方式
-- 使用pytorch的torchvision中的函数实现数据增强
+- 数据增强简介
+- 总结：读取数据并进行数据扩增的完整示例
 
 ## 一、常见数据集简介   
 
 学习CV，最重要的就是先有图像数据集，现在互联网中也已经有很多开源的图像数据集供我们学习选择。在CV中较为“出名”，使用频率较高的几个数据集有：[MNIST](http://yann.lecun.com/exdb/mnist/)、[CIFAR](http://www.cs.toronto.edu/~kriz/cifar.html)、[PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)、[ImageNet](http://image-net.org/index)、[MS COCO](http://cocodataset.org/)、[Open Image Dataset](https://storage.googleapis.com/openimages/web/index.html)等。这些数据集都是根据具体的应用场景(如分类、检测、分割等)，为了更好的促进学术研究的进展，耗费大量人力进行标注的。除此之外，当然还有很多特定领域的数据集，这里不再一一罗列，感兴趣的读者可以自行检索。下面将对分类任务常见的数据集进行介绍。
 
-### 1.MNIST
+### **1.1 MNIST数据集**
 
 **简介**
 
@@ -24,16 +25,16 @@ MNIST数据集(Mixed National Institute of Standards and Technology database)是
 
 **下载**
 
+[数据集官网](http://yann.lecun.com/exdb/mnist/)
+
   * [train-images-idx3-ubyte.gz:](http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz)   training set images (9912422 bytes) 
   * [train-labels-idx1-ubyte.gz:](http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz)  test set images (1648877 bytes) 
   * [t10k-images-idx3-ubyte.gz:](http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz) test set images (1648877 bytes)
   * [t10k-labels-idx1-ubyte.gz:](http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz)  test set labels (4542 bytes)
 
-[数据集官网](http://yann.lecun.com/exdb/mnist/)
 
----
 
-### 2.CIFAR-10
+### **1.2 CIFAR-10数据集**
 
 **简介**
 
@@ -45,17 +46,18 @@ CIFAR-10是一个小型图片分类数据集，该数据集共有60000张彩色�
 
 **下载**
 
-  官方给出了多个CIFAR-10数据集的版本：           
+[数据集官网](https://www.cs.utoronto.ca/~kriz/cifar.html)  官方给出了多个CIFAR-10数据集的版本：           
 
   Python版：[CIFAR-10 python version](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz) 
+
   Matlab版：[CIFAR-10 Matlab version](https://www.cs.toronto.edu/~kriz/cifar-10-matlab.tar.gz) 
+
   二进制版：[CIFAR-10 binary version (suitable for C programs)](https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz)   
 
-[数据集官网](https://www.cs.utoronto.ca/~kriz/cifar.html)
 
----
 
-### 3.ImageNet   
+
+### **1.3 ImageNet数据集** 
 
 **简介**    
 
@@ -97,7 +99,7 @@ ImageNet项目是一个大型计算机视觉数据库，它按照WordNet层次�
 
 我们已经了解了部分分类任务的常用数据集，下面我们来介绍在pytorch中是如何定义和读取这些数据集的。在pytorch中已经包含了部分常用数据集的定义，可以直接使用，但在实际工程应用中仅仅使用pytorch自带的数据集远远不够，有时还需要自定义数据集来满足需求。下面内容中，我们将从pytorch自带数据集和自定义数据集两部分介绍数据集制作和读取方法。
 
-### 1.pytorch自带数据集及读取方法 
+### **2.1 pytorch自带数据集及读取方法** 
 
 pytorch中所有的数据集均继承自torch.utils.data.Dataset，它们都需要实现了 \_\_getitem\_\_ 和 \_\_len\_\_ 两个接口，因此，实现一个数据集的核心也就是实现这两个接口。
 
@@ -124,7 +126,7 @@ torchvision.datasets.CIFAR10(dataset_dir, train=True, transform=None, target_tra
 为了直观地体现数据读取方法，给出以下两个示例：
 
 **读取示例1(从网上自动下载)**
-  
+
 ```python
 from PIL import Image
 import torch
@@ -146,9 +148,11 @@ test_data = torchvision.datasets.CIFAR10('../../../dataset',
                                                       download=True)      
 ```
 
-**读取示例2(数据增强)**
+**读取示例2(示例1基础上附带数据增强)**
 
-在使用API读取数据时，API中的transform参数指定了导入数据集时需要对图像进行何种变换操作。一般的，我们使用torchvision.transforms中的函数来实现数据增强，并用transforms.Compose将所要进行的变换操作都组合在一起，其变换操作的顺序按照在transforms.Compose中出现的先后顺序排列。在transforms中有很多方便的数据增强方法，我们将在下一小节详细介绍，在这里我们尝试使用缩放，随机颜色变换、随机旋转、图像像素归一化等组合变换。 
+在使用API读取数据时，API中的transform参数指定了导入数据集时需要对图像进行何种变换操作。对于图像进行各种变换来增加数据的丰富性称为数据增强，是一种常用操作，在下一小节将有更详细的说明。
+
+一般的，我们使用torchvision.transforms中的函数来实现数据增强，并用transforms.Compose将所要进行的变换操作都组合在一起，其变换操作的顺序按照在transforms.Compose中出现的先后顺序排列。在transforms中有很多实现好的数据增强方法，在这里我们尝试使用缩放，随机颜色变换、随机旋转、图像像素归一化等组合变换。 
 
 ```python
 from PIL import Image
@@ -196,7 +200,7 @@ train_loader = torch.utils.data.DataLoader(train_data,
 
 这里batch_size设置了批量大小，shuffle设置为True在装载过程中为随机乱序，num_workers>=1表示多进程读取数据，在Win下num_workers只能设置为0，否则会报错。
 
-### 2.自定义数据集及读取方法
+### **2.2 自定义数据集及读取方法**
 
 除了pytorch自带的数据集外，在实际应用中，我们可能还需要从其他各种不同的数据集或自己构建的数据集（将其统称为自定义数据集）中读取图像，这些图像可能来自于开源数据集网站，也可能是我们自己整理得到的。对于这样的图像数据：首先，我们要确定是否包含标签文件，如果没有就要自己先创建标签文件；然后，我们就可以使用pytorch来读取数据集了。道理是不是很简单？接下来，该小节我们将着重讲解pytorch自定义数据集的制作和读取方法。
 
@@ -206,7 +210,7 @@ train_loader = torch.utils.data.DataLoader(train_data,
 
 图像数据不必多说，就是训练测试模型使用的图片。这里的索引文件指的就是记录数据标注信息的文件，我们必须有一个这样的文件来充当“引路人”，告诉程序哪个图片对应哪些标注信息，例如图片`img_0013.jpg`对应的类别为狗。之后便可以像套公式一样使用Dataset和DataLoader两个类完成数据读取。下面我们会根据这个流程用实例指引你实现自制数据集的构建和读取。
 
-**1° 图像索引文件制作**
+**2.2.1 图像索引文件制作**
 
 图像索引文件只要能够合理记录标注信息即可，内容可以简单也可以复杂，但有一条要注意：**内容是待读取图像的名称（或路径）及标签，并且读取后能够方便实现索引**。该文件可以是txt文件，csv文件等多种形式，甚至是一个list都可以，只要是能够被Dataset类索引到即可。
 
@@ -288,7 +292,7 @@ convert_to_img(save_path, False)
 
 通过上面的示例，其实是为了展示自制分类数据集的数据形式与索引文件之间的关系，以方便后续构建自己的Dataset。
 
-**2° 构建自己的Dataset**
+**2.2.2 构建自己的Dataset**
 
 想要读取我们自己数据集中的数据，就需要写一个Dataset的子类来定义我们的数据集，并必须对 \_\_init\_\_、\_\_getitem\_\_ 和 \_\_len\_\_ 方法进行重载。下面我们看一下构建Dataset类的基本结构： 
 
@@ -314,7 +318,7 @@ class MyDataset(Dataset):  # 继承Dataset类
 > * \_\_getitem\_\_() : 接收一个index，这个index通常指的是一个list的index，这个list的每个元素就包含了图片数据的路径和标签信息,返回数据对（图像和标签）
 > * \_\_len\_\_() : 返回所有数据的数量
 
-重点说明一下\_\_getitem\_\_() 函数，该函数接收一个index，也就是索引值。只要是具有索引的数据类型都能够被读取，如list，Series，Dataframe等形式。为了方便，我们一般采用list形式将文件代入函数中，该list中的每一个元素包含了图片的路径或标签等信息，以方便index用来逐一读取单一样本数据。在\_\_getitem\_\_() 函数内部，我们可以选择性的对图像和标签进行预处理等操作，最后返回图像数据和标签。
+重点说明一下 \_\_getitem\_\_() 函数，该函数接收一个index，也就是索引值。只要是具有索引的数据类型都能够被读取，如list，Series，Dataframe等形式。为了方便，我们一般采用list形式将文件代入函数中，该list中的每一个元素包含了图片的路径或标签等信息，以方便index用来逐一读取单一样本数据。在\_\_getitem\_\_() 函数内部，我们可以选择性的对图像和标签进行预处理等操作，最后返回图像数据和标签。
 
 我们延续上一小节自制MNIST索引文件，构建自己的Dataset类，以便通过该类读取特定图像数据。
 
@@ -382,13 +386,13 @@ test_dataset = MnistDataset(test_img_list,
                             transform=transforms.Compose([transforms.ToTensor()]))
 ```
 
-上面的代码通过构建`MnistDataset`类，完成了数据集的定义。
+上面的代码通过构建 `MnistDataset` 类，完成了数据集的定义。
 
-首先通过`get_path_label()`函数获得图像的路径和标签列表，并通过`MnistDataset`类中`\_\_init\_\_()`的`self.image_path`和`self.image_label`进行存储，我们能够看到此处的图像列表中的数据和标签列表中的数据是一一对应的关系，同时我们在初始化中还初始化了`transform`，以实现后续中图像增强操作。
+首先通过 get_path_label() 函数获得图像的路径和标签列表，并通过 MnistDataset 类中 \_\_init\_\_() 的 self.image_path 和 self.image_label 进行存储，我们能够看到此处的图像列表中的数据和标签列表中的数据是一一对应的关系，同时我们在初始化中还初始化了 transform ，以实现后续中图像增强操作。
 
-`MnistDataset`类的 \_\_getitem\_\_() 函数完成了图像读取和增强。该函数的前三行，我们通过`index`读取了`self.image_path`和`self.image_label`（两个list，也是前文中提到的list）中的图像和标签。第四、五行，对图像进行处理，在`transform`中可以实现旋转、裁剪、仿射变换、标准化等等一系列操作。最后返回处理好的图像数据和标签。
+MnistDataset 类的 `__getitem__()` 函数完成了图像读取和增强。该函数的前三行，我们通过 index 读取了 self.image_path 和 self.image_label （两个list，也是前文中提到的list）中的图像和标签。第四、五行，对图像进行处理，在 transform 中可以实现旋转、裁剪、仿射变换、标准化等等一系列操作。最后返回处理好的图像数据和标签。
 
-通过`MnistDataset`类的定义，pytorch就知道了如何获取一张图片并完成相应的预处理工作。这里我们尝试从数据集中读取一些数据，打印下输出结果进行观察：
+通过 MnistDataset 类的定义，pytorch就知道了如何获取一张图片并完成相应的预处理工作。这里我们尝试从数据集中读取一些数据，打印下输出结果进行观察：
 
 ```python
 >>> train_iter = iter(train_dataset)
@@ -438,11 +442,11 @@ torch.Size([1, 28, 28]) tensor(8.)
 train num: 60000
 ```
 
-需要注意的是，以上面的train_dataset为例，当train_dataset创建好后并没有将所有的数据都读进来，而是在使用到时，如next(iter(train_dataset))，才会触发`MnistDataset`类内部的 \_\_getitem\_\_() 读取一次数据。
+需要注意的是，当 Dataset 创建好后并没有将数据生产出来，我们只是定义了数据及标签生产的流水线，只有在真正使用时，如手动调用 next(iter(train_dataset))，或被 DataLoader调用，才会触发数据集内部的 \_\_getitem\_\_() 函数来读取数据，通常CV入门者对于这一块会存在困惑。
 
-**3° 使用DataLoader批量读取数据**
+**2.2.3 使用DataLoader批量读取数据**
 
-在构建好自己的Dataset之后，就可以使用DataLoader批量的读取数据，相当于帮我们完成一个batch的数据组装工作。Dataloader为一个迭代器，最基本的使用方法就是传入一个Dataset对象，在Dataloader中，会触发Dataset对象中的\_\_gititem\_\_()函数，逐次读取数据，并根据batch_size产生一个 batch 的数据，实现批量化的数据读取，以节省内存。
+在构建好自己的 Dataset 之后，就可以使用 DataLoader 批量的读取数据，相当于帮我们完成一个batch的数据组装工作。Dataloader 为一个迭代器，最基本的使用方法就是传入一个 Dataset 对象，在Dataloader中，会触发Dataset对象中的 \_\_gititem\_\_() 函数，逐次读取数据，并根据 batch_size 产生一个 batch 的数据，实现批量化的数据读取。
 
 Dataloader 内部参数如下：
 
@@ -453,11 +457,11 @@ Dataloader 内部参数如下：
 > - shuffle:：是否打乱数据顺序
 > - sampler： 样本抽样方式
 > - num_workers：使用多进程加载的进程数，0代表不使用多进程
-> - collate_fn： 将多个样本数据组成一个batch的方式，一般使用默认的拼接方式
+> - collate_fn： 将多个样本数据组成一个batch的方式，一般使用默认的拼接方式，可以通过自定义这个函数来完成一些特殊的读取逻辑。
 > - pin_memory：是否将数据保存在pin memory区，pin memory中的数据转到GPU会快一些
 > - drop_last：为True时，dataset中的数据个数不是batch_size整数倍时，将多出来不足一个batch的数据丢弃
 
-承接上一节中的train_dataset和test_dataset，使用DataLoader进行批量化读取，此处仅使用了常用的几个参数。
+承接上一节中的 train_dataset 和 test_dataset，使用 DataLoader 进行批量化读取，此处仅使用了常用的几个参数。
 
 ```python
 from torch.utils.data import DataLoader
@@ -474,7 +478,7 @@ test_loader = DataLoader(dataset=test_dataset,
                         num_workers=4)
 ```
 
-如上面的代码，为方便展示加载后的结果，我们定义了一个批量大小为3的DataLoader来加载训练集，并且打乱了数据顺序，在测试集的加载中，我们并没有打乱顺序，这都可以根据自己的需求进行调整。现在，train_loader已经将原来训练集中的60000张图像重新“洗牌”后按照每3张一个batch划分完成（test_loader同理），进一步查看划分后的数据格式。
+如上面的代码，为方便展示加载后的结果，我们定义了一个批量大小为 3 的 DataLoader 来加载训练集，并且打乱了数据顺序，在测试集的加载中，我们并没有打乱顺序，这都可以根据自己的需求进行调整。现在，train_loader 已经将原来训练集中的60000张图像重新“洗牌”后按照每3张一个batch划分完成（test_loader同理），进一步查看划分后的数据格式。
 
 ```python
 >>> loader = iter(train_loader)
@@ -552,9 +556,9 @@ batch20000:images shape info-->torch.Size([3, 1, 28, 28]) labels-->tensor([9., 7
 20000
 ```
 
-我们将DataLoader与Dataset分别处理后的数据比较可以发现出两者的不同：Dataset是对本地数据的封装，每一张图像及对应标签都被封装成一个二元元组；而DataLoader是对Dataset对象的封装，将一个batch size的图像数据封装在一起，实现批量读取数据，减少了内存使用。
+我们将DataLoader与Dataset分别处理后的数据比较可以发现出两者的不同：Dataset是对本地数据读取逻辑的定义；而DataLoader是对Dataset对象的封装，执行调度，将一个batch size的图像数据组装在一起，实现批量读取数据。
 
-### 3.分类任务特有的ImageFolder读取形式
+### **2.3 分类任务通用的ImageFolder读取形式**
 
 我们已经学会了通过构建自己的Dataset类来读取数据，这是具有一般性的数据读取方式，无论是分类、检测等等都能够通过这种方式读取图像及标签。但对于图像分类问题，torchvision还提供了一种文件目录组织形式可供调用，即`ImageFolder`，因为利用了分类任务的特性，此时就不用再另行创建一份标签文件了。这种文件目录组织形式，要求数据集已经自觉按照待分配的类别分成了不同的文件夹，一种类别的文件夹下面只存放同一种类别的图片。
 
@@ -629,9 +633,9 @@ test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=
 
 ---
 
-## 三、图像分类常见数据增广方法
+## 三、数据增强简介
 
-图像的增广是通过对训练图像进行一系列变换，产生相似但不同于主体图像的训练样本，来扩大数据集的规模的一种常用技巧。另一方面，随机改变训练样本降低了模型对特定数据进行记忆的可能，有利于提⾼模型的泛化能⼒。在常见的数据增广方法中，一般会从图像颜色、尺寸、形态、亮度/对比度、噪声和像素等角度进行变换。当然不同的数据增广方法可以自由进行组合，得到更加丰富的数据增广方法。
+图像的增广是通过对训练图像进行一系列变换，产生相似但不同于主体图像的训练样本，来扩大数据集的规模的一种常用技巧。另一方面，随机改变训练样本降低了模型对特定数据进行记忆的可能，有利于增强模型的泛化能⼒，提高模型的预测效果，因此可以说数据增强已经不算是一种优化技巧，而是CNN训练中默认要使用的标准操作。在常见的数据增广方法中，一般会从图像颜色、尺寸、形态、亮度/对比度、噪声和像素等角度进行变换。当然不同的数据增广方法可以自由进行组合，得到更加丰富的数据增广方法。
 
 在torchvision.transforms中，提供了Compose类来快速控制图像增广方式：我们只需将要采用的数据增广方式存放在一个list中，并传入到Compose中，便可按照数据增广方式出现的先后顺序依次处理图像。如下面的样例所示：
 
@@ -643,197 +647,9 @@ transform = transforms.Compose([transforms.CenterCrop(10),
                                transforms.ToTensor()])
 ```
 
-同时torchvision.transforms提供了大量的图像数据处理方式，不仅含有图像增广方法，还有数据类型转换等预处理方法。本小节对其部分图像预处理方法进行了分类总结和介绍，主要涉及以下19种方法：
+同时torchvision.transforms提供了大量的图像数据处理方式，不仅含有图像增广方法，还有数据类型转换等预处理方法。对于torchvision.transforms中各种图像预处理方法的详细参数解释，参见本章**附录**部分，也可以通过[官方torchvision.transforms教程](https://pytorch.org/docs/stable/torchvision/transforms.html)进行学习。
 
-[官方torchvision.transforms讲解](https://pytorch.org/docs/stable/torchvision/transforms.html)
-
-### 1.裁剪
-
-**（1）中心裁剪：transforms.CenterCrop**
-
-> *CLASS* `torchvision.transforms.CenterCrop(size)`
->
-> ​			根据给定的size从从中心进行裁剪
->
-> 参数：**size**(*sequence* *or* *int*) - 裁剪后的输出尺寸。若为*sequence*，表示(h, w)；若为*int*，表示(size, size)。
-
-**（2）随机裁剪：transforms.RandomCrop**
-
-> *CLASS* `torchvision.transforms.RandomCrop(size, padding=None, pad_if_needed=False, fill=0, padding_mode='constant')`
->
-> ​			根据给定的size在随机点进行裁剪
->
-> 参数：**size**(*sequence* *or* *int*) - 裁剪后的输出尺寸。若为*sequence*，表示(h, w)；若为*int*，表示(size, size)。
->
-> ​			**padding**(*int* *or* *sequence*, *optional*) - 图像填充像素的个数。默认*None*，不填充；若为*int*，图像上下左右均填充int个像素；若为*sequence*，有两个给定值时，第一个数表示左右填充像素个数，第二个数表示上下像素填充个数，有四个给定值时，分别表示左上右下填充像素个数。
->
-> ​			**fill** - 只针对constant填充模式，填充的具体值。默认为0。若为*int*，各通道均填充该值；若为长度3的tuple时，表示RGB各通道填充的值。
->
-> ​			**padding_mode** - 填充模式。● constant：特定的常量填充；● edge：图像边缘的值填充● reflect；● symmetric。
-
-**（3）随机长宽比裁剪 ：transforms.RandomResizedCrop**
-
-> *CLASS* `torchvision.transforms.RandomResizedCrop(size, scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=2)`
->
-> ​			根据随机大小和长宽比裁剪，并且最后将裁剪的图像resize为给定的size。通常用于训练Inception网络。
->
-> 参数：**size** - 期望输出的图像尺寸
->
-> ​			**scale** - 随机裁剪的区间，默认(0.08, 1.0)，表示随机裁剪的图片在0.08倍到1.0倍之间。
->
-> ​			**ratio** - 随机长宽比的区间，默认(3/4, 4/3)。
->
-> ​			**interpolation** - 差值方法，默认为PIL.Image.BILINEAR（双线性差值）
-
-**（4）五分图像：transforms.FiveCrop**
-
-> *CLASS* `torchvision.transforms.FiveCrop(size)`
->
-> ​			对图像四个角和中心进行裁剪得到五张图像
->
-> 参数：**size**(*sequence* *or* *int*) - 裁剪后的输出尺寸。若为*sequence*，表示(h, w)；若为*int*，表示(size, size)。
-
-**（5）十分图像：transforms.TenCrop**
-
-> *CLASS* `torchvision.transforms.TenCrop(size, vertical_flip=False)`
->
-> ​			对图片进行上下左右以及中心裁剪，然后全部翻转（水平或者垂直），获得10张图片
->
-> 参数：**size**(*sequence* *or* *int*) - 裁剪后的输出尺寸。若为*sequence*，表示(h, w)；若为*int*，表示(size, size)
->
-> ​			**vertical_flip**(*bool*) - 默认False，水平翻转；否则垂直翻转。
-
-### 2.翻转和旋转    
-
-**（1）依概率水平翻转transforms.RandomHorizontalFlip**
-
-> *CLASS* `torchvision.transforms.RandomHorizontalFlip(p=0.5)`
->
-> ​			根据给定的概率p水平翻转图像（PIL图像或Tensor）
->
-> 参数：**p**(*float*) - 翻转概率，默认0.5。
-
-**（2）依概率垂直翻转transforms.RandomVerticalFlip**
-
-> *CLASS* `torchvision.transforms.RandomVerticalFlip(p=0.5)`
->
-> ​			根据给定的概率p垂直翻转图像（PIL图像或Tensor）
->
-> 参数：**p**(*float*) - 翻转概率，默认0.5。
-
-**（3）随机旋转：transforms.RandomRotation**
-
-> *CLASS* `torchvision.transforms.RandomRotation(degrees, resample=False, expand=False, center=None, fill=None)`
->
-> ​			根据*degrees*随机旋转图像一定角度
->
-> 参数：**degrees**(*sequence* *or* *float* *or* *int*) - 待选择旋转度数的范围。如果是一个数字，表示在(-degrees, +degrees)范围内随机旋转；如果是类似(min, max)的sequence，则表示在指定的最小和最大角度范围内随即旋转。
->
-> ​			**resample**(*{PIL.Image.NEAREST*, *PIL.Image.BILINEAR*, *PIL.Image.BICUBIC}*, *optional*) - 重采样方式，可选。
->
-> ​			**expand**(*bool*, *optional*) - 图像尺寸是否根据旋转后的图像进行扩展，可选。若为True，扩展输出图像大小以容纳整个旋转后的图像；若为False或忽略，则输出图像大小和输入图像的大小相同。
->
-> ​			**center**(*2-tuple*, *optional*) - 旋转中心，可选为中心旋转或左上角点旋转。
->
-> ​			**fill**(*n-tuple* *or* *int* *or* *float*) - 旋转图像外部区域像素的填充值。此选项仅使用pillow >= 5.2.0。
-
-### 3. 其他图像变换
-
-**（1）转为tensor：transforms.ToTensor**
-
-> *CLASS* `torchvision.transforms.ToTensor`
->
-> ​			将`PIL Image`或范围在[0, 255]的`numpy.ndarray`(H×W×C)转换成范围为[0.0, 1.0]的torch.Float(C×H×W)类型的tensor。
-
-**（2）转为PILImage：transforms.ToPILImage**
-
-> *CLASS* `torchvision.transforms.ToPILImage(mode=None)`
->
-> ​			将tensor(C×H×W)或者`numpy.ndarray`(H×W×C)的数据转换为`PIL Image`类型数据，同时保留值范围。
->
-> 参数：**mode**(PIL.Image mode) - 输入数据的颜色空间和像素深度。如果为None(默认)时，会对数据做如下假定：输入为1通道，mode根据数据类型确定；输入为2通道，mode为LA；输入为3通道，mode为RGB；输入为4通道，mode为RGBA。
-
-**（3）填充：transforms.Pad**
-
-> *CLASS* `torchvision.transforms.Pad(padding, fill=0, padding_mode='constant')`
->
-> ​			对给定的PIL Image使用给定的填充值进行填充
->
-> 参数：**padding**(*int or tuple*) - 图像填充像素的个数。若为*int*，图像上下左右均填充*int*个像素；若为*tuple*，有两个给定值时，第一个数表示左右填充像素个数，第二个数表示上下像素填充个数，有四个给定值时，分别表示左上右下填充像素个数。
->
-> ​			**fill** - 只针对constant填充模式，填充的具体值。默认为0。若为*int*，各通道均填充该值；若为长度3的tuple时，表示RGB各通道填充的值。
->
-> ​			**padding_mode** - 填充模式。● constant：特定的常量填充；● edge：图像边缘的值填充● reflect；● symmetric。
-
-**（4）resize：transforms.Resize**
-
->*CLASS* `torchvision.transforms.Resize(size, interpolation=2)`
->
->​			重置PIL Image的size
->
->参数：**size**(*sequence or int*) - 需求的输出图像尺寸。如果size是类似(h, w)的*sequence*，表示输出图像高为h，宽为w；如果为*int*，则匹配图像较小的边到size，并保持高宽比，如 height > width，图像将被重置为(size * height / width, size)。
->
->​			**interpolation**(*int*, *optional*) - 差值方式，默认为`PIL.Image.BILINEAR`
-
-**（5）标准化：transforms.Normalize**
-
->*CLASS* `torchvision.transforms.Normalize(mean, std, inplace=False)`
->
->​			对tensor image进行标准化。根据给定的n个通道的均值`(mean[1],...,mean[n])`和标准差`(std[1],..,std[n])`计算每个通道的输出值`output[channel] = (input[channel] - mean[channel]) / std[channel]`。
->
->参数：**mean**(*sequence*) - 含有每个通道均值的*sequence*
->
->​			**std**(*sequence*) - 含有每个通道标准差的*sequence*
->
->​			**inplace** (*bool*, *optional*) - 是否替换原始数据
-
-**（6）修改亮度、对比度和饱和度：transforms.ColorJitter**
-
->*CLASS* `torchvision.transforms.ColorJitter(brightness=0, contrast=0, saturation=0, hue=0)`
->
->​			随机更改图像的亮度、对比度和饱和度。
-
-**（7）转为灰度图：transforms.Grayscale**
-
->*CLASS* `torchvision.transforms.Grayscale(num_output_channels=1)`
->
->​			将图片转成灰度图
->
->参数：**num_output_channels**(*int*) - （1或3）输出图像的通道数。如果为1，输出单通道灰度图；如果为3，输出3通道，且有r == g == b。
-
-**（8）依概率转为灰度图：transforms.RandomGrayscale**
-
->*CLASS* `torchvision.transforms.RandomGrayscale(p=0.1)`
->
->​			根据概率随机将图片转换成灰度图
->
->参数：**p** (*float*) - 图像转换成灰度图的概率。
-
-**（9）线性变换：transforms.LinearTransformation**
-
->*CLASS* `torchvision.transforms.LinearTransformation(transformation_matrix, mean_vector)`
->
->​			对tensor image做线性变换，可用于白化处理。
->
->参数：**transformation_matrix**(*Tensor*) - tensor [D x D], D = C x H x W
->
->​			**mean_vector**(*Tensor*) - tensor [D], D = C x H x W
-
-**（10）仿射变换：transforms.RandomAffine**
-
->*CLASS* `torchvision.transforms.RandomAffine(degrees, translate=None, scale=None, shear=None, resample=False, fillcolor=0)`
->
->​			保持图像中心不变的随机仿射变换
-
-**（11）自定义变换：transforms.Lambda**
-
->*CLASS* `torchvision.transforms.Lambda(lambd)`
->
->​			将自定义的函数(lambda)应用于图像变换
->
->参数：**lambd**(*lambda*) - 用于图像变换的lambda/自定义函数
-
-### 4.部分图像变换的代码示例和效果展示
+部分图像变换的代码示例和效果展示如下：
 
 **首先import相关的包并读入原始图像**
 
@@ -913,9 +729,11 @@ img_tansform = transform(im)
 
 ---
 
-## 四、读取数据并进行数据扩增的完整示例      
+## 四、总结    
 
-前文对数据读取和数据增广方法分别进行了详细介绍，篇幅很长，最后这部分就仍以CIFAR10数据集为例，将数据读取和数据增广整合到一起给出一个综合示例。 
+前文对数据读取和数据增广方法分别进行了详细介绍，篇幅很长，最后这部分做个小小的总结。
+
+我们仍以 CIFAR10 数据集为例，将数据读取和数据增广整合到一起，给出一个综合示例作为复习强化记忆。 
 
 ```python      
 import os, sys, glob, shutil, json
@@ -960,16 +778,14 @@ test_loader = torch.utils.data.DataLoader(train_data,
 ```
 
 
-## 总结
-
-本节第一部分对常用数据集进行了简单介绍，第二部分讲解了pytorch中的各种数据集读取方法，包括torchvision自带数据集的读取方法，ImageFolder格式数据集读取方法和任意数据集的一般化自定义读取方案。第三部分介绍了常见的数据增强方法且展示了可视化效果，最后给出了一个数据加载的完整示例。
+本文第一部分对常用数据集进行了简单介绍，第二部分讲解了pytorch中的各种数据集读取方法，包括torchvision自带数据集的读取方法，ImageFolder格式数据集读取方法和任意数据集的一般化自定义读取方案。第三部分介绍了常见的数据增强方法且展示了可视化效果，最后给出了一个数据加载的完整示例。
 
 ---
 
 **贡献者**
 
-初稿：[小武](https://blog.csdn.net/weixin_40647819)，[阿水](https://github.com/datawhalechina/coggle)
+第1版：[小武](https://blog.csdn.net/weixin_40647819)，[阿水](https://github.com/datawhalechina/coggle)
 
 第2版：[袁明坤](https://github.com/yuan-mk)
 
-校对：[安晟](https://github.com/monkeyDemon)
+校对优化：[安晟](https://github.com/monkeyDemon)
