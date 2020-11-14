@@ -40,7 +40,7 @@ def detect(original_image, min_score, max_overlap, top_k):
     # Forward prop.
     predicted_locs, predicted_scores = model(image.unsqueeze(0))
 
-    # Post process, get the final detect objects from out tiny detector output
+    # Post process, get the final detect objects from our tiny detector output
     det_boxes, det_labels, det_scores = model.detect_objects(predicted_locs, predicted_scores, min_score=min_score,
                                                              max_overlap=max_overlap, top_k=top_k)
 

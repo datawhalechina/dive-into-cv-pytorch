@@ -6,3 +6,5 @@ dataset/*
 .idea
 *.ckpt
 .ipynb_checkpoints
+code/chapter03_object_detection_introduction/tiny_detector_demo/checkpoint.pth.tar
+code/chapter03_object_detection_introduction/tiny_detector_demo/checkpoint_ssd300.pth.tar

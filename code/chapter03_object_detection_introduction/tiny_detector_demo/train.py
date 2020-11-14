@@ -30,7 +30,6 @@ def main():
     """
     Training.
     """
-
     # Initialize model and optimizer
     model = tiny_detector(n_classes=n_classes)
     criterion = MultiBoxLoss(priors_cxcy=model.priors_cxcy)
@@ -51,7 +50,6 @@ def main():
 
     # Epochs
     for epoch in range(total_epochs):
-
         # Decay learning rate at particular epochs
         if epoch in decay_lr_at:
             adjust_learning_rate(optimizer, decay_lr_to)
