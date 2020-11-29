@@ -6,22 +6,15 @@
 
 项目大体上会按照计算机视觉的不同领域和应用场景进行章节划分，循序渐进，带领大家走进CV的世界，以动手实战的方式，从入门到进阶。
 
-“for the learner，和学习者一起成长”是我们的愿景。
-
-目前项目还处于初期：正在重构前两章内容，并制作第三章：目标检测入门。
-
-如果热爱学习且认同Datawahle开源精神的你正好路过，不妨先点个:star:收藏一下吧，相信随着项目的推进，你我将互相见证彼此的进步。
+目前已经完成的内容包括：预备知识、图像分类入门、和目标检测入门三个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
 
 ## 食用方法
 
 :whale: 推荐使用 [**动手学CV-PyTorch 在线阅读**](https://datawhalechina.github.io/dive-into-cv-pytorch) 进行学习
 
-也可以直接在github项目中阅读README教程进行学习，配套的完整代码可以在相应章节目录下面找到。
+配套的完整代码可以项目`code`目录的相应章节目录下面找到。
 
-还等什么，学就完事了～
-
-
-以下是目录与代码更新进度
+以下是目录与代码更新进度，还等什么，学就完事了～
 
 ## 动手学CV-Pytorch 目录
 
@@ -50,65 +43,100 @@
     - [x] [3.6 训练与测试](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_6.md)
 
 * 第四章: 你猜猜
-    推进中...
+    - 推进中...
 
 
 ## 常见问题
 
-- **github页面中无法加载图片的解决办法**: 
+- **在线教程页面无法打开**: 
+
+    测试中发现存在一部分伙伴打不开在线教程的情况。
+
+    部分小伙伴反馈尝试切换浏览器后可以正常打开了，当然最有效的办法是科学上网。
+
+- **无法加载图片的解决办法**: 
+
+    根本解决办法还是科学上网，也可以尝试修改host文件看下是否能解决。
 
     [windows解决方案：修改host文件](https://blog.csdn.net/u011583927/article/details/104384169)
 
 - **公式无法正常显示解决办法**：
 
-    为了让公式正常显示，强烈建议安装chrome的`MathJax Plugin for Github`插件。
+    github中的markdown不支持LATEX公式，如果你喜欢在本项目中浏览教程，可以安装chrome的`MathJax Plugin for Github`插件让大部分公式正常显示。但是包含公式的章节强力建议使用 [动手学CV-PyTorch 在线阅读](https://datawhalechina.github.io/dive-into-cv-pytorch) 进行学习
 
 
 ## 致谢
+
+感谢以下Datawhale成员对项目推进作出的贡献(排名不分先后)：
 
 <table align="center" style="width:80%;">
   <caption><b>贡献者名单</b></caption>
 <thead>
   <tr>
     <th>成员</th>
-    <th>介绍</th>
+    <th>个人简介及贡献</th>
     <th>个人主页</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">安晟</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">一只普通的算法攻城狮 </td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，项目负责人，参与前三章内容构建 </td>
     <td><a href="https://blog.csdn.net/u011583927">CSDN博客</a>,   <a href="https://github.com/monkeyDemon">Github</a></td>
   </tr>
   <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁波大学计算机硕士</td>
-    <td><a href="https://github.com/QiangZiBro">Github</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">闫永强</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，2.4、2.5、2.6节作者</td>
+    <td><a href="url">TODO</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋志龙</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，2.1、2.2、2.3节作者</td>
+    <td><a href="url">TODO</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">南昌航空大学研究生   </td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">南昌航空大学研究生，1.5、2.1节作者</td>
     <td><a href="https://blog.csdn.net/weixin_40647819">CSDN博客</a></td>
   </tr>
   <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">伊雪</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">中电科网安研究院开发工程师</span></td>
-    <td> </td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁波大学计算机硕士，2.2节作者</td>
+    <td><a href="https://github.com/QiangZiBro">Github</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">袁明坤</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，2.1节作者</td>
+    <td><a href="url">https://github.com/yuan-mk</a>Github</td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">游璐颖</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，1.2节作者</td>
+    <td><a href="https://github.com/Sonatau">Github</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李一飞</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，1.3、1.4节作者</td>
+    <td><a href="url">TODO</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，1.3节作者</span></td>
     <td><a href="https://blog.csdn.net/OuDiShenmiss">CSDN博客</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">杨皓博</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，1.4节作者</span></td>
     <td><a href="https://github.com/Dulpyanghaobo">Github</a></td>
   </tr>
   <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">伊雪</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">中电科网安研究院开发工程师，2.3节作者</span></td>
+    <td> </td>
+  </tr>
+  <tr>
     <td>阿水</td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">公众号：Coggle数据科学 </td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，公众号：Coggle数据科学, 为第二章提供部分素材 </td>
     <td><a href="https://www.zhihu.com/people/finlayliu">知乎</a></td>
   </tr>
 </tbody>
