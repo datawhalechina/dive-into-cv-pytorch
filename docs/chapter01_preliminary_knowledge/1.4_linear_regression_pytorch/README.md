@@ -1,6 +1,6 @@
 # Pytorch 线性回归实战
 
-通过前面的学习我们已经熟知了pytorch的基本用法和自动求导梯度的基本原理，这节课我们将结合前面所学的知识做一个简单的demo，我们将使用pytorch来构建一个简单的线性回归实战案例并且将训练模型的过程进行一次总结
+通过前面的学习我们已经熟知了pytorch的基本用法和自动求梯度的基本原理，这节课我们将结合前面所学的知识做一个简单的demo，我们将使用pytorch来构建一个简单的线性回归实战案例并且将训练模型的过程进行一次总结
 
 ## 1.线性回归模型
 
@@ -14,7 +14,7 @@
 
 如果读者掌握基本的数学分析功底，则可以轻松推出函数的梯度与函数的等势面垂直，因此梯度方向是函数值变化最快的方向，对于可微函数，我们通过反复迭代，每一步向当前点梯度方向下降一定距离的方法，便能得到极小值。
 
-![img](https://images2015.cnblogs.com/blog/1042406/201610/1042406-20161017221342935-1872962415.png)
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.4_linear_regression_pytorch/grad_decent.png">
 
 ## 3.反向传播算法简略介绍
 
