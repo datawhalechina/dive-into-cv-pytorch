@@ -5,7 +5,7 @@
         - [1.3 自动求梯度](chapter01_preliminary_knowledge/1.3_automatic_gradient/README.md)
         - [1.4 线性回归-小试身手](chapter01_preliminary_knowledge/1.4_linear_regression_pytorch/README.md)
         - [1.5 初识图像分类：MNIST分类实战](chapter01_preliminary_knowledge/1.5_mnist_classification/README.md)
-    - 第二章：图片分类入门
+    - 第二章：图像分类入门
         - [2.1 数据读取与数据扩增](chapter02_image_classification_introduction/2.1_dataloader_and_augmentation/README.md)
         - [2.2 图像分类介绍](chapter02_image_classification_introduction/2.2_introduction_of_image_classification/README.md)
         - [2.3 模型训练与验证](chapter02_image_classification_introduction/2.3_model_training_and_verification/README.md)
@@ -14,10 +14,9 @@
             - [比赛方案与优化技巧总结](chapter02_image_classification_introduction/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
         - [附录A torchvision.transforms速查表](chapter02_image_classification_introduction/appendix/appendixA_data_augment.md)
     - 第三章 目标检测入门
-        - [公式测试](chapter03_object_detection_introduction/gongshi_test.md)
         - [3.1 目标检测基本概念](chapter03_object_detection_introduction/3_1.md)
         - [3.2 目标检测数据集VOC](chapter03_object_detection_introduction/3_2.md)
-        - [3.3 锚框基本概念](chapter03_object_detection_introduction/3_3.md)
+        - [3.3 锚框](chapter03_object_detection_introduction/3_3.md)
         - [3.4 模型结构](chapter03_object_detection_introduction/3_4.md)
         - [3.5 损失函数](chapter03_object_detection_introduction/3_5.md)
         - [3.6 训练与测试](chapter03_object_detection_introduction/3_6.md)

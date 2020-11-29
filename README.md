@@ -25,31 +25,31 @@
 
 ## 动手学CV-Pytorch 目录
 
-* 1\. 预备知识
-    - [x] 1.1 深度学习环境配置
-    - [x] 1.2 Pytorch基础使用介绍
-    - [x] 1.3 自动求梯度
-    - [x] 1.4 线性回归-小试身手
-    - [ ] 1.5 初识图像分类
-* 2\. 图片分类入门
-    - [x] 2.1 数据读取与数据扩增
-    - [x] 2.2 图像分类介绍
-        - [x] 卷积神经网络基础
-        - [x] 经典图像分类模型简介
-            - [x] LeNet
-            - [x] AlexNet
-            - [x] VGG
-            - [x] 网络中的网络（NiN）
-            - [x] 含并行连结的网络（GoogLeNet）
-            - [x] 批量归一化（Batch Normalization）
-            - [x] 残差网络（ResNet）
-    - [x] 2.3 模型训练与验证
-    - [x] 2.4 模型集成
-    - [x] 2.5 比赛实战
-        - [x] [天池计算机视觉入门赛:街景字符识别baseline讲解](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/docs/chapter02_image_classification_introduction/2.4_classification_action_SVHN/README.md)
-        - [x] [比赛方案与优化技巧总结](https://github.com/datawhalechina/dive-into-cv-pytorch/blob/master/docs/chapter02_image_classification_introduction/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
-* 3\. 目标检测入门
+* 第一章: 预备知识
+    - [x] [1.1 深度学习环境配置](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter01_preliminary_knowledge/1.1_environment_install/README.md)
+    - [x] [1.2 Pytorch基础使用介绍](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter01_preliminary_knowledge/1.2_pytorch_basic_usage_introduction/README.md)
+    - [x] [1.3 自动求梯度](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter01_preliminary_knowledge/1.3_automatic_gradient/README.md)
+    - [x] [1.4 线性回归-小试身手](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter01_preliminary_knowledge/1.4_linear_regression_pytorch/README.md)
+    - [x] [1.5 初识图像分类：MNIST分类实战](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter01_preliminary_knowledge/1.5_mnist_classification/README.md)
 
+* 第二章: 图像分类入门
+    - [x] [2.1 数据读取与数据扩增](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter02_image_classification_introduction/2.1_dataloader_and_augmentation/README.md)
+    - [x] [2.2 图像分类介绍](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter02_image_classification_introduction/2.2_introduction_of_image_classification/README.md)
+    - [x] [2.3 模型训练与验证](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter02_image_classification_introduction/2.3_model_training_and_verification/README.md)
+    - [x] 2.4 天池CV入门赛实战
+        - [x] [街景字符识别baseline讲解](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter02_image_classification_introduction/2.4_classification_action_SVHN/baseline.md)
+        - [x] [比赛方案与优化技巧总结](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter02_image_classification_introduction/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
+    - [x] [附录A torchvision.transforms速查表](chapter02_image_classification_introduction/appendix/appendixA_data_augment.md)
+
+* 第三章: 目标检测入门
+    - [x] [3.1 目标检测基本概念](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_1.md)
+    - [x] [3.2 目标检测数据集VOC](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_2.md)
+    - [x] [3.3 锚框](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_3.md)
+    - [x] [3.4 模型结构](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_4.md)
+    - [x] [3.5 损失函数](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_5.md)
+    - [x] [3.6 训练与测试](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter03_object_detection_introduction/3_6.md)
+
+* 第四章: 你猜猜
     推进中...
 
 
