@@ -38,6 +38,10 @@ Kaggle竞赛平台在新建一个Kernel时，是可以通过设置中选择GPU�
 
 和Kaggle的Kernel类似，Goggle的Colab本质上是一个在线版本的jupyter notebook，可以免费嫖一个NVIDIA Tesla K80用。
 
+`天池实验室`
+
+[天池Notebook](https://tianchi.aliyun.com/notebook-ai/)，也是一个很好的选择，提供免费GPU算力进行在线编程实验，上面还可以看到其他人分享的代码。
+
 `AI Studio 与 PaddlePaddle`
 
 百度在推进深度学习发展上也做了不少努力，目前提供的免费算力还是很感人的，感兴趣也可以尝试。
@@ -49,9 +53,7 @@ Kaggle竞赛平台在新建一个Kernel时，是可以通过设置中选择GPU�
 
 但不管怎样，如果你的电脑没有一块NVIDIA GPU，你可以选择买一块自己装！
 
-比较爱鼓捣硬件的同学自然觉得没什么，但是可能对于某些小白来说，听到要自己装，就有点想退却了，甚至会找到自己比较懂电脑的朋友，问出一句：“大神，那你能帮帮我吗？”
-
-这个过程并没有什么技术含量，操作起来要比听起来简单的多，所以自己动起手来吧~
+比较熟悉硬件的同学自然觉得没什么，但是可能对于某些小白来说，听到要自己装，可能就有点想退却了，实际上这个过程并没有什么技术含量，操作起来要比听起来简单的多，所以自己动起手来吧~
 
 问把GPU装进机箱，总共分几步？ 答曰：分三步
 
@@ -144,7 +146,7 @@ Built on Sat_Aug_25_21:08:01_CDT_2018
 Cuda compilation tools, release 10.0, V10.0.130
 ```
 
-这个过程应该是整个环境配置过程中最容易出问题的，一般都和显卡驱动有关。不要灰心，我们面对什么困难，都不要怕，加油，奥利给！
+这个过程应该是整个环境配置过程中最容易出问题的，一般都和显卡驱动有关。不要灰心，谁没在安装CUDA上面浪费过几天时间呢～
 
 ## 3.如何安装Cudnn
 
@@ -210,17 +212,17 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 可以通过如下命令删除制定虚拟环境，当然这里我们就不真的实际运行了
 
->$onda env remove -n py37_torch131
+> $conda env remove -n py37_torch131
 
 **激活or关闭指定环境**
 
 使用`source activate 环境名`来激活指定环境
 
->$source activate py37_torch131
+> $source activate py37_torch131
 
 使用`source deactivate` or `source deactivate 环境名` 关闭当前环境
 
->$source deactivate py37_torch131
+> $source deactivate py37_torch131
 
 **在指定环境中安装包**
 
@@ -228,11 +230,11 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 首先重新激活刚刚创建的环境
 
->$source activate py37_torch131
+> $source activate py37_torch131
 
 接下来安装gpu_1.3.1版本的pytorch
 
->$conda install pytorch=1.3.1 torchvision cudatoolkit=10.0
+> $conda install pytorch=1.3.1 torchvision cudatoolkit=10.0
 
 不同环境下的安装命令可以在[Pytorch官网](https://pytorch.org)找到
 
@@ -242,7 +244,7 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 除此之外，你可以还需要一切其他的库，根据你的需要，再使用pip命令安装到当前环境中即可，例如：
 
->$pip install jupyter tqdm opencv-python matplotlib pandas
+> $pip install jupyter tqdm opencv-python matplotlib pandas
 
 **下载超时的解决办法**
 
@@ -265,16 +267,11 @@ $ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs
 $ conda config --set show_channel_urls yes
 ```
 
-到此，本教材关于GPU环境配置的介绍就全部结束了。如有意见和建议，欢迎和我联系。
+到此，本教材关于GPU环境配置的介绍就全部结束了。如有疑问和建议，欢迎交流。
 
 ---
 
---- ***By: 安晟***
+**贡献者**
 
->一只普通的算法攻城狮，邮箱[anshengmath@163.com]，[CSDN博客](https://blog.csdn.net/u011583927)，[Github](https://github.com/monkeyDemon)
-
-
-**关于Datawhale**：
-
->Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。
+[安晟](https://github.com/monkeyDemon)
 
