@@ -8,9 +8,8 @@
 
 > 我们的目标是：
 
-- 新人友好
+- 新手友好
 - 注重实战
-- 主题丰富
 
 [GitHub](https://github.com/datawhalechina/dive-into-cv-pytorch/)
 [Get Started](https://datawhalechina.github.io/dive-into-cv-pytorch/#/?id=dive-into-cv-pytorch)
