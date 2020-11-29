@@ -6,13 +6,13 @@
 
 项目大体上会按照计算机视觉的不同领域和应用场景进行章节划分，循序渐进，带领大家走进CV的世界，以动手实战的方式，从入门到进阶。
 
-目前已经完成的内容包括：预备知识、图像分类入门、和目标检测入门三个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
+目前已经完成的内容包括：预备知识、图像分类入门、目标检测入门三个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
 
 ## 食用方法
 
 :whale: 推荐使用 [**动手学CV-PyTorch 在线阅读**](https://datawhalechina.github.io/dive-into-cv-pytorch) 进行学习
 
-配套的完整代码可以项目`code`目录的相应章节目录下面找到。
+有配套代码的章节，可以在项目`code`目录的相应章节目录下面找到。
 
 以下是目录与代码更新进度，还等什么，学就完事了～
 
@@ -50,9 +50,9 @@
 
 - **在线教程页面无法打开**: 
 
-    测试中发现存在一部分伙伴打不开在线教程的情况。
+    测试中存在部分人打不开在线教程的情况。
 
-    部分小伙伴反馈尝试切换浏览器后可以正常打开了，当然最有效的办法是科学上网。
+    部分小伙伴反馈尝试切换浏览器后可以正常打开了，如果仍然不行，最有效的解决办法是科学上网。
 
 - **无法加载图片的解决办法**: 
 
@@ -62,7 +62,7 @@
 
 - **公式无法正常显示解决办法**：
 
-    github中的markdown不支持LATEX公式，如果你喜欢在本项目中浏览教程，可以安装chrome的`MathJax Plugin for Github`插件让大部分公式正常显示。但是包含公式的章节强力建议使用 [动手学CV-PyTorch 在线阅读](https://datawhalechina.github.io/dive-into-cv-pytorch) 进行学习
+    github中的markdown不支持LATEX公式，如果你喜欢在本项目中直接浏览教程，可以安装chrome的`MathJax Plugin for Github`插件让大部分公式正常显示。但是包含公式的章节强力建议使用 [动手学CV-PyTorch 在线阅读](https://datawhalechina.github.io/dive-into-cv-pytorch) 进行学习
 
 
 ## 致谢
@@ -86,13 +86,13 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">闫永强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，2.4、2.5、2.6节作者</td>
-    <td><a href="url">TODO</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，2.4、2.5、2.6节作者</td>
+    <td> </td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋志龙</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，2.1、2.2、2.3节作者</td>
-    <td><a href="url">TODO</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，2.1、2.2、2.3节作者</td>
+    <td> </td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
@@ -106,13 +106,13 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">袁明坤</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，2.1节作者</td>
-    <td><a href="url">https://github.com/yuan-mk</a>Github</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">西安电子科技大学硕士，2.1节作者</td>
+    <td><a href="https://blog.csdn.net/my_kun?spm=1011.2124.3001.5113">CSDN</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">游璐颖</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，1.2节作者</td>
-    <td><a href="https://github.com/Sonatau">Github</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">福州大学计算机硕士，1.2节作者</td>
+    <td><a href="yluy.gitee.io">个人主页</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李一飞</span></td>
