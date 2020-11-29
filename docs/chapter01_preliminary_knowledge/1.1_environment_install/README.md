@@ -189,7 +189,9 @@ Anaconda是目前非常流行的一个python包管理器，自带很多流行的
 
 使用如下命令创建一个名为py37_torch131的指定python3.7版本的新环境。
 
->$conda create -n py37_torch131 python=3.7
+```
+$conda create -n py37_torch131 python=3.7
+```
 
 **查看所有环境**
 
@@ -212,17 +214,23 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 可以通过如下命令删除制定虚拟环境，当然这里我们就不真的实际运行了
 
-> $conda env remove -n py37_torch131
+```
+$conda env remove -n py37_torch131
+```
 
 **激活or关闭指定环境**
 
 使用`source activate 环境名`来激活指定环境
 
-> $source activate py37_torch131
+```
+$source activate py37_torch131
+```
 
 使用`source deactivate` or `source deactivate 环境名` 关闭当前环境
 
-> $source deactivate py37_torch131
+```
+$source deactivate py37_torch131
+```
 
 **在指定环境中安装包**
 
@@ -230,11 +238,15 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 首先重新激活刚刚创建的环境
 
-> $source activate py37_torch131
+```
+$source activate py37_torch131
+```
 
 接下来安装gpu_1.3.1版本的pytorch
 
-> $conda install pytorch=1.3.1 torchvision cudatoolkit=10.0
+```
+$conda install pytorch=1.3.1 torchvision cudatoolkit=10.0
+```
 
 不同环境下的安装命令可以在[Pytorch官网](https://pytorch.org)找到
 
@@ -244,7 +256,9 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 除此之外，你可以还需要一切其他的库，根据你的需要，再使用pip命令安装到当前环境中即可，例如：
 
-> $pip install jupyter tqdm opencv-python matplotlib pandas
+```
+$pip install jupyter tqdm opencv-python matplotlib pandas
+```
 
 **下载超时的解决办法**
 
