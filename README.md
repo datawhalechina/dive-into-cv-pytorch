@@ -86,12 +86,12 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">闫永强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，2.4、2.5、2.6节作者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.4、3.5、3.6节作者</td>
     <td> </td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋志龙</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，2.1、2.2、2.3节作者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.1、3.2、3.3节作者</td>
     <td> </td>
   </tr>
   <tr>
@@ -116,8 +116,7 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李一飞</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">TODO，1.3、1.4节作者</td>
-    <td><a href="url">TODO</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">1.3、1.4节优化</td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
