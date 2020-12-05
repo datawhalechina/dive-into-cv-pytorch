@@ -1,3 +1,8 @@
+
+<div align=center>
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/whale_pytorch.jpg" width="250">
+</div>
+
 # Dive-into-CV-PyTorch
 
 本项目《动手学CV-Pytorch版》是Datawhale:whale:CV小组近期推动的一个重点项目。
