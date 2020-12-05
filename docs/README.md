@@ -116,7 +116,7 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李一飞</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">1.3、1.4节优化</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，参与1.3、1.4节优化</td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
