@@ -32,6 +32,7 @@ class PascalVOCDataset(Dataset):
 
         assert len(self.images) == len(self.objects)
 
+
     def __getitem__(self, i):
         # Read image
         image = Image.open(self.images[i], mode='r')
@@ -54,8 +55,10 @@ class PascalVOCDataset(Dataset):
 
         return image, boxes, labels, difficulties
 
+
     def __len__(self):
         return len(self.images)
+
 
     def collate_fn(self, batch):
         """
@@ -68,7 +71,6 @@ class PascalVOCDataset(Dataset):
         :param batch: an iterable of N sets from __getitem__()
         :return: a tensor of images, lists of varying-size tensors of bounding boxes, labels, and difficulties
         """
-
         images = list()
         boxes = list()
         labels = list()
@@ -83,3 +85,4 @@ class PascalVOCDataset(Dataset):
         images = torch.stack(images, dim=0)
 
         return images, boxes, labels, difficulties  # tensor (N, 3, 224, 224), 3 lists of N tensors each
+
