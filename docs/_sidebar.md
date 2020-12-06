@@ -14,6 +14,7 @@
             - [比赛方案与优化技巧总结](chapter02_image_classification_introduction/2.4_classification_action_SVHN/ideas_and_tricks_summary.md)
         - [附录A torchvision.transforms速查表](chapter02_image_classification_introduction/appendix/appendixA_data_augment.md)
     - 第三章 目标检测入门
+        - [前言](chapter03_object_detection_introduction/introduction.md)
         - [3.1 目标检测基本概念](chapter03_object_detection_introduction/3_1.md)
         - [3.2 目标检测数据集VOC](chapter03_object_detection_introduction/3_2.md)
         - [3.3 锚框](chapter03_object_detection_introduction/3_3.md)
