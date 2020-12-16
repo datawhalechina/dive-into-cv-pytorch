@@ -76,7 +76,7 @@ def create_data_lists(voc07_path, voc12_path, output_folder):
             objects = parse_annotation(os.path.join(path, 'Annotations', id + '.xml'))
             if len(objects['boxes']) == 0:
                 continue
-            n_objects += len(objects)
+            n_objects += len(objects['boxes'])
             train_objects.append(objects)
             train_images.append(os.path.join(path, 'JPEGImages', id + '.jpg'))
 
@@ -105,10 +105,10 @@ def create_data_lists(voc07_path, voc12_path, output_folder):
     for id in ids:
         # Parse annotation's XML file
         objects = parse_annotation(os.path.join(voc07_path, 'Annotations', id + '.xml'))
-        if len(objects) == 0:
+        if len(objects['boxes']) == 0:
             continue
         test_objects.append(objects)
-        n_objects += len(objects)
+        n_objects += len(objects['boxes'])
         test_images.append(os.path.join(voc07_path, 'JPEGImages', id + '.jpg'))
 
     assert len(test_objects) == len(test_images)
