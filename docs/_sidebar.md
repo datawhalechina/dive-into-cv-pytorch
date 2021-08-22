@@ -21,4 +21,12 @@
         - [3.4 模型结构](chapter03_object_detection_introduction/3_4.md)
         - [3.5 损失函数](chapter03_object_detection_introduction/3_5.md)
         - [3.6 训练与测试](chapter03_object_detection_introduction/3_6.md)
+    - 第四章: 图像分割入门
+        - 推进中...
+    - 第五章: 生成式对抗网络入门
+        - 推进中...
+    - 第六章: CV中的Transformer
+        - 6.1 Hello Transformer
+        - 6.2 Vision Transformer
+        - [6.3 OCR by Transformer](chapter06_transformer/6_3_ocr_by_transformer.md)
 
