@@ -20,7 +20,9 @@
 - transformer.py (transformer模型文件)
 - train_utils.py (训练相关辅助函数，loss、optimizer等)
 
-其中 ocr_by_transformer.py 依托 train_utils.py 和 transformer.py 两个文件构建 transformer 模型，这两个脚本在之前章节中已经详细介绍，因此本文不再赘述。
+其中 ocr_by_transformer.py 为主要的训练脚本，其依托 train_utils.py 和 transformer.py 两个文件构建 transformer 来完成字符识别模型的训练。
+
+下面进入正式内容：
 
 ---
 
@@ -1010,7 +1012,7 @@ total correct rate of validset: 92.72088353413655%
 
 回顾一下，本小节我们首先介绍了我们所使用的ICDAR2015中的一个单词识别任务数据集，然后对数据的特点进行了简单分析，并构建了识别用的字符映射关系表。之后，我们重点介绍了将transformer引入来解决OCR任务的动机与思路，并结合代码详细介绍了细节，最后我们大致过了一些训练相关的逻辑和代码。
 
-本文主要是帮助大家打开思路，了解transformer在CV中除了作为backbone以外的其他应用点，关于Tranformer模型本身的实现代码参考了[The Annotated Transformer](https://link.zhihu.com/?target=http%3A//nlp.seas.harvard.edu/2018/04/03/attention.html)，关于如何应用到OCR部分，完全是结合作者个人理解实现的，不能保证一定能应用到更负责的工程问题中。关于文中的任何细节，如果有任何疑问，欢迎联系我们一起讨论，如有错误，也恳请指出。
+本文主要是帮助大家打开思路，了解transformer在CV中除了作为backbone以外的其他应用点，关于Tranformer模型本身的实现代码参考了[The Annotated Transformer](https://link.zhihu.com/?target=http%3A//nlp.seas.harvard.edu/2018/04/03/attention.html)，关于如何应用到OCR部分，完全是结合作者个人理解实现的，不能保证一定能应用到更复杂的工程问题中。关于文中的任何细节，如果有任何疑问，欢迎联系我们一起讨论，如有错误，也恳请指出。
 
 希望大家阅读本文后有所收获!
 
