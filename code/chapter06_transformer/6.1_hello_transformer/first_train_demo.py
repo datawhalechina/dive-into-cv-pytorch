@@ -226,8 +226,6 @@ nrof_epochs = 20
 batch_size = 32
 V = 11    # 词典的数量
 sequence_len = 15  # 生成的序列数据的长度
-#nrof_batch_train_epoch = 20    # 训练时每个epoch多少个batch
-#nrof_batch_valid_epoch = 5     # 验证时每个epoch多少个batch
 nrof_batch_train_epoch = 30    # 训练时每个epoch多少个batch
 nrof_batch_valid_epoch = 10    # 验证时每个epoch多少个batch
 criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
@@ -275,49 +273,3 @@ pred_result = greedy_decode(model, src, src_mask, max_len=10, start_symbol=1)
 print(pred_result[:, 1:])
 
 
-
-## A Real World Example
-#
-#global max_src_in_batch, max_tgt_in_batch
-#def batch_size_fn(new, count, sofar):
-#    "Keep augmenting batch and calculate total number of tokens + padding."
-#    global max_src_in_batch, max_tgt_in_batch
-#    if count == 1:
-#        max_src_in_batch = 0
-#        max_tgt_in_batch = 0
-#    max_src_in_batch = max(max_src_in_batch,  len(new.src))
-#    max_tgt_in_batch = max(max_tgt_in_batch,  len(new.trg) + 2)
-#    src_elements = count * max_src_in_batch
-#    tgt_elements = count * max_tgt_in_batch
-#    return max(src_elements, tgt_elements)
-#
-#
-## For data loading.
-#from torchtext import data, datasets
-#import spacy
-#
-#spacy_de = spacy.load('de_core_news_sm')
-#spacy_en = spacy.load('en_core_web_sm')
-#
-#def tokenize_de(text):
-#    return [tok.text for tok in spacy_de.tokenizer(text)]
-#
-#def tokenize_en(text):
-#    return [tok.text for tok in spacy_en.tokenizer(text)]
-#
-#BOS_WORD = '<s>'
-#EOS_WORD = '</s>'
-#BLANK_WORD = "<blank>"
-#SRC = data.Field(tokenize=tokenize_de, pad_token=BLANK_WORD)
-#TGT = data.Field(tokenize=tokenize_en, init_token = BOS_WORD, 
-#                 eos_token = EOS_WORD, pad_token=BLANK_WORD)
-#
-#MAX_LEN = 100
-#train, val, test = datasets.IWSLT.splits(
-#    exts=('.de', '.en'), fields=(SRC, TGT), 
-#    filter_pred=lambda x: len(vars(x)['src']) <= MAX_LEN and 
-#        len(vars(x)['trg']) <= MAX_LEN)
-#MIN_FREQ = 2
-#SRC.build_vocab(train.src, min_freq=MIN_FREQ)
-#TGT.build_vocab(train.trg, min_freq=MIN_FREQ)
-#

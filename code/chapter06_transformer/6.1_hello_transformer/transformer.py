@@ -92,26 +92,9 @@ class LayerNorm(nn.Module):
         return self.a_2 * (x - mean) / (std + self.eps) + self.b_2
 
 
-#class SublayerConnection(nn.Module):
-#    """
-#    A residual connection followed by a layer norm.
-#    Note for code simplicity the norm is first as opposed to last.
-#    """
-#    def __init__(self, size, dropout):
-#        super(SublayerConnection, self).__init__()
-#        self.norm = LayerNorm(size)
-#        self.dropout = nn.Dropout(dropout)
-#
-#    def forward(self, x, sublayer):
-#        "Apply residual connection to any sublayer with the same size."
-#        x_norm = self.norm(x)
-#        sublayer_out = sublayer(x_norm)
-#        return x + self.dropout(sublayer_out)
-
 class SublayerConnection(nn.Module):
     """
-    A residual connection followed by a layer norm.
-    Note for code simplicity the norm is first as opposed to last.
+    实现子层连接结构的类
     """
     def __init__(self, size, dropout):
         super(SublayerConnection, self).__init__()
@@ -120,15 +103,20 @@ class SublayerConnection(nn.Module):
 
     def forward(self, x, sublayer):
         "Apply residual connection to any sublayer with the same size."
+
+        # 原paper的方案
+        #sublayer_out = sublayer(x)
+        #x_norm = self.norm(x + self.dropout(sublayer_out))
+
+        # 稍加调整的版本
         sublayer_out = sublayer(x)
         sublayer_out = self.dropout(sublayer_out)
-        #x_norm = self.norm(x + sublayer_out)    # 
         x_norm = x + self.norm(sublayer_out)
         return x_norm
 
 
 class EncoderLayer(nn.Module):
-    "Encoder is made up of self-attn and feed forward (defined below)"
+    "EncoderLayer is made up of two sublayer: self-attn and feed forward"
     def __init__(self, size, self_attn, feed_forward, dropout):
         super(EncoderLayer, self).__init__()
         self.self_attn = self_attn
@@ -137,7 +125,6 @@ class EncoderLayer(nn.Module):
         self.size = size   # embedding's dimention of model, 默认512
 
     def forward(self, x, mask):
-        "Follow Figure 1 (left) for connections."
         # attention sub layer
         x = self.sublayer[0](x, lambda x: self.self_attn(x, x, x, mask))
         # feed forward sub layer
@@ -231,6 +218,7 @@ class MultiHeadedAttention(nn.Module):
              .view(nbatches, -1, self.h * self.d_k)
         return self.linears[-1](x)
 
+
 class PositionwiseFeedForward(nn.Module):
     "Implements FFN equation."
     def __init__(self, d_model, d_ff, dropout=0.1):
@@ -254,15 +242,25 @@ class Embeddings(nn.Module):
         embedds = self.lut(x)
         return embedds * math.sqrt(self.d_model)    # TODO 这里的归一化操作的目的?
 
+
 # Positional Encoding
 class PositionalEncoding(nn.Module):
     "Implement the PE function."
     def __init__(self, d_model, dropout, max_len=5000):
+        """
+        位置编码器类的初始化函数
+        
+        共有三个参数，分别是
+        d_model：词嵌入维度
+        dropout: dropout触发比率
+        max_len：每个句子的最大长度
+        """
         super(PositionalEncoding, self).__init__()
         self.dropout = nn.Dropout(p=dropout)
         
-        # TODO 位置信息编码的具体原理
-        # Compute the positional encodings once in log space.
+        # Compute the positional encodings
+        # 注意下面代码的计算方式与公式中给出的是不同的，但是是等价的，你可以尝试简单推导证明一下。
+        # 这样计算是为了避免中间的数值计算结果超出float的范围，
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len).unsqueeze(1)
         div_term = torch.exp(torch.arange(0, d_model, 2) *
