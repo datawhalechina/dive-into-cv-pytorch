@@ -11,7 +11,7 @@
 
 项目大体上会按照计算机视觉的不同领域和应用场景进行章节划分，循序渐进，带领大家走进CV的世界，以动手实战的方式，从入门到进阶。
 
-目前已经完成的内容包括：预备知识、图像分类入门、目标检测入门三个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
+目前已经完成的内容包括：`预备知识`、`图像分类入门`、`目标检测入门`、`CV中的Transformer`四个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
 
 ## 食用方法
 
@@ -54,9 +54,8 @@
     - 推进中...
 
 * 第六章: CV中的Transformer
-    - [] 6.1 Hello Transformer
-    - [] 6.2 Vision Transformer
-    - [X] [6.3 OCR by Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_3_ocr_by_transformer.md)
+    - [X] [6.1 Hello Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_1_hello_transformer.md)
+    - [X] [6.2 OCR by Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_2_ocr_by_transformer.md)
 
 
 ## 常见问题
@@ -99,13 +98,18 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">闫永强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.4、3.5、3.6节作者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.4、3.5、3.6、6.1节作者</td>
     <td> </td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋志龙</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.1、3.2、3.3节作者</td>
     <td> </td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">袁明坤</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">西安电子科技大学硕士，2.1、6.2节作者</td>
+    <td><a href="https://blog.csdn.net/my_kun?spm=1011.2124.3001.5113">CSDN</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
@@ -116,11 +120,6 @@
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁波大学计算机硕士，2.2节作者</td>
     <td><a href="https://github.com/QiangZiBro">Github</a></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">袁明坤</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">西安电子科技大学硕士，2.1节作者</td>
-    <td><a href="https://blog.csdn.net/my_kun?spm=1011.2124.3001.5113">CSDN</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">游璐颖</span></td>

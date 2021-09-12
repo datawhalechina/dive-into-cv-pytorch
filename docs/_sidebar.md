@@ -26,7 +26,6 @@
     - 第五章: 生成式对抗网络入门
         - 推进中...
     - 第六章: CV中的Transformer
-        - 6.1 Hello Transformer
-        - 6.2 Vision Transformer
-        - [6.3 OCR by Transformer](chapter06_transformer/6_3_ocr_by_transformer.md)
+        - [6.1 Hello Transformer](chapter06_transformer/6_1_hello_transformer.md)
+        - [6.2 OCR by Transformer](chapter06_transformer/6_2_ocr_by_transformer.md)
 
