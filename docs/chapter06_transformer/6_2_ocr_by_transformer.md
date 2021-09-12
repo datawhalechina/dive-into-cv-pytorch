@@ -1,4 +1,4 @@
-# 6.3 使用transformer实现OCR字符识别
+# 6.2 使用transformer实现OCR字符识别
 
 本文将以 `ICDAR2015 Incidental Scene Text` 中的 [Task 4.3: Word Recognition](https://rrc.cvc.uab.es/?ch=4&com=downloads) 单词识别子任务作为数据集，讲解如何使用transformer来实现一个简单的OCR文字识别任务，并从中体会transformer是如何应用到除分类以外更复杂的CV任务中的。
 
@@ -11,7 +11,7 @@
 
 注：本文未涉及过多transformer原理的讲解，更注重围绕如何设计模型和训练架构来解决OCR任务进行讲解。对transformer原理及代码并不熟悉的小伙伴需要先学习本文的前置章节《6.1 hello transformer》，重点讲解了 transformer 的代码实现。
 
-本实验代码位于`dive-into-cv-pytorch/code/chapter06_transformer/6.3_recognition_by_transformer`
+本实验代码位于`dive-into-cv-pytorch/code/chapter06_transformer/6.2_recognition_by_transformer`
 
 主要包括以下几个文件：
 
@@ -26,7 +26,7 @@
 
 ---
 
-## 6.3.1、数据集简介
+## 6.2.1、数据集简介
 
 
 本文OCR实验使用的数据集基于`ICDAR2015 Incidental Scene Text` 中的 `Task 4.3: Word Recognition`，这是一个单词识别任务，我们去掉了其中一些图片，来简化这个实验的难度，马上会提到。
@@ -39,7 +39,7 @@
 
 |                     word_79.png, "Share"                     |                   word_104.png, "Optical"                    |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![data_share](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/data_share.png) | ![data_optical](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/data_optical.png) |
+| ![data_share](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/data_share.png) | ![data_optical](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/data_optical.png) |
 
 下载后的数据集包含以下几个文件或目录：
 
@@ -60,7 +60,7 @@ word_5.png, "727"
 
 为了简化后续实验的识别难度，提供的数据集使用高宽比>1.5粗略过滤了文字竖向排列的图像，因此与ICDAR2015的原始数据集略有差别。
 
-## 6.3.2 数据分析与字符映射关系构建
+## 6.2.2 数据分析与字符映射关系构建
 
 开始实验前，我们先对数据进行简单分析，只有对数据的特性足够了解，才能够更好的搭建出baseline，在训练中少走弯路。
 
@@ -288,17 +288,17 @@ max_ratio: 8.619047619047619
 
 以上便是对于数据集的若干简单分析，并且准备出了训练要用的char2id映射文件，下面就是重头戏了，来看看我们如何将transfomer引入，来完成OCR单词识别这样的CV任务。
 
-## 6.3.3 如何将transformer引入OCR
+## 6.2.3 如何将transformer引入OCR
 
 很多算法本身并不难，难的是如何思考和定义问题，把它转化到已知的解决方案上去。因此在看代码之前，我们先要聊聊，为什么transformer可以解决OCR问题，动机是什么？
 
 首先，我们知道，transformer被广泛应用在NLP领域中，可以解决类似机器翻译这样的sequence to sequence类的问题，如下图所示
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/transformer.jpg">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/transformer.jpg">
 
 而OCR识别任务，如下图所示，我们希望将下图识别为"Share"，本质上也可以看作是一个sequence to sequence任务，只不过输入的序列信息是由图片形式表示的。
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/data_share.png">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/data_share.png">
 
 因此，如果从把OCR问题看作是一个sequence to sequence预测问题这个角度，使用transformer解决OCR问题貌似是一个非常自然和顺畅的想法，剩下的问题只是如何将图片的信息构造成transformer想要的，类似于 word embedding 形式的输入。
 
@@ -308,13 +308,13 @@ max_ratio: 8.619047619047619
 
 因此，基于以上分析，我们将模型框架的pipeline定义为下图所示的形式：
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/ocr_by_transformer.png">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/ocr_by_transformer.png">
 
 通过观察上图可以发现，整个pipeline和利用transformer训练机器翻译的流程是基本一致的，之间的差异主要是多了借助一个CNN网络作为backbone提取图像特征得到input embedding的过程。
 
 关于构造transformer的输入embedding这部分的设计，是本文的重点，也是整个算法能够work的关键。后文会结合代码，对上面示意图中展示的相关细节进行展开讲解
 
-## 6.3.4 训练框架代码讲解
+## 6.2.4 训练框架代码讲解
 
 训练框架相关代码实现在 **ocr_by_transformer.py** 文件中
 
@@ -389,7 +389,7 @@ sequence_len = max(train_max_label_len, valid_max_label_len)
 
 基于之前对于数据集的分析，图片基本都是水平长条状的，图像内容是水平排列的字符组成的单词。那么图片空间上同一纵向切片的位置，基本只有一个字符，因此纵向分辨率不需要很大，那么取  $ H_f=1 $ 即可；而横向的分辨率需要大一些，我们需要有不同的embedding来编码水平方向上不同字符的特征。
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/img2feature.jpg">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/img2feature.jpg">
 
 这里，我们就用最经典的resnet18网络作为backbone，由于其下采样倍数为32，最后一层特征图channel数为512，那么:
 
@@ -399,7 +399,7 @@ $ C_f = 512 $
 
 那么输入图片的宽度如何确定呢？这里给出两种方案，如下图所示：
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/two_resize.jpg">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/two_resize.jpg">
 
 方法一：设定一个固定尺寸，将图像保持其宽高比进行resize，右侧空余区域进行padding；
 
@@ -597,7 +597,7 @@ decode_mask经过一个特殊的函数 **make_std_mask()** 进行生成。
 
 生成的decode_mask如下图所示：
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/decode_mask.png">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/decode_mask.png">
 
 以上是构建Dataset的所有细节，进而我们可以构建出DataLoader供训练使用
 
@@ -625,9 +625,9 @@ valid_loader = torch.utils.data.DataLoader(valid_dataset,
 
 ### 3. 模型构建
 
-代码通过 **make_ocr_model** 类和 **OCR_EncoderDecoder** 类完成模型结构搭建。
+代码通过 **make_ocr_model** 和 **OCR_EncoderDecoder** 类完成模型结构搭建。
 
-可以从 **make_ocr_model** 这个类看起，该类首先调用了pytorch中预训练的Resnet-18作为backbone以提取图像特征，此处也可以根据自己需要调整为其他的网络，但需要重点关注的是网络的下采样倍数，以及最后一层特征图的channel_num，相关模块的参数需要同步调整。之后调用了 **OCR_EncoderDecoder** 类完成transformer的搭建。最后对模型参数进行初始化。
+可以从 **make_ocr_model** 这个函数看起，该函数首先调用了pytorch中预训练的Resnet-18作为backbone以提取图像特征，此处也可以根据自己需要调整为其他的网络，但需要重点关注的是网络的下采样倍数，以及最后一层特征图的channel_num，相关模块的参数需要同步调整。之后调用了 **OCR_EncoderDecoder** 类完成transformer的搭建。最后对模型参数进行初始化。
 
 在 **OCR_EncoderDecoder** 类中，该类相当于是一个transformer各基础组件的拼装线，包括 encoder 和 decoder 等，其初始参数是已存在的基本组件，其基本组件代码都在transformer.py文件中，本文将不在过多叙述。
 
@@ -635,7 +635,7 @@ valid_loader = torch.utils.data.DataLoader(valid_dataset,
 
 图片经过backbone后将输出一个维度为 **[batch_size, 512, 1, 24]** 的特征图，在不关注batch_size的前提下，每一张图像都会得到如下所示具有512个通道的1×24的特征图，如图中红色框标注所示，将不同通道相同位置的特征值拼接组成一个新的向量，并作为一个时间步的输入，此时变构造出了维度为 **[batch_size, 24, 512]** 的输入，满足Transformer的输入要求。
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.3/transpose.jpg">
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter06/6.2/transpose.jpg">
 
 下面来看下完整的构造模型部分的代码：
 
@@ -1006,13 +1006,13 @@ tensor([20, 12, 21, 12, 22, 23, 34,  2])
 total correct rate of validset: 92.72088353413655%
 ```
 
-## 6.3.5 小结
+## 6.2.5 小结
 
 以上便是本小节的全部内容了。
 
 回顾一下，本小节我们首先介绍了我们所使用的ICDAR2015中的一个单词识别任务数据集，然后对数据的特点进行了简单分析，并构建了识别用的字符映射关系表。之后，我们重点介绍了将transformer引入来解决OCR任务的动机与思路，并结合代码详细介绍了细节，最后我们大致过了一些训练相关的逻辑和代码。
 
-本文主要是帮助大家打开思路，了解transformer在CV中除了作为backbone以外的其他应用点，关于Tranformer模型本身的实现代码参考了[The Annotated Transformer](https://link.zhihu.com/?target=http%3A//nlp.seas.harvard.edu/2018/04/03/attention.html)，关于如何应用到OCR部分，完全是结合作者个人理解实现的，不能保证一定能应用到更复杂的工程问题中。关于文中的任何细节，如果有任何疑问，欢迎联系我们一起讨论，如有错误，也恳请指出。
+本文主要是帮助大家打开思路，了解transformer在CV中除了作为backbone以外的其他应用点，关于Tranformer模型本身的实现代码参考了[The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)，关于如何应用到OCR部分，完全是结合作者个人理解实现的，不能保证一定能应用到更复杂的工程问题中。关于文中的任何细节，如果有任何疑问，欢迎联系我们一起讨论，如有错误，也恳请指出。
 
 希望大家阅读本文后有所收获!
 

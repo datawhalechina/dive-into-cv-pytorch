@@ -3,7 +3,7 @@
 
 分析本节所要用的识别数据集
 
-本节的OCR小实验使用的数据集是 Focused_Scene_Text_2013-2015
+本节的OCR小实验使用的数据集是 ICDAR 2015 Incidental Scene Text Task4.3 word Recognition
 本脚本会对这个数据集进行一些简单的分析，并统计生成一些后续需要使用的文件
 
 @author: anshengmath@163.com

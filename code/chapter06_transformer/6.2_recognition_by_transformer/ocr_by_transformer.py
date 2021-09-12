@@ -74,23 +74,19 @@ class Recognition_Dataset(object):
 
         # 对图片进行大致等比例的缩放
         # 将高缩放到32，宽大致等比例缩放，但要被32整除
-        #w, h = img.size
-        #ratio = round((w / h) * 3)   # 将宽拉长3倍，然后四舍五入
-        #if ratio == 0:
-        #    ratio = 1
-        #if ratio > self.max_ratio:
-        #    ratio = self.max_ratio
-        #h_new = 32
-        #w_new = h_new * ratio
-        #img_resize = img.resize((w_new, h_new), Image.BILINEAR)
+        w, h = img.size
+        ratio = round((w / h) * 3)   # 将宽拉长3倍，然后四舍五入
+        if ratio == 0:
+            ratio = 1
+        if ratio > self.max_ratio:
+            ratio = self.max_ratio
+        h_new = 32
+        w_new = h_new * ratio
+        img_resize = img.resize((w_new, h_new), Image.BILINEAR)
 
         # 对图片右半边进行padding，使得宽/高比例固定=self.max_ratio
-        #img_padd = Image.new('RGB', (32*self.max_ratio, 32), (0,0,0))
-        #img_padd.paste(img_resize, (0, 0))
-
-        # new 强行resize
-        ratio = self.max_ratio
-        img_padd = img.resize((32*self.max_ratio, 32), Image.BILINEAR)
+        img_padd = Image.new('RGB', (32*self.max_ratio, 32), (0,0,0))
+        img_padd.paste(img_resize, (0, 0))
 
         # 随机颜色变换
         img_input = self.color_trans(img_padd)
@@ -114,9 +110,8 @@ class Recognition_Dataset(object):
         gt.append(2)
         for i in range(len(lbl_str), self.sequence_len):   # 除去起始符终止符，lbl长度为sequence_len，剩下的padding
             gt.append(0)
-        # TODO
+        # 截断为预设的最大序列长度
         gt = gt[:self.sequence_len]
-        
 
         # decoder的输入
         decode_in = gt[:-1]
@@ -295,10 +290,8 @@ if __name__ == "__main__":
     base_data_dir = '../../../dataset/ICDAR_2015/'    # 数据集根目录，请将数据下载到此位置
     device = torch.device('cuda')
     nrof_epochs = 1500
-    nrof_epochs = 1
     batch_size = 64
-    d_model = 512
-    max_ratio = 8    # 图片预处理时 宽/高的最大值，不超过就保比例resize，超过会强行压缩
+    model_save_path = './log/ex1_ocr_model.pth'
 
     # 读取label-id映射关系记录文件
     lbl2id_map_path = os.path.join(base_data_dir, 'lbl2id_map.txt')
@@ -310,9 +303,9 @@ if __name__ == "__main__":
     train_max_label_len = statistics_max_len_label(train_lbl_path)
     valid_max_label_len = statistics_max_len_label(valid_lbl_path)
     sequence_len = max(train_max_label_len, valid_max_label_len)   # 数据集中字符数最多的一个case作为制作的gt的sequence_len
-    #sequence_len = 7   # TODO
 
     # 构造 dataloader
+    max_ratio = 8    # 图片预处理时 宽/高的最大值，不超过就保比例resize，超过会强行压缩
     train_dataset = Recognition_Dataset(base_data_dir, lbl2id_map, sequence_len, max_ratio, 'train', pad=0)
     valid_dataset = Recognition_Dataset(base_data_dir, lbl2id_map, sequence_len, max_ratio, 'valid', pad=0)
     train_loader = torch.utils.data.DataLoader(train_dataset,
@@ -327,6 +320,7 @@ if __name__ == "__main__":
     # build model
     # use transformer as ocr recognize model
     tgt_vocab = len(lbl2id_map.keys())
+    d_model = 512
     ocr_model = make_ocr_model(tgt_vocab, N=5, d_model=d_model, d_ff=2048, h=8, dropout=0.1)
     ocr_model.to(device)
 
@@ -355,7 +349,7 @@ if __name__ == "__main__":
             print(f"valid loss: {valid_mean_loss}")
     
     # save model
-    torch.save(ocr_model.state_dict(), 'ocr_model.pt')
+    torch.save(ocr_model.state_dict(), model_save_path)
 
     # 训练结束，使用贪心的解码方式推理训练集和验证集，统计正确率
     ocr_model.eval()
