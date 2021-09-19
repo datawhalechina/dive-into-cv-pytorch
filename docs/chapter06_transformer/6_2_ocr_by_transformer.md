@@ -302,8 +302,6 @@ max_ratio: 8.619047619047619
 
 因此，如果从把OCR问题看作是一个sequence to sequence预测问题这个角度，使用transformer解决OCR问题貌似是一个非常自然和顺畅的想法，剩下的问题只是如何将图片的信息构造成transformer想要的，类似于 word embedding 形式的输入。
 
-根据上一节 vision transformer 的学习，我们已经知道，借助一个基础骨架网络，例如resnet来提取图像的特征后，特征图经过整理可以得到对应图片不同空间位置处的图像特征embedding，这和NLP任务中对应不同时间步的 word embedding是等价的，因此可以作为transformer的输入。
-
 回到我们的任务，既然待预测的图片都是长条状的，文字基本都是水平排列，那么我们将特征图沿水平方向进行整合，得到的每一个embedding可以认为是图片纵向的某个切片的特征，将这样的特征序列交给transformer，利用其强大的attention能力来完成预测。
 
 因此，基于以上分析，我们将模型框架的pipeline定义为下图所示的形式：
