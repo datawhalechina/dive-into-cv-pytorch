@@ -3,7 +3,12 @@
 
 第一次训练Transformer，Hello Transformer！
 
-通过一个玩具级的任务来学习transformer的训练，数据的人工构造的
+通过一个玩具级的任务来学习transformer的训练，数据是人工构造的
+
+use the following command to run:
+python first_train_demo.py 
+or
+CUDA_VISIBLE_DEVICES='0' python first_train_demo.py 
 
 @author: anshengmath@163.com
 modified from a great tutorial: http://nlp.seas.harvard.edu/2018/04/03/attention.html
@@ -40,6 +45,7 @@ class Batch:
             subsequent_mask(tgt.size(-1)).type_as(tgt_mask.data))
         return tgt_mask
 
+
 # Synthetic Data
 def data_gen(V, slen, batch, nbatches, device):
     """
@@ -69,6 +75,7 @@ def data_gen(V, slen, batch, nbatches, device):
             tgt = tgt.cuda() 
         yield Batch(src, tgt, 0)
     
+
 # test data_gen
 data_iter = data_gen(V=5, slen=10, batch=2, nbatches=10, device="cpu")
 for i, batch in enumerate(data_iter):
@@ -98,12 +105,8 @@ def run_epoch(data_iter, model, loss_compute, device=None):
     total_loss = 0
     tokens = 0
     for i, batch in enumerate(data_iter):
-        #if device == "cuda":
-        #    batch.to_device(device) 
         out = model.forward(batch.src, batch.trg, 
                             batch.src_mask, batch.trg_mask)
-        import pdb
-        pdb.set_trace()
         loss = loss_compute(out, batch.trg_y, batch.ntokens)
         total_loss += loss
         total_tokens += batch.ntokens
@@ -116,38 +119,6 @@ def run_epoch(data_iter, model, loss_compute, device=None):
             tokens = 0
     return total_loss / total_tokens
 
-
-
-class NoamOpt:
-    "Optim wrapper that implements rate."
-    def __init__(self, model_size, factor, warmup, optimizer):
-        self.optimizer = optimizer
-        self._step = 0
-        self.warmup = warmup
-        self.factor = factor
-        self.model_size = model_size
-        self._rate = 0
-        
-    def step(self):
-        "Update parameters and rate"
-        self._step += 1
-        rate = self.rate()
-        for p in self.optimizer.param_groups:
-            p['lr'] = rate
-        self._rate = rate
-        self.optimizer.step()
-        
-    def rate(self, step = None):
-        "Implement `lrate` above"
-        if step is None:
-            step = self._step
-        return self.factor * \
-            (self.model_size ** (-0.5) *
-            min(step ** (-0.5), step * self.warmup ** (-1.5)))
-        
-def get_std_opt(model):
-    return NoamOpt(model.src_embed[0].d_model, 2, 4000,
-            torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
 class LabelSmoothing(nn.Module):
     "Implement label smoothing."
@@ -173,29 +144,6 @@ class LabelSmoothing(nn.Module):
         return self.criterion(x, Variable(true_dist, requires_grad=False))
 
 
-# Example of label smoothing.
-crit = LabelSmoothing(5, 0, 0.4)
-predict = torch.FloatTensor([[0, 0.2, 0.7, 0.1, 0],
-                             [0, 0.2, 0.7, 0.1, 0], 
-                             [0, 0.2, 0.7, 0.1, 0]])
-v = crit(Variable(predict.log()), 
-         Variable(torch.LongTensor([2, 1, 0])))
-
-
-crit = LabelSmoothing(5, 0, 0.1)
-def loss(x):
-    d = x + 3 * 1
-    predict = torch.FloatTensor([[0, x / d, 1 / d, 1 / d, 1 / d],
-                                 ])
-    #print(predict)
-    return crit(Variable(predict.log()),
-                 Variable(torch.LongTensor([1]))).data[0]
-
-
-# A First Example
-
-
-
 class SimpleLossCompute:
     "A simple loss compute and train function."
     def __init__(self, generator, criterion, opt=None):
@@ -215,14 +163,16 @@ class SimpleLossCompute:
         loss.backward()
         if self.opt is not None:
             self.opt.step()
-            self.opt.optimizer.zero_grad()
-        #return loss.data[0] * norm  # TODO
+            self.opt.zero_grad()
         return loss.item() * norm
 
 
+# -----------------------------------
+# A Easy Example
+# -----------------------------------
 # Train the simple copy task.
 device = "cuda"
-nrof_epochs = 20
+nrof_epochs = 40
 batch_size = 32
 V = 11    # 词典的数量
 sequence_len = 15  # 生成的序列数据的长度
@@ -230,8 +180,8 @@ nrof_batch_train_epoch = 30    # 训练时每个epoch多少个batch
 nrof_batch_valid_epoch = 10    # 验证时每个epoch多少个batch
 criterion = LabelSmoothing(size=V, padding_idx=0, smoothing=0.0)
 model = make_model(V, V, N=2)
-optimizer = torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
-model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400, optimizer)
+#optimizer = torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.005, momentum=0.9)
 if device == "cuda":
     model.cuda()
 
@@ -239,8 +189,8 @@ for epoch in range(nrof_epochs):
     print(f"\nepoch {epoch}")
     print("train...")
     model.train()
-    data_iter = data_gen(V, sequence_len, batch_size, nrof_batch_train_epoch, device)   
-    loss_compute = SimpleLossCompute(model.generator, criterion, model_opt)
+    data_iter = data_gen(V, sequence_len, batch_size, nrof_batch_train_epoch, device)
+    loss_compute = SimpleLossCompute(model.generator, criterion, optimizer)
     train_mean_loss = run_epoch(data_iter, model, loss_compute, device)
     print("valid...")
     model.eval()

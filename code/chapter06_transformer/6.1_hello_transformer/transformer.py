@@ -105,13 +105,14 @@ class SublayerConnection(nn.Module):
         "Apply residual connection to any sublayer with the same size."
 
         # 原paper的方案
-        #sublayer_out = sublayer(x)
-        #x_norm = self.norm(x + self.dropout(sublayer_out))
+        #x_norm = self.norm(x + self.dropout(sublayer(x)))
+
+        # http://nlp.seas.harvard.edu/2018/04/03/attention.html 版本 
+        #x_norm = x + self.dropout(sublayer(self.norm(x)))
 
         # 稍加调整的版本
-        sublayer_out = sublayer(x)
-        sublayer_out = self.dropout(sublayer_out)
-        x_norm = x + self.norm(sublayer_out)
+        x_norm = x + self.norm(self.dropout(sublayer(x)))
+
         return x_norm
 
 
