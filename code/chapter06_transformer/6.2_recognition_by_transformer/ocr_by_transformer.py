@@ -289,7 +289,7 @@ if __name__ == "__main__":
     # TODO set parameters
     base_data_dir = '../../../dataset/ICDAR_2015/'    # 数据集根目录，请将数据下载到此位置
     device = torch.device('cuda')
-    nrof_epochs = 1500
+    nrof_epochs = 1000
     batch_size = 64
     model_save_path = './log/ex1_ocr_model.pth'
 
