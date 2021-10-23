@@ -92,22 +92,6 @@ class LayerNorm(nn.Module):
         return self.a_2 * (x - mean) / (std + self.eps) + self.b_2
 
 
-#class SublayerConnection(nn.Module):
-#    """
-#    A residual connection followed by a layer norm.
-#    Note for code simplicity the norm is first as opposed to last.
-#    """
-#    def __init__(self, size, dropout):
-#        super(SublayerConnection, self).__init__()
-#        self.norm = LayerNorm(size)
-#        self.dropout = nn.Dropout(dropout)
-#
-#    def forward(self, x, sublayer):
-#        "Apply residual connection to any sublayer with the same size."
-#        x_norm = self.norm(x)
-#        sublayer_out = sublayer(x_norm)
-#        return x + self.dropout(sublayer_out)
-
 class SublayerConnection(nn.Module):
     """
     A residual connection followed by a layer norm.
@@ -122,7 +106,6 @@ class SublayerConnection(nn.Module):
         "Apply residual connection to any sublayer with the same size."
         sublayer_out = sublayer(x)
         sublayer_out = self.dropout(sublayer_out)
-        #x_norm = self.norm(x + sublayer_out)    # 
         x_norm = x + self.norm(sublayer_out)
         return x_norm
 

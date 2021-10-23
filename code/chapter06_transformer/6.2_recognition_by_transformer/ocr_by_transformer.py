@@ -111,7 +111,7 @@ class Recognition_Dataset(object):
         for i in range(len(lbl_str), self.sequence_len):   # 除去起始符终止符，lbl长度为sequence_len，剩下的padding
             gt.append(0)
         # 截断为预设的最大序列长度
-        gt = gt[:self.sequence_len]
+        gt = gt[:self.sequence_len+2]
 
         # decoder的输入
         decode_in = gt[:-1]
@@ -326,19 +326,18 @@ if __name__ == "__main__":
 
     # train prepare
     criterion = LabelSmoothing(size=tgt_vocab, padding_idx=0, smoothing=0.0)
-    #optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, ocr_model.parameters()), 
-    #                            lr=0,
-    #                            betas=(0.9, 0.98),
-    #                            eps=1e-9)
-    optimizer = torch.optim.Adam(ocr_model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
-    model_opt = NoamOpt(d_model, 1, 400, optimizer)
+
+    # choose a optimizer
+    #optimizer = torch.optim.Adam(ocr_model.parameters(), lr=0.0005, betas=(0.9, 0.98), eps=1e-9)
+    optimizer = torch.optim.SGD(ocr_model.parameters(), lr=0.001, momentum=0.9)
 
     for epoch in range(nrof_epochs):
         print(f"\nepoch {epoch}")
 
         print("train...")
         ocr_model.train()
-        loss_compute = SimpleLossCompute(ocr_model.generator, criterion, model_opt)
+        #loss_compute = SimpleLossCompute(ocr_model.generator, criterion, model_opt)
+        loss_compute = SimpleLossCompute(ocr_model.generator, criterion, optimizer)
         train_mean_loss = run_epoch(train_loader, ocr_model, loss_compute, device)
 
         if epoch % 10 == 0:
