@@ -207,11 +207,11 @@ with open(lbl2id_map_path, 'w', encoding='utf-8') as writer:  # 参数encoding�
 [ 3
 0 4
 ...
-‰ 87
-@ 88
-= 89
-+ 90
-© 91
+‰ 85
+@ 86
+= 87
++ 88
+© 89
 ```
 
 此外，**analysis_recognition_dataset.py** 文件中还包含一个建立关系映射字典的函数，可以通过读取含有映射关系txt的文件，构建出字符到id和id到字符的映射字典。这服务于后续transformer训练过程，以方便字符关系快速实现转换。
