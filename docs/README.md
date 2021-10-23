@@ -93,8 +93,8 @@
 <tbody>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">安晟</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，项目负责人，参与前三章内容构建 </td>
-    <td><a href="https://blog.csdn.net/u011583927">CSDN博客</a>,   <a href="https://github.com/monkeyDemon">Github</a></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，项目负责人 </td>
+    <td><a href="https://blog.csdn.net/u011583927">CSDN</a>,   <a href="https://github.com/monkeyDemon">Github</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">闫永强</span></td>
@@ -114,7 +114,7 @@
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王程伟</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">南昌航空大学研究生，1.5、2.1节作者</td>
-    <td><a href="https://blog.csdn.net/weixin_40647819">CSDN博客</a></td>
+    <td><a href="https://blog.csdn.net/weixin_40647819">CSDN</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">张强</span></td>
@@ -133,7 +133,7 @@
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，1.3节作者</span></td>
-    <td><a href="https://blog.csdn.net/OuDiShenmiss">CSDN博客</a></td>
+    <td><a href="https://blog.csdn.net/OuDiShenmiss">CSDN</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">杨皓博</span></td>
