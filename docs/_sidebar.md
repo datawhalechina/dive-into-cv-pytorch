@@ -24,7 +24,10 @@
     - 第四章: 图像分割入门
         - 推进中...
     - 第五章: 生成式对抗网络入门
-        - 推进中...
+        - [前言](chapter05_gan/introduction.md)
+        - [5.1 初识生成对抗网络](chapter05_gan/5_1.md)
+        - [5.2 GAN实战: 手写数字生成](chapter05_gan/5_2.md)
+        - [5.3 ConditionGAN实战: 再战手写数字生成](chapter05_gan/5_3.md)
     - 第六章: CV中的Transformer
         - [6.1 Hello Transformer](chapter06_transformer/6_1_hello_transformer.md)
         - [6.2 OCR by Transformer](chapter06_transformer/6_2_ocr_by_transformer.md)

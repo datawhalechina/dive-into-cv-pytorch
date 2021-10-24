@@ -51,11 +51,13 @@
     - 推进中...
 
 * 第五章: 生成式对抗网络入门
-    - 推进中...
+    - [x] [5.1 初识生成对抗网络](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_1.md)
+    - [x] [5.2 GAN实战: 手写数字生成](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_2.md)
+    - [x] [5.3 ConditionGAN实战: 再战手写数字生成](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_3.md)
 
 * 第六章: CV中的Transformer
-    - [X] [6.1 Hello Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_1_hello_transformer.md)
-    - [X] [6.2 OCR by Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_2_ocr_by_transformer.md)
+    - [X] [6.1 你好，Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_1_hello_transformer.md)
+    - [X] [6.2 Transformer实战：OCR字符识别](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_2_ocr_by_transformer.md)
 
 
 ## 常见问题
