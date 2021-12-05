@@ -5,13 +5,11 @@
 
 # Dive-into-CV-PyTorch
 
-本项目《动手学CV-Pytorch版》是Datawhale:whale:CV小组近期推动的一个重点项目。
-
-受启发于李沐老师的[《动手学深度学习》](https://zh.d2l.ai/)，我们旨在构建一个以Pytorch为框架，强调动手实战的计算机视觉教程项目，帮助大家更好的学习。
+本项目《动手学CV-Pytorch版》是Datawhale:whale:CV小组的一个重点项目，我们旨在构建一个以Pytorch为框架，强调动手实战的计算机视觉教程项目，帮助大家更好的学习。
 
 项目大体上会按照计算机视觉的不同领域和应用场景进行章节划分，循序渐进，带领大家走进CV的世界，以动手实战的方式，从入门到进阶。
 
-目前已经完成的内容包括：预备知识、图像分类入门、目标检测入门三个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
+目前已经完成的内容包括：`预备知识`、`图像分类入门`、`目标检测入门`、`生成式对抗网络入门`、`CV中的Transformer`四个章节，后续的章节敬请期待。相信随着项目的推进，你我将互相见证彼此的进步。
 
 ## 食用方法
 
@@ -19,7 +17,7 @@
 
 有配套代码的章节，可以在项目`code`目录的相应章节目录下面找到。
 
-以下是目录与代码更新进度，还等什么，学就完事了～
+以下是目录与代码更新进度
 
 ## 动手学CV-Pytorch 目录
 
@@ -54,6 +52,7 @@
     - [x] [5.1 初识生成对抗网络](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_1.md)
     - [x] [5.2 GAN实战: 手写数字生成](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_2.md)
     - [x] [5.3 ConditionGAN实战: 再战手写数字生成](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_3.md)
+    - [x] [5.4 DCGAN实战](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter05_gan/5_4.md)
 
 * 第六章: CV中的Transformer
     - [X] [6.1 你好，Transformer](https://datawhalechina.github.io/dive-into-cv-pytorch/#/chapter06_transformer/6_1_hello_transformer.md)
@@ -100,13 +99,18 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">闫永强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.4、3.5、3.6、6.1节作者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，3.4、3.5、3.6、6.1节作者</td>
     <td> </td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋志龙</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，Datawhale成员，3.1、3.2、3.3节作者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">图像算法工程师，3.1、3.2、3.3节作者</td>
     <td> </td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">沈豪</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">复旦大学网安博士在读，第五章作者</td>
+    <td><a href="https://www.zhihu.com/people/shenhao-63">知乎</a>,   <a href="https://github.com/shenhao-stu">Github</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">袁明坤</span></td>
@@ -130,16 +134,16 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李一飞</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，参与1.3、1.4节优化</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">参与1.3、1.4节优化</td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">樊亮</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，1.3节作者</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">1.3节作者</span></td>
     <td><a href="https://blog.csdn.net/OuDiShenmiss">CSDN</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">杨皓博</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，1.4节作者</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">1.4节作者</span></td>
     <td><a href="https://github.com/Dulpyanghaobo">Github</a></td>
   </tr>
   <tr>
