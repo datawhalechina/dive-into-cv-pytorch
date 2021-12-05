@@ -28,6 +28,7 @@
         - [5.1 初识生成对抗网络](chapter05_gan/5_1.md)
         - [5.2 GAN实战: 手写数字生成](chapter05_gan/5_2.md)
         - [5.3 ConditionGAN实战: 再战手写数字生成](chapter05_gan/5_3.md)
+        - [5.4 DCGAN实战: 深度卷积生成对抗网络](chapter05_gan/5_4.md)
     - 第六章: CV中的Transformer
         - [6.1 Hello Transformer](chapter06_transformer/6_1_hello_transformer.md)
         - [6.2 OCR by Transformer](chapter06_transformer/6_2_ocr_by_transformer.md)
