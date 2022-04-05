@@ -51,31 +51,19 @@ Kaggle竞赛平台在新建一个Kernel时，是可以通过设置中选择GPU�
 
 实际上由于游戏行业的普及，目前很多人的电脑，不论是台式机还是笔记本，都是有独显的，也就是GPU。
 
-但不管怎样，如果你的电脑没有一块NVIDIA GPU，你可以选择买一块自己装！
+现在的gpu普遍价格不菲，且更新换代较快，因此如果是个人使用且资金不是特别充裕，还是更建议短期租用gpu服务器的方式进行使用，而不是购买gpu。但不管怎样，如果你的电脑没有一块NVIDIA GPU，你可以选择买一块自己装！
 
-比较熟悉硬件的同学自然觉得没什么，但是可能对于某些小白来说，听到要自己装，可能就有点想退却了，实际上这个过程并没有什么技术含量，操作起来要比听起来简单的多，所以自己动起手来吧~
-
-问把GPU装进机箱，总共分几步？ 答曰：分三步
-
-1. 首先，把机箱盖打开
-
-2. 把GPU装进去
-
-3. 把机箱盖盖上
-
-对，没有在开玩笑，就是这么简单。当然也有几个要注意的要点：
+实际上，自己买一块GPU并自己安装，并没有什么过多的技术含量，当然也有几个要注意的要点：
 
 - 你购买的GPU要和你的电脑其他配件的实力相匹配
 
 这个其实不是什么硬性要求，但是GPU和主板及CPU能力的大致匹配是最好的，为什么呢？
 
-CPU的性能和GPU差距过大，可能出现这样的现象：CPU为了计算出要喂给GPU的数据，忙的都冒烟了，GPU这边叼着根烟头来一句：“呦～U哥，忙着呢？快点啊，我这没活干啊。”
+如果你的GPU是3080Ti，而你的cpu性能不够，那你在训练中很可能遇到cpu已经满负荷运转，而GPU的利用率还很低的情况，相当于浪费了一定的GPU计算能力。
 
 - 关注GPU的功率，更换电源
 
-这里划重点！！！
-
-为了GPU能够长期正常使用，你需要查一下你买的GPU的功率，然后配一个相应的电源。通常来说，你可以这样来操作，举个例子：
+如果你买的GPU功耗比较高，为了GPU能够长期正常安全使用，你需要查一下你买的GPU的功率，然后配一个相应的电源。通常来说，你可以这样来操作，举个例子：
 
 假如你现在的电脑没有一个好的独显，然后当前电源的功率是400w。你想买一个GTX1070，那么可以查到，1070公版显卡的标准功耗是150W，所以比较推荐配一个600W的电源，留出这部分增量。
 
@@ -83,21 +71,19 @@ CPU的性能和GPU差距过大，可能出现这样的现象：CPU为了计算�
 
 实际上，更换电源及GPU都是非常简单的，各种接线口的设计都已经考虑了你不懂的因素，基本可以这么说，只要形状对应，你能轻松插上去，就是接对了。
 
-当然，各种接口都是“防呆不防傻”的，插不进去别楞来 -\_-||
+当然，各种接口都是“防呆不防傻”的，插不进去别楞来，可以搜索相关的装机指南辅助进行安装。
 
 ## 2.如何安装CUDA?
 
 有了GPU机器，下面要做的就是安装CUDA。如果你是租用或者蹭的云服务器，通常来说CUDA已经帮你完成，可以直接跳过本节。
 
-由于NVIDIA GPU及其配套驱动以及CUDA的版本的不断更新，网上能搜到众多不同系统下不同CUDA版本的安装教程，当然如果英文阅读无障碍还是建议阅读NVIDIA官网教程。
+由于NVIDIA GPU及其配套驱动以及CUDA的版本的不断更新，网上能搜到众多不同系统下不同CUDA版本的安装教程，你一定适用于你的情况，强烈建议遵循NVIDIA官网教程进行安装。
 
 这里简单帮你梳理下Ubuntu18.04下的安装方法：
 
-首先是CUDA版本的选择，这主要取决于你想使用的深度学习框架如tensorflow、Pytorch等对应的版本
+首先是CUDA版本的选择，你能安装的最高CUDA版本，取决于你的GPU硬件型号。
 
-例如pytorch==1.0.1要求CUDA版本>=9.0，CUDA9.0与tensorflow1.6是对应的，CUDA8.0和tensorflow1.2是对应的。
-
-通常来说，你可以选择安装CUDA==9.0或CUDA==10.0，都是支持比较广的版本。然后之后再根据你的CUDA版本来选择深度学习框架的版本。
+目前来说，CUDA10和CUDA11是比较广泛使用的版本，再之前的版本就有些过于老旧了，不建议安装。（本段修改于2022/04/05）
 
 置于安装，比较推荐的方法分为两步：安装NVIDIA驱动 + 安装CUDA
 
@@ -122,11 +108,31 @@ CPU的性能和GPU差距过大，可能出现这样的现象：CPU为了计算�
 
 `$ sudo sh cuda_10.0.130_410.48_linux.run`
 
-这里有一个注意事项，就是安装程序也内嵌了NVIDIA的驱动安装包，因此它会询问你是否安装驱动。这里一定要选择否，因为我们前面已经手动安装过了。
+安装过程比较简单，核心要注意两点：
 
-安装过程中其他的选项默认即可。
+- 安装过程会询问你是否安装驱动。这里一定要选择否，因为我们前面已经手动安装过了。
+- 选择cuda的安装路径
 
-安装完成后设置环境变量，在~/.bashrc文件结尾添加如下两句
+不同版本的安装过程会稍有不同，但基本方法一致，都是把握好上述两点即可。
+
+下面展示一下另一个版本CUDA11.1的安装过程截图 (此处更新于2022/4/5)
+
+运行安装后，会看到如下界面，注意Driver要取消勾选，CUDA ToolKit一定要选，其他如Samples是一些CUDA示例代码，可以取消勾选不装。
+
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/cuda11_install_1.png">
+
+然后进入Options设置其他相关参数，一个比较重要的参数是 Options -> CUDA Toolkit -> Change Toolkit Install Path，这个参数用来指定CUDA安装位置
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/cuda11_install_2.png">
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/cuda11_install_3.png">
+
+最后，执行Install，等待一会即可完成安装。如下是没有选择安装驱动时安装成功的运行结果示例：
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/cuda11_install_4.png">
+
+安装完成后设置环境变量，在~/.bashrc文件结尾添加如下两句(注意将路径修改为你自己的cuda安装路径)
 
 `export PATH=/usr/local/cuda-10.0/bin:$PATH`
 
@@ -150,26 +156,16 @@ Cuda compilation tools, release 10.0, V10.0.130
 
 ## 3.如何安装Cudnn
 
-首先到官网下载cudnn，注意版本一定要和CUDA进行对应就好
+首先到[官网下载cudnn](https://developer.nvidia.com/cudnn)，注意版本一定要和CUDA进行对应就好
 
-cudnn其实并不需要安装，下载并解压后有两种处理方法：
+cudnn的安装，其实就是将文件对应的拷贝到你安装的cuda相应目录下。
 
-第一种是将文件对应的拷贝到你安装的cuda相应目录下，例如：
-
+下载并解压后，参照下面命令执行即可（注意替换为你自己的路径）
 ```
 $ sudo cp cuda/include/cudnn.h /usr/local/cuda/include
 $ sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
 $ sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
 ```
-
-第二种是设置环境变量，让你的系统能够在需要时找到cudnn，例如在`~/.bashrc`中添加：
-
-```
-LD_LIBRARY_PATH="/data/ansheng/local/usr/lib64:$LD_LIBRARY_PATH"  # cudnn
-```
-
-你需要将路径更换为你实际放置cudnn的路径
-
 
 ## 4.Anaconda安装及环境管理
 
@@ -226,25 +222,21 @@ py37_torch131            /home/ansheng/miniconda3/envs/py37_torch131
 
 **在指定环境中安装包**
 
-下面我们通过安装pytorch的例子，来介绍如何在指定环境中安装需要的库。
+下面我们介绍如何在指定环境中安装需要的库，同样非常简单。
 
 首先重新激活刚刚创建的环境
 
 `$ source activate py37_torch131`
 
-接下来安装gpu_1.3.1版本的pytorch
+使用 `pip install package_name` 命令安装相应包
 
-`$ conda install pytorch=1.3.1 torchvision cudatoolkit=10.0`
+例如，下面命令安装进度条辅助工具库 tqdm
 
-不同环境下的安装命令可以在[Pytorch官网](https://pytorch.org)找到
+`pip install tqdm`
 
-<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/select_pytorch.png">
+下面是一些常用工具库，你可以使用pip命令一并安装到当前环境中：
 
-上面的命令相当于通过conda帮你在当前环境中把pytorch及其所有的依赖库都安装好了。
-
-除此之外，你可以还需要一切其他的库，根据你的需要，再使用pip命令安装到当前环境中即可，例如：
-
-`$ pip install jupyter tqdm opencv-python matplotlib pandas`
+`$ pip install jupyter tqdm opencv-python matplotlib numpy pandas`
 
 **下载超时的解决办法**
 
@@ -267,9 +259,32 @@ $ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs
 $ conda config --set show_channel_urls yes
 ```
 
-到此，本教材关于GPU环境配置的介绍就全部结束了。如有疑问和建议，欢迎交流。
+## 5.pytorch安装
+
+本教程的所有实战代码都是基于Pytorch这个深度学习框架的，因此我们要先将pytorch安装好，来完成后面的学习。
+
+不同环境下的安装命令可以在[Pytorch官网](https://pytorch.org)找到(你可以结合gpu型号选择适合自己的版本)
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/select_pytorch.png">
+
+例如：使用如下命令安装gpu_1.3.1版本的pytorch
+
+`$ conda install pytorch=1.3.1 torchvision cudatoolkit=10.0`
+
+上面的命令相当于通过conda帮你在当前环境中把pytorch及其所有的依赖库都安装好了。
+
+安装pytorch有一个比较容易出现的问题，就是错误安装了cpu版本，使得gpu无法使用
+
+在python中，使用如下命令查看pytorch版本以及gpu是否可用
+
+<img src="https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.1_environment_install/torch_test.png">
+
+其中，`torch.cuda.is_available()` 返回 True，说明安装正确
+
 
 ---
+
+到此，本教材关于GPU环境配置的介绍就全部结束了。如有疑问和建议，欢迎交流。
 
 **贡献者**
 
