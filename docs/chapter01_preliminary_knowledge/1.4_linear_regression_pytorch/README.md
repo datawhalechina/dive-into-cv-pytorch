@@ -87,7 +87,7 @@ plt.legend()
 plt.show()
 ```
 
-![estimate_before_train.png](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.4_linear_regression_pytorch/estimate_before_train.png.png)
+![estimate_before_train.png](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.4_linear_regression_pytorch/estimate_before_train.png)
 
 可以看到，未经训练的模型预测的完全不对
 
@@ -152,7 +152,7 @@ plt.legend()
 plt.show()
 ```
 
-![estimate_after_train.png](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.4_linear_regression_pytorch/estimate_after_train.png.png)
+![estimate_after_train.png](https://raw.githubusercontent.com/datawhalechina/dive-into-cv-pytorch/master/markdown_imgs/chapter01/1.4_linear_regression_pytorch/estimate_after_train.png)
 
 可以看到，模型正确的学到的y与x之间的规律。
 
