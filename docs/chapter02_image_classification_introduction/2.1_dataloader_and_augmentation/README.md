@@ -333,7 +333,6 @@ from torchvision import transforms
 class MnistDataset(Dataset):
 
     def __init__(self, image_path, image_label, transform=None):
-        super(MnistDataset, self).__init__()
         self.image_path = image_path  # 初始化图像路径列表
         self.image_label = image_label  # 初始化图像标签列表
         self.transform = transform  # 初始化数据增强方法
