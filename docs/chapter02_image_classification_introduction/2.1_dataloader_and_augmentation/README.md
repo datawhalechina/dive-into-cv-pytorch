@@ -604,7 +604,7 @@ batch20000:images shape info-->torch.Size([3, 1, 28, 28]) labels-->tensor([9., 7
 ```python
 from torchvision.datasets import ImageFolder
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoade
+from torch.utils.data import DataLoader
 
 # train & test root
 train_root = r'./sample/train/'
@@ -621,13 +621,11 @@ test_transform=transforms.Compose([
         ])
 
 # train dataset
-train_dataset = torchvision.datasets.ImageFolder(root=train_root,
-                                                 transform=train_transform)
+train_dataset = ImageFolder(root=train_root,transform=train_transform)
 train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=0)
 
 # test dataset
-test_dataset = torchvision.datasets.ImageFolder(root=test_root,
-                                               transform=test_transform)
+test_dataset = ImageFolder(root=test_root,transform=test_transform)
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=0)
 ```
 
