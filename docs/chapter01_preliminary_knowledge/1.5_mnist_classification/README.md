@@ -220,7 +220,7 @@ for epoch in range(nums_epoch):
 将结果可视化，从图可以看出，测试结果在0.97以上，还是比较低的哈，大家可以修改一下参数看能否有提高呢。
 ```python
 
-lt.figure()
+plt.figure()
 plt.suptitle('Test', fontsize=12)
 ax1 = plt.subplot(1, 2, 1)
 ax1.plot(eval_losses, color='r')
