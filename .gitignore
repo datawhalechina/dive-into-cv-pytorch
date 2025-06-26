@@ -8,3 +8,50 @@ dataset/*
 .ipynb_checkpoints
 code/chapter03_object_detection_introduction/tiny_detector_demo/checkpoint.pth.tar
 code/chapter03_object_detection_introduction/tiny_detector_demo/checkpoint_ssd300.pth.tar
+
+# Testing related
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.tox/
+.nox/
+
+# Claude settings
+.claude/*
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+*.egg
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.manifest
+*.spec
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.env
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Package manager files
+# Note: Do NOT ignore poetry.lock or uv.lock
+__pycache__/
+*.py[cod]
+*$py.class
